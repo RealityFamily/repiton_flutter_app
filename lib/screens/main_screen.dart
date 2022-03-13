@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
+import 'package:repiton/screens/controll_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final pages = [
     AddingAccountScreen(),
-    Container(),
+    ControllScreen(),
     Container(),
   ];
   int pageIndex = 0;
