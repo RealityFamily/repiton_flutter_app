@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:repiton/screens/main_screen.dart';
+import 'package:repiton/widgets/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
