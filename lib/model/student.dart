@@ -2,11 +2,13 @@ import 'package:intl/intl.dart';
 import 'package:repiton/model/parent.dart';
 
 class Student {
+  late String id;
   late String name;
   late String lastName;
   late DateTime birthDay;
   late String email;
   late String phone;
+  late String imageUrl;
   late String education;
 
   late List<Parent> parents;
@@ -15,11 +17,13 @@ class Student {
   late int hours;
 
   Student.empty() {
+    id = "";
     name = "";
     lastName = "";
     birthDay = DateTime.now();
     email = "";
     phone = "";
+    imageUrl = "";
     education = "";
 
     parents = [];
@@ -29,11 +33,13 @@ class Student {
   }
 
   Student({
+    required this.id,
     required this.name,
     required this.lastName,
     required this.birthDay,
     required this.email,
     required this.phone,
+    required this.imageUrl,
     required this.education,
     required this.parents,
     required this.price,
@@ -42,7 +48,9 @@ class Student {
 
   @override
   String toString() {
-    return "name: " +
+    return "id: " +
+        id +
+        "\nname: " +
         name +
         "\nlastName: " +
         lastName +
@@ -52,6 +60,8 @@ class Student {
         email +
         "\nphone: " +
         phone +
+        "\nimageUrl: " +
+        imageUrl +
         "\neducation: " +
         education +
         "\nparents: " +

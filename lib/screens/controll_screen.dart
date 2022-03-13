@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:repiton/provider/students.dart';
+import 'package:repiton/provider/teachers.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
 
 class ControllScreen extends StatefulWidget {
@@ -132,10 +135,38 @@ class _ControllScreenState extends State<ControllScreen> {
                 ],
               ),
             ),
-            ListView.separated(
-              itemBuilder: (context, index) => ControllListWidget(),
-              separatorBuilder: (context, index) => Divider(),
-              itemCount: 10,
+            Expanded(
+              child: state == ControllState.student
+                  ? Consumer<Students>(
+                      builder: (context, students, child) => ListView.separated(
+                        itemBuilder: (context, index) => ControllListWidget(
+                          name: students.students[index].lastName +
+                              " " +
+                              students.students[index].name,
+                          imageUrl: students.students[index].imageUrl,
+                          id: students.students[index].id,
+                          state: state,
+                        ),
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemCount: students.students.length,
+                      ),
+                    )
+                  : Consumer<Teachers>(
+                      builder: (context, teachers, child) => ListView.separated(
+                        itemBuilder: (context, index) => ControllListWidget(
+                          name: teachers.teachers[index].lastName +
+                              " " +
+                              teachers.teachers[index].name +
+                              " " +
+                              teachers.teachers[index].fatherName,
+                          imageUrl: teachers.teachers[index].imageUrl,
+                          id: teachers.teachers[index].id,
+                          state: state,
+                        ),
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemCount: teachers.teachers.length,
+                      ),
+                    ),
             ),
           ],
         ),

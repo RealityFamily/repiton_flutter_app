@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
+import 'package:repiton/provider/students.dart';
+import 'package:repiton/provider/teachers.dart';
 import 'package:repiton/widgets/add_student_info.dart';
 import 'package:repiton/widgets/add_student_parent_info.dart';
 import 'package:repiton/widgets/add_teacher_info.dart';
@@ -41,16 +44,14 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
         widget.student.parents.add(parent.result);
       }
 
-      //TODO: Send new student
-      debugPrint(widget.student.toString());
+      Provider.of<Students>(context, listen: false).addStudent(widget.student);
     } else {
       if (!teacherFormKey.currentState!.validate()) {
         return;
       }
       teacherFormKey.currentState!.save();
 
-      //TODO: Send new teacher
-      debugPrint(widget.teacher.toString());
+      Provider.of<Teachers>(context, listen: false).addTeacher(widget.teacher);
     }
   }
 
