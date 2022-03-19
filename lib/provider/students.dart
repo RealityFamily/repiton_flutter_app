@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:repiton/model/info_visualisation_state.dart';
+import 'package:repiton/core/comparing/date_comparing.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
 import 'package:repiton/model/student.dart';
@@ -8,6 +8,9 @@ class Students with ChangeNotifier {
   late final String authToken;
   late final List<String> userRole;
   late List<Student> _students;
+
+  LearnStatistics? _statistics;
+  List<StudentLearnStatistics> _disciplines = [];
 
   Students({
     required List<Student>? prevStudents,
@@ -40,6 +43,14 @@ class Students with ChangeNotifier {
     return [..._students];
   }
 
+  LearnStatistics? get statictics {
+    return _statistics;
+  }
+
+  List<StudentLearnStatistics> get disciplines {
+    return [..._disciplines];
+  }
+
   void addStudent(Student student) {
     _students.add(student);
     notifyListeners();
@@ -57,70 +68,91 @@ class Students with ChangeNotifier {
     }
   }
 
-  Future<LearnStatistics> getStatistics(
-    DateTime showDate,
-    InfoVisualisationState state, [
-    DateTime? customDateFrom,
-    DateTime? customDateTo,
-  ]) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    late DateTime dateFrom;
-    late DateTime dateTo;
-
-    switch (state) {
-      case InfoVisualisationState.week:
-        dateFrom = showDate.subtract(Duration(days: showDate.weekday - 1));
-        dateTo = showDate
-            .add(Duration(days: DateTime.daysPerWeek - showDate.weekday));
-        break;
-      case InfoVisualisationState.month:
-        dateFrom = DateTime(showDate.year, showDate.month, 1);
-        dateTo = DateTime(showDate.year, showDate.month + 1, 0);
-        break;
-      case InfoVisualisationState.custom:
-        dateFrom = customDateFrom ?? DateTime(showDate.year, showDate.month, 1);
-        dateTo =
-            customDateFrom ?? DateTime(showDate.year, showDate.month + 1, 0);
-        break;
+  void fecthAndSetTeachersInfoForADay(DateTime day) {
+    _disciplines = [];
+    if (_statistics == null) {
+      return;
     }
 
-    return LearnStatistics(allHomeTasks: 5, allPresents: 7, disciplines: [
-      StudentLearnStatistics(
-        teacherId: "t1",
-        teacherName: "Зинаида",
-        teacherLastName: "Юрьевна",
-        teacherFatherName: "Аркадьевна",
-        disciplineId: "d1",
-        disciplineName: "Информатика",
-        teacherImageUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
-        presents: 7,
-        homeTasks: 5,
-        lessons: [
-          Lesson(
-            status: LessonStatus.done,
-            dateTimeStart: DateTime.now(),
-            dateTimeEnd: DateTime.now().add(
-              const Duration(hours: 2),
+    for (var discipline in _statistics!.disciplines) {
+      for (var lesson in discipline.lessons) {
+        if (lesson.dateTimeStart.isSameDate(day)) {
+          _disciplines.add(discipline);
+        }
+      }
+    }
+    notifyListeners();
+  }
+
+  void fecthAndSetTeachersInfoForAPeriod(DateTime startDay, DateTime endDay) {
+    _disciplines = [];
+    if (_statistics == null) {
+      return;
+    }
+
+    for (var discipline in _statistics!.disciplines) {
+      for (var lesson in discipline.lessons) {
+        if ((lesson.dateTimeStart.isAfter(startDay) ||
+                lesson.dateTimeStart.isSameDate(startDay)) &&
+            (lesson.dateTimeStart.isBefore(endDay) ||
+                lesson.dateTimeStart.isSameDate(endDay))) {
+          _disciplines.add(discipline);
+        }
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchAndSetStatistics(
+    DateTime fromDate,
+    DateTime toDate,
+  ) async {
+    _disciplines = [];
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    _statistics = LearnStatistics(
+      allHomeTasks: 5,
+      allPresents: 7,
+      disciplines: [
+        StudentLearnStatistics(
+          teacherId: "t1",
+          teacherName: "Зинаида",
+          teacherLastName: "Юрьевна",
+          teacherFatherName: "Аркадьевна",
+          disciplineId: "d1",
+          disciplineName: "Информатика",
+          teacherImageUrl:
+              "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+          presents: 7,
+          homeTasks: 5,
+          lessons: [
+            Lesson(
+              status: LessonStatus.done,
+              dateTimeStart: DateTime.now(),
+              dateTimeEnd: DateTime.now().add(
+                const Duration(hours: 2),
+              ),
             ),
-          ),
-          Lesson(
-            status: LessonStatus.canceled,
-            dateTimeStart: DateTime.now(),
-            dateTimeEnd: DateTime.now().add(
-              const Duration(hours: 2),
+            Lesson(
+              status: LessonStatus.canceled,
+              dateTimeStart: DateTime.now(),
+              dateTimeEnd: DateTime.now().add(
+                const Duration(hours: 2),
+              ),
             ),
-          ),
-          Lesson(
-            status: LessonStatus.moved,
-            dateTimeStart: DateTime.now(),
-            dateTimeEnd: DateTime.now().add(
-              const Duration(hours: 2),
+            Lesson(
+              status: LessonStatus.moved,
+              dateTimeStart: DateTime.now(),
+              dateTimeEnd: DateTime.now().add(
+                const Duration(hours: 2),
+              ),
             ),
-          ),
-        ],
-      ),
-    ]);
+          ],
+        ),
+      ],
+    );
+
+    notifyListeners();
   }
 }

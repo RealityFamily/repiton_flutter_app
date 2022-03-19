@@ -4,6 +4,7 @@ import 'package:repiton/provider/auth.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
 import 'package:repiton/screens/controll_screen.dart';
 import 'package:repiton/screens/settings_screen.dart';
+import 'package:repiton/screens/timetable_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -20,13 +21,13 @@ class _MainScreenState extends State<MainScreen> {
       const SettingsScreen(),
     ],
     "TEACHER": [
-      AddingAccountScreen(),
-      const ControllScreen(),
+      Container(),
+      const TimeTableScreen(),
       const SettingsScreen(),
     ],
     "STUDENT": [
-      AddingAccountScreen(),
-      const ControllScreen(),
+      Container(),
+      Container(),
       const SettingsScreen(),
     ],
   };
@@ -87,19 +88,19 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Auth auth = Provider.of<Auth>(context);
-
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: pageIndex,
-        items: buttons[auth.userRole[0]]!,
-        onTap: (value) {
-          setState(() {
-            pageIndex = value;
-          });
-        },
+    return Consumer<Auth>(
+      builder: (context, auth, _) => Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: pageIndex,
+          items: buttons[auth.userRole[0]]!,
+          onTap: (value) {
+            setState(() {
+              pageIndex = value;
+            });
+          },
+        ),
+        body: pages[auth.userRole[0]]![pageIndex],
       ),
-      body: pages[auth.userRole[0]]![pageIndex],
     );
   }
 }

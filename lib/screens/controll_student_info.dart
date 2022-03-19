@@ -15,18 +15,16 @@ class ControllStudentInfo extends StatefulWidget {
 
 class _ControllTeacherInfoState extends State<ControllStudentInfo> {
   InfoVisualisationState state = InfoVisualisationState.week;
-  late Students students;
   Student? student;
 
   Future<Student> _getCachedTeacher() async {
-    student ??= await students.findById(widget.id);
+    student ??=
+        await Provider.of<Students>(context, listen: false).findById(widget.id);
     return student!;
   }
 
   @override
   Widget build(BuildContext context) {
-    students = Provider.of<Students>(context);
-
     return Scaffold(
       body: SafeArea(
         child: Padding(

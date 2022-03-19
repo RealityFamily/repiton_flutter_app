@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/students.dart';
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
             primary: const Color(0xFF393939),
           ),
         ),
+        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        supportedLocales: const [Locale('ru')],
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
         home: const MainScreen(),
       ),

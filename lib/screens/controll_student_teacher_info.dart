@@ -136,10 +136,12 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  Color background;
-                  String trailing;
+                  List<Lesson> lessons =
+                      studentStatistics.lessons.reversed.toList();
+                  Color background = Colors.transparent;
+                  String trailing = "";
 
-                  switch (studentStatistics.lessons[index].status) {
+                  switch (lessons[index].status) {
                     case LessonStatus.done:
                       background = const Color(0xFF9DCBAA);
                       trailing = "Проведено";
@@ -157,7 +159,7 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                   return ListTile(
                     title: Text(
                       DateFormat("dd.MM.yyyy").format(
-                        studentStatistics.lessons[index].dateTimeStart,
+                        lessons[index].dateTimeStart,
                       ),
                       style: const TextStyle(
                         fontSize: 18,

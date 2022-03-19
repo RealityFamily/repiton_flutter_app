@@ -20,4 +20,5 @@ enum LessonStatus {
   done,
   canceled,
   moved,
+  planned,
 }

@@ -19,14 +19,15 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
   Teacher? teacher;
 
   Future<Teacher> getCachedTeacher() async {
-    teacher ??= await teachers.findById(widget.id);
+    teacher ??= await Provider.of<Teachers>(
+      context,
+      listen: false,
+    ).findById(widget.id);
     return teacher!;
   }
 
   @override
   Widget build(BuildContext context) {
-    teachers = Provider.of<Teachers>(context);
-
     return Scaffold(
       body: SafeArea(
         child: Padding(

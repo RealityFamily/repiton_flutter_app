@@ -1,20 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:repiton/screens/controll_screen.dart';
-import 'package:repiton/screens/controll_student_info.dart';
-import 'package:repiton/screens/controll_teacher_info.dart';
 
 class ControllListWidget extends StatelessWidget {
   final String name;
   final String imageUrl;
   final String id;
-  final ControllState state;
+  final Widget Function(String) page;
 
   const ControllListWidget({
     required this.id,
     required this.name,
     required this.imageUrl,
-    required this.state,
+    required this.page,
     Key? key,
   }) : super(key: key);
 
@@ -30,13 +26,7 @@ class ControllListWidget extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => state == ControllState.teacher
-                ? ControllTeacherInfo(
-                    id: id,
-                  )
-                : ControllStudentInfo(
-                    id: id,
-                  ),
+            builder: (context) => page(id),
           ),
         );
       },
