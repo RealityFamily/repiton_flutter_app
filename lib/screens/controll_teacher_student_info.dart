@@ -16,7 +16,7 @@ class ControllTeacherStudentInfo extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.only(top: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -60,9 +60,9 @@ class ControllTeacherStudentInfo extends StatelessWidget {
                     ),
                     TextSpan(
                       text: " " +
-                          studentStatistics.studentName +
+                          studentStatistics.student.name +
                           " " +
-                          studentStatistics.studentLastName,
+                          studentStatistics.student.lastName,
                       style: TextStyle(
                         fontSize: 22,
                         color: Theme.of(context).colorScheme.primary,
@@ -74,92 +74,103 @@ class ControllTeacherStudentInfo extends StatelessWidget {
               const SizedBox(
                 height: 32,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Проведенных занятий",
-                    style: TextStyle(fontSize: 22),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
                   ),
-                  Text(
-                    studentStatistics.presents.toString(),
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Итого к оплате",
-                    style: TextStyle(fontSize: 22),
-                  ),
-                  Text(
-                    studentStatistics.price.toStringAsFixed(0) + " ₽",
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 42,
-              ),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  List<Lesson> lessons =
-                      studentStatistics.lessons.reversed.toList();
-                  Color background = Colors.transparent;
-                  String trailing = "";
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Проведенных занятий",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          Text(
+                            studentStatistics.presents.toString(),
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Итого к оплате",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          Text(
+                            studentStatistics.price.toStringAsFixed(0) + " ₽",
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 42,
+                      ),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          List<Lesson> lessons =
+                              studentStatistics.lessons.reversed.toList();
+                          Color background = Colors.transparent;
+                          String trailing = "";
 
-                  switch (lessons[index].status) {
-                    case LessonStatus.done:
-                      background = const Color(0xFF9DCBAA);
-                      trailing = "Проведено";
-                      break;
-                    case LessonStatus.canceled:
-                      background = const Color(0xFFDE9898);
-                      trailing = "Отменено";
-                      break;
-                    case LessonStatus.moved:
-                      background = const Color(0xFFFFEE97);
-                      trailing = "Перенесено";
-                      break;
-                  }
+                          switch (lessons[index].status) {
+                            case LessonStatus.done:
+                              background = const Color(0xFF9DCBAA);
+                              trailing = "Проведено";
+                              break;
+                            case LessonStatus.canceled:
+                              background = const Color(0xFFDE9898);
+                              trailing = "Отменено";
+                              break;
+                            case LessonStatus.moved:
+                              background = const Color(0xFFFFEE97);
+                              trailing = "Перенесено";
+                              break;
+                          }
 
-                  return ListTile(
-                    title: Text(
-                      DateFormat("dd.MM.yyyy").format(
-                        lessons[index].dateTimeStart,
+                          return ListTile(
+                            title: Text(
+                              DateFormat("dd.MM.yyyy").format(
+                                lessons[index].dateTimeStart,
+                              ),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            trailing: Container(
+                              constraints: const BoxConstraints(
+                                minWidth: 110,
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              color: background,
+                              child: Text(
+                                trailing,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemCount: studentStatistics.lessons.length,
                       ),
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    trailing: Container(
-                      constraints: const BoxConstraints(
-                        minWidth: 110,
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      color: background,
-                      child: Text(
-                        trailing,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: studentStatistics.lessons.length,
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

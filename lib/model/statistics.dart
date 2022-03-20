@@ -1,4 +1,6 @@
+import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
+import 'package:repiton/model/student.dart';
 
 class FinancialStatistics {
   late int allLessons;
@@ -19,29 +21,20 @@ class FinancialStatistics {
 }
 
 class StudentFinancialStatistics {
-  late String studentId;
-  late String studentName;
-  late String studentLastName;
-  late String studentImageUrl;
+  late Student student;
   late int presents;
   late double price;
   late List<Lesson> lessons;
 
   StudentFinancialStatistics({
-    required this.studentId,
-    required this.studentName,
-    required this.studentLastName,
-    required this.studentImageUrl,
+    required this.student,
     required this.presents,
     required this.price,
     required this.lessons,
   });
 
   StudentFinancialStatistics.empty() {
-    studentId = "";
-    studentName = "";
-    studentLastName = "";
-    studentImageUrl = "";
+    student = Student.empty();
     presents = 0;
     price = 0;
     lessons = [];
@@ -51,7 +44,7 @@ class StudentFinancialStatistics {
 class LearnStatistics {
   late int allPresents;
   late int allHomeTasks;
-  late List<StudentLearnStatistics> disciplines;
+  late List<DisciplineLearnStatistics> disciplines;
 
   LearnStatistics({
     required this.allHomeTasks,
@@ -67,48 +60,27 @@ class LearnStatistics {
 
   int get countAllLessons {
     int result = 0;
-    for (StudentLearnStatistics studentLearnStatistics in disciplines) {
-      result += studentLearnStatistics.lessons.length;
+    for (DisciplineLearnStatistics studentLearnStatistics in disciplines) {
+      result += studentLearnStatistics.discipline.lessons.length;
     }
     return result;
   }
 }
 
-class StudentLearnStatistics {
-  late String teacherId;
-  late String teacherName;
-  late String teacherFatherName;
-  late String teacherLastName;
-  late String disciplineId;
-  late String disciplineName;
-  late String teacherImageUrl;
+class DisciplineLearnStatistics {
+  late Discipline discipline;
   late int presents;
   late int homeTasks;
-  late List<Lesson> lessons;
 
-  StudentLearnStatistics({
-    required this.teacherId,
-    required this.teacherName,
-    required this.teacherFatherName,
-    required this.teacherLastName,
-    required this.teacherImageUrl,
-    required this.disciplineId,
-    required this.disciplineName,
+  DisciplineLearnStatistics({
+    required this.discipline,
     required this.presents,
     required this.homeTasks,
-    required this.lessons,
   });
 
-  StudentLearnStatistics.empty() {
-    teacherId = "";
-    teacherName = "";
-    teacherFatherName = "";
-    teacherLastName = "";
-    teacherImageUrl = "";
-    disciplineId = "";
-    disciplineName = "";
+  DisciplineLearnStatistics.empty() {
+    discipline = Discipline.empty();
     presents = 0;
     homeTasks = 0;
-    lessons = [];
   }
 }

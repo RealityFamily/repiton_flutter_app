@@ -254,7 +254,7 @@ class _ControllFinancinalStatisticsWidgetState
                           height: 37,
                         ),
                         const Text(
-                          "Подробнее по ученикам",
+                          "Подробнее по дисциплинам",
                           style: TextStyle(
                             fontSize: 24,
                           ),
@@ -266,19 +266,22 @@ class _ControllFinancinalStatisticsWidgetState
                             return ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  students.disciplines[index].teacherImageUrl,
+                                  students.disciplines[index].discipline.teacher
+                                      .imageUrl,
                                 ),
                               ),
                               title: Text(
-                                students.disciplines[index].disciplineName,
+                                students.disciplines[index].discipline.name,
                               ),
                               subtitle: Text(
-                                students.disciplines[index].teacherLastName +
+                                students.disciplines[index].discipline.teacher
+                                        .lastName +
                                     " " +
-                                    students.disciplines[index].teacherName +
+                                    students.disciplines[index].discipline
+                                        .teacher.name +
                                     " " +
-                                    students
-                                        .disciplines[index].teacherFatherName,
+                                    students.disciplines[index].discipline
+                                        .teacher.fatherName,
                               ),
                               onTap: () {
                                 Navigator.of(context).push(

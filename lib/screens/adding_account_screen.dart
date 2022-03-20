@@ -11,15 +11,15 @@ import 'package:repiton/widgets/add_teacher_info.dart';
 class AddingAccountScreen extends StatefulWidget {
   final Teacher teacher = Teacher.empty();
   final Student student = Student.empty();
+  final AddingState state;
 
-  AddingAccountScreen({Key? key}) : super(key: key);
+  AddingAccountScreen({required this.state, Key? key}) : super(key: key);
 
   @override
   State<AddingAccountScreen> createState() => _AddingAccountScreenState();
 }
 
 class _AddingAccountScreenState extends State<AddingAccountScreen> {
-  AddingState state = AddingState.student;
   final parentList = [AddStudentParentInfo()];
   final GlobalKey<FormState> studentFormKey = GlobalKey();
   final GlobalKey<FormState> teacherFormKey = GlobalKey();
@@ -34,7 +34,7 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
   }
 
   void _submit() {
-    if (state == AddingState.student) {
+    if (widget.state == AddingState.student) {
       if (!studentFormKey.currentState!.validate() || !_checkAllParents()) {
         return;
       }
@@ -57,191 +57,130 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "Добавление",
-              style: TextStyle(
-                fontSize: 34,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(
-                vertical: 21,
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 3,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                borderRadius: BorderRadius.circular(11),
-              ),
-              child: Row(
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        elevation: 0,
-                        shadowColor: Colors.transparent,
-                        primary: state == AddingState.student
-                            ? Theme.of(context).colorScheme.primary
-                            : Colors.transparent,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.zero,
-                            bottomRight: Radius.zero,
-                            bottomLeft: Radius.circular(8),
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          state = AddingState.student;
-                        });
-                      },
-                      child: Text(
-                        "Ученик",
-                        style: TextStyle(
-                          color: state == AddingState.teacher
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.white,
-                        ),
-                      ),
+                  const Text(
+                    "Добавление",
+                    style: TextStyle(
+                      fontSize: 34,
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          state = AddingState.teacher;
-                        });
-                      },
-                      child: Text(
-                        "Преподаватель",
-                        style: TextStyle(
-                          color: state == AddingState.student
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.white,
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      IconButton(
+                        padding: const EdgeInsets.all(16),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(Icons.arrow_back),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        elevation: 0,
-                        shadowColor: Colors.transparent,
-                        primary: state == AddingState.teacher
-                            ? Theme.of(context).colorScheme.primary
-                            : Colors.transparent,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(8),
-                            topLeft: Radius.zero,
-                            bottomLeft: Radius.zero,
-                            bottomRight: Radius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: state == AddingState.student
-                    ? Column(
-                        children: [
-                          AddStudentInfo(
-                            formKey: studentFormKey,
-                            result: widget.student,
-                          ),
-                          const SizedBox(
-                            height: 23,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Expanded(
-                                child: Text(
-                                  "Введите данные родителя ученика",
-                                  style: TextStyle(
-                                    fontSize: 22,
+              const SizedBox(
+                height: 26,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: widget.state == AddingState.student
+                      ? Column(
+                          children: [
+                            AddStudentInfo(
+                              formKey: studentFormKey,
+                              result: widget.student,
+                            ),
+                            const SizedBox(
+                              height: 23,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Expanded(
+                                  child: Text(
+                                    "Введите данные родителя ученика",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    parentList.add(AddStudentParentInfo());
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.add,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 13,
-                          ),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final item = parentList[index];
-                              return Dismissible(
-                                key: ObjectKey(item),
-                                background: Container(
-                                  color: Colors.red,
-                                ),
-                                child: item,
-                                direction: DismissDirection.endToStart,
-                                onDismissed: (direction) {
-                                  if (direction ==
-                                      DismissDirection.endToStart) {
+                                IconButton(
+                                  onPressed: () {
                                     setState(() {
-                                      if (parentList.length > 1) {
-                                        parentList.remove(item);
-                                      }
+                                      parentList.add(AddStudentParentInfo());
                                     });
-                                  }
-                                },
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              height: 36,
+                                  },
+                                  icon: Icon(
+                                    Icons.add,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                )
+                              ],
                             ),
-                            itemCount: parentList.length,
-                          ),
-                        ],
-                      )
-                    : AddTeacherInfo(
-                        formKey: teacherFormKey,
-                        result: widget.teacher,
-                      ),
+                            const SizedBox(
+                              height: 13,
+                            ),
+                            ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                final item = parentList[index];
+                                return Dismissible(
+                                  key: ObjectKey(item),
+                                  background: Container(
+                                    color: Colors.red,
+                                  ),
+                                  child: item,
+                                  direction: DismissDirection.endToStart,
+                                  onDismissed: (direction) {
+                                    if (direction ==
+                                        DismissDirection.endToStart) {
+                                      setState(() {
+                                        if (parentList.length > 1) {
+                                          parentList.remove(item);
+                                        }
+                                      });
+                                    }
+                                  },
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                height: 36,
+                              ),
+                              itemCount: parentList.length,
+                            ),
+                          ],
+                        )
+                      : AddTeacherInfo(
+                          formKey: teacherFormKey,
+                          result: widget.teacher,
+                        ),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: _submit,
-              child: const Text("Сохранить"),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: _submit,
+                child: const Text("Сохранить"),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -249,6 +188,6 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
 }
 
 enum AddingState {
-  teacher,
   student,
+  teacher,
 }

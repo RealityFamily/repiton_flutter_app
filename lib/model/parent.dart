@@ -1,10 +1,12 @@
 class Parent {
+  late String id;
   late String name;
   late String lastName;
   late String fatherName;
   late String phone;
 
   Parent.empty() {
+    id = "";
     name = "";
     lastName = "";
     fatherName = "";
@@ -12,6 +14,7 @@ class Parent {
   }
 
   Parent({
+    required this.id,
     required this.name,
     required this.lastName,
     required this.fatherName,
@@ -20,7 +23,9 @@ class Parent {
 
   @override
   String toString() {
-    return "name: " +
+    return "id: " +
+        id +
+        "name: " +
         name +
         "\nlastName: " +
         lastName +

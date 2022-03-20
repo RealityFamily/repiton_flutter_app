@@ -2,11 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:repiton/core/comparing/date_comparing.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
+import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
+import 'package:repiton/provider/auth.dart';
 
 class Teachers with ChangeNotifier {
   late final String authToken;
-  late final List<String> userRole;
+  late final List<Role> userRole;
   late List<Teacher> _teachers;
 
   FinancialStatistics? _statistics;
@@ -128,15 +130,19 @@ class Teachers with ChangeNotifier {
       allPrice: 15000,
       students: [
         StudentFinancialStatistics(
-          studentId: "s1",
-          studentName: "Виталий",
-          studentLastName: "Евпанько",
-          studentImageUrl:
-              "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+          student: Student.empty()
+            ..id = "s1"
+            ..name = "Виталий"
+            ..lastName = "Евпанько"
+            ..imageUrl =
+                "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
           presents: 10,
           price: 15000,
           lessons: [
             Lesson(
+              id: "l1",
+              name: "Урок №1",
+              description: "Какая-то инфа по уроку",
               status: LessonStatus.done,
               dateTimeStart: DateTime.now().subtract(
                 const Duration(days: 35),
@@ -146,6 +152,9 @@ class Teachers with ChangeNotifier {
               ),
             ),
             Lesson(
+              id: "l2",
+              name: "Урок №2",
+              description: "Какая-то инфа по уроку",
               status: LessonStatus.canceled,
               dateTimeStart: DateTime.now().subtract(
                 const Duration(days: 8),
@@ -153,6 +162,9 @@ class Teachers with ChangeNotifier {
               dateTimeEnd: DateTime.now(),
             ),
             Lesson(
+              id: "l3",
+              name: "Урок №3",
+              description: "Какая-то инфа по уроку",
               status: LessonStatus.moved,
               dateTimeStart: DateTime.now().subtract(
                 const Duration(days: 4),
@@ -177,6 +189,9 @@ class Teachers with ChangeNotifier {
 
     _lessons = [
       Lesson(
+          id: "l4",
+          name: "Урок №4",
+          description: "Какая-то инфа по уроку",
           status: LessonStatus.planned,
           dateTimeStart: DateTime.now(),
           dateTimeEnd: DateTime.now())

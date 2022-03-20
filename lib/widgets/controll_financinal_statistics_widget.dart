@@ -228,11 +228,13 @@ class _ControllFinancinalStatisticsWidgetState
                             return ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                    teachers.students[index].studentImageUrl),
+                                  teachers.students[index].student.imageUrl,
+                                ),
                               ),
-                              title: Text(teachers.students[index].studentName +
+                              title: Text(teachers
+                                      .students[index].student.name +
                                   " " +
-                                  teachers.students[index].studentLastName),
+                                  teachers.students[index].student.lastName),
                               trailing: Text(
                                 teachers.students[index].presents.toString(),
                               ),

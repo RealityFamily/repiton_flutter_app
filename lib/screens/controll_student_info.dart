@@ -28,7 +28,7 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.only(top: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -60,159 +60,170 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
               const SizedBox(
                 height: 8,
               ),
-              FutureBuilder<Student>(
-                future: _getCachedTeacher(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.hasData) {
-                    return RichText(
-                      text: TextSpan(
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: Column(
+                  children: [
+                    FutureBuilder<Student>(
+                      future: _getCachedTeacher(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData) {
+                          return RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: "Ученик ",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: snapshot.data!.name +
+                                      " " +
+                                      snapshot.data!.lastName,
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 21,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 3,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+                      child: Row(
                         children: [
-                          const TextSpan(
-                            text: "Ученик ",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey,
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                primary: state == InfoVisualisationState.week
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.zero,
+                                    bottomRight: Radius.zero,
+                                    bottomLeft: Radius.circular(8),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  state = InfoVisualisationState.week;
+                                });
+                              },
+                              child: Text(
+                                "Неделя",
+                                style: TextStyle(
+                                  color: state != InfoVisualisationState.week
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Colors.white,
+                                ),
+                              ),
                             ),
                           ),
-                          TextSpan(
-                            text: snapshot.data!.name +
-                                " " +
-                                snapshot.data!.lastName,
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Theme.of(context).colorScheme.primary,
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                primary: state == InfoVisualisationState.month
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.zero,
+                                    topRight: Radius.zero,
+                                    bottomRight: Radius.zero,
+                                    bottomLeft: Radius.zero,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  state = InfoVisualisationState.month;
+                                });
+                              },
+                              child: Text(
+                                "Месяц",
+                                style: TextStyle(
+                                  color: state != InfoVisualisationState.month
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                primary: state == InfoVisualisationState.custom
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.zero,
+                                    topRight: Radius.circular(8),
+                                    bottomRight: Radius.circular(8),
+                                    bottomLeft: Radius.zero,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  state = InfoVisualisationState.custom;
+                                });
+                              },
+                              child: Text(
+                                "Выбрать...",
+                                style: TextStyle(
+                                  color: state != InfoVisualisationState.custom
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 21,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 3,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  borderRadius: BorderRadius.circular(11),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          elevation: 0,
-                          shadowColor: Colors.transparent,
-                          primary: state == InfoVisualisationState.week
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.transparent,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              topRight: Radius.zero,
-                              bottomRight: Radius.zero,
-                              bottomLeft: Radius.circular(8),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            state = InfoVisualisationState.week;
-                          });
-                        },
-                        child: Text(
-                          "Неделя",
-                          style: TextStyle(
-                            color: state != InfoVisualisationState.week
-                                ? Theme.of(context).colorScheme.primary
-                                : Colors.white,
-                          ),
-                        ),
-                      ),
                     ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          elevation: 0,
-                          shadowColor: Colors.transparent,
-                          primary: state == InfoVisualisationState.month
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.transparent,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.zero,
-                              topRight: Radius.zero,
-                              bottomRight: Radius.zero,
-                              bottomLeft: Radius.zero,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            state = InfoVisualisationState.month;
-                          });
-                        },
-                        child: Text(
-                          "Месяц",
-                          style: TextStyle(
-                            color: state != InfoVisualisationState.month
-                                ? Theme.of(context).colorScheme.primary
-                                : Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          elevation: 0,
-                          shadowColor: Colors.transparent,
-                          primary: state == InfoVisualisationState.custom
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.transparent,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.zero,
-                              topRight: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                              bottomLeft: Radius.zero,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            state = InfoVisualisationState.custom;
-                          });
-                        },
-                        child: Text(
-                          "Выбрать...",
-                          style: TextStyle(
-                            color: state != InfoVisualisationState.custom
-                                ? Theme.of(context).colorScheme.primary
-                                : Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                    ControllLearnStatisticsWidget(state: state),
                   ],
                 ),
-              ),
-              ControllLearnStatisticsWidget(state: state),
+              )),
             ],
           ),
         ),

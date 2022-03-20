@@ -24,7 +24,9 @@ class SettingsScreen extends StatelessWidget {
                   )
                 ],
               ),
-              if (Provider.of<Auth>(context).userRole.contains("ADMIN"))
+              if (Provider.of<Auth>(context)
+                  .userRole
+                  .contains(Role(name: "ADMIN")))
                 Consumer<Auth>(
                   builder: (context, auth, _) => IconButton(
                     padding: const EdgeInsets.all(16),

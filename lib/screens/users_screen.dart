@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/provider/students.dart';
 import 'package:repiton/provider/teachers.dart';
+import 'package:repiton/screens/adding_account_screen.dart';
 import 'package:repiton/screens/controll_student_info.dart';
 import 'package:repiton/screens/controll_teacher_info.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
-class ControllScreen extends StatefulWidget {
-  const ControllScreen({Key? key}) : super(key: key);
+class UsersScreen extends StatefulWidget {
+  const UsersScreen({Key? key}) : super(key: key);
 
   @override
-  State<ControllScreen> createState() => _ControllScreenState();
+  State<UsersScreen> createState() => _UsersScreenState();
 }
 
-class _ControllScreenState extends State<ControllScreen> {
+class _UsersScreenState extends State<UsersScreen> {
   final List<String> _states = ["Преподаватели", "Ученики"];
   late String _state = _states[0];
 
@@ -22,18 +23,43 @@ class _ControllScreenState extends State<ControllScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              "Статистика",
-              style: TextStyle(
-                fontSize: 34,
-              ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                const Text(
+                  "Пользователи",
+                  style: TextStyle(
+                    fontSize: 34,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    IconButton(
+                      padding: const EdgeInsets.all(16),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AddingAccountScreen(
+                                state: _states.indexOf(_state) == 0
+                                    ? AddingState.teacher
+                                    : AddingState.student),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                  ],
+                ),
+              ],
             ),
             const SizedBox(
-              height: 23,
+              height: 16,
             ),
             TextField(
               decoration: InputDecoration(

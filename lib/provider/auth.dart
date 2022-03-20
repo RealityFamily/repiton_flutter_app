@@ -1,8 +1,12 @@
 import 'package:flutter/foundation.dart';
 
 class Auth with ChangeNotifier {
-  String? _authToken;
-  List<String> _userRole = ["ADMIN", "TEACHER"];
+  String? _token;
+  String? _refresh;
+  final List<Role> _userRole = [
+    Role(name: "ADMIN"),
+    Role(name: "TEACHER"),
+  ];
 
   void changeRoles() {
     if (_userRole.length > 1) {
@@ -11,11 +15,35 @@ class Auth with ChangeNotifier {
     }
   }
 
-  List<String> get userRole {
+  List<Role> get userRole {
     return [..._userRole];
   }
 
   String get authToken {
-    return _authToken ?? "";
+    return _token ?? "";
   }
+
+  String get refresh {
+    return _token ?? "";
+  }
+}
+
+class Role {
+  late String id;
+  String name;
+
+  Role({required this.name}) {
+    id = "r_$name";
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! Role) {
+      return false;
+    }
+    return name == other.name;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }

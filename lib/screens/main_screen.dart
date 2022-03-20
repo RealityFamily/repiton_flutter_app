@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/provider/auth.dart';
-import 'package:repiton/screens/adding_account_screen.dart';
 import 'package:repiton/screens/controll_screen.dart';
 import 'package:repiton/screens/settings_screen.dart';
 import 'package:repiton/screens/timetable_screen.dart';
+import 'package:repiton/screens/users_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final pages = {
     "ADMIN": [
-      AddingAccountScreen(),
+      const UsersScreen(),
       const ControllScreen(),
       const SettingsScreen(),
     ],
@@ -34,14 +34,14 @@ class _MainScreenState extends State<MainScreen> {
   final buttons = {
     "ADMIN": const [
       BottomNavigationBarItem(
-        icon: Icon(Icons.add_outlined),
-        activeIcon: Icon(Icons.add),
-        label: "Добавление",
-      ),
-      BottomNavigationBarItem(
         icon: Icon(Icons.people_alt_outlined),
         activeIcon: Icon(Icons.people_alt),
-        label: "Ведение",
+        label: "Пользователи",
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.stacked_bar_chart_outlined),
+        activeIcon: Icon(Icons.stacked_bar_chart),
+        label: "Статистика",
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.settings_outlined),
@@ -92,14 +92,14 @@ class _MainScreenState extends State<MainScreen> {
       builder: (context, auth, _) => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: pageIndex,
-          items: buttons[auth.userRole[0]]!,
+          items: buttons[auth.userRole[0].name]!,
           onTap: (value) {
             setState(() {
               pageIndex = value;
             });
           },
         ),
-        body: pages[auth.userRole[0]]![pageIndex],
+        body: pages[auth.userRole[0].name]![pageIndex],
       ),
     );
   }

@@ -25,81 +25,95 @@ class _LessonScreenState extends State<LessonScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      //TODO: set lesson name
-                      "Урок №1",
-                      style: TextStyle(
-                        fontSize: 34,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      padding: const EdgeInsets.all(16),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
-                    const Expanded(child: SizedBox()),
-                    IconButton(
-                      padding: const EdgeInsets.all(16),
-                      onPressed: () {},
-                      icon: const Icon(Icons.more_vert),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Column(
+            children: [
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  const TextSpan(
-                    text: "Ученик ",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        //TODO: set lesson name
+                        "Урок №1",
+                        style: TextStyle(
+                          fontSize: 34,
+                        ),
+                      )
+                    ],
                   ),
-                  TextSpan(
-                    // TODO: put student name
-                    text: "Дима" + " " + "Носов",
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  TextSpan(
-                    // TODO: put student name
-                    text: "\n" + "Информатика",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        padding: const EdgeInsets.all(16),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                      ),
+                      const Expanded(child: SizedBox()),
+                      IconButton(
+                        padding: const EdgeInsets.all(16),
+                        onPressed: () {},
+                        icon: const Icon(Icons.more_vert),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ),
-            StateChooser(
-              items: _states,
-              onStateChange: (newState) {
-                setState(() {
-                  _newState = newState;
-                });
-              },
-            )
-          ],
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Ученик ",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    TextSpan(
+                      // TODO: put student name
+                      text: "Дима" + " " + "Носов",
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    TextSpan(
+                      // TODO: put student name
+                      text: "\n" + "Информатика",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: Column(
+                    children: [
+                      StateChooser(
+                        items: _states,
+                        onStateChange: (newState) {
+                          setState(() {
+                            _newState = newState;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

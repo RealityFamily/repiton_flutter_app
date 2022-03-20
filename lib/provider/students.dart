@@ -1,16 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:repiton/core/comparing/date_comparing.dart';
+import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
 import 'package:repiton/model/student.dart';
+import 'package:repiton/model/teacher.dart';
+import 'package:repiton/provider/auth.dart';
 
 class Students with ChangeNotifier {
   late final String authToken;
-  late final List<String> userRole;
+  late final List<Role> userRole;
   late List<Student> _students;
 
   LearnStatistics? _statistics;
-  List<StudentLearnStatistics> _disciplines = [];
+  List<DisciplineLearnStatistics> _disciplines = [];
 
   Students({
     required List<Student>? prevStudents,
@@ -47,7 +50,7 @@ class Students with ChangeNotifier {
     return _statistics;
   }
 
-  List<StudentLearnStatistics> get disciplines {
+  List<DisciplineLearnStatistics> get disciplines {
     return [..._disciplines];
   }
 
@@ -75,7 +78,7 @@ class Students with ChangeNotifier {
     }
 
     for (var discipline in _statistics!.disciplines) {
-      for (var lesson in discipline.lessons) {
+      for (var lesson in discipline.discipline.lessons) {
         if (lesson.dateTimeStart.isSameDate(day)) {
           _disciplines.add(discipline);
         }
@@ -91,7 +94,7 @@ class Students with ChangeNotifier {
     }
 
     for (var discipline in _statistics!.disciplines) {
-      for (var lesson in discipline.lessons) {
+      for (var lesson in discipline.discipline.lessons) {
         if ((lesson.dateTimeStart.isAfter(startDay) ||
                 lesson.dateTimeStart.isSameDate(startDay)) &&
             (lesson.dateTimeStart.isBefore(endDay) ||
@@ -115,40 +118,53 @@ class Students with ChangeNotifier {
       allHomeTasks: 5,
       allPresents: 7,
       disciplines: [
-        StudentLearnStatistics(
-          teacherId: "t1",
-          teacherName: "Зинаида",
-          teacherLastName: "Юрьевна",
-          teacherFatherName: "Аркадьевна",
-          disciplineId: "d1",
-          disciplineName: "Информатика",
-          teacherImageUrl:
-              "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+        DisciplineLearnStatistics(
+          discipline: Discipline(
+            id: "d1",
+            name: "Информатика",
+            teacher: Teacher.empty()
+              ..name = "Зинаида"
+              ..lastName = "Юрьевна"
+              ..fatherName = "Аркадьевна"
+              ..imageUrl =
+                  "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+            student: Student.empty(),
+            lessons: [
+              Lesson(
+                id: "l1",
+                name: "Урок №1",
+                description: "Какая-то инфа по уроку",
+                status: LessonStatus.done,
+                dateTimeStart: DateTime.now(),
+                dateTimeEnd: DateTime.now().add(
+                  const Duration(hours: 2),
+                ),
+              ),
+              Lesson(
+                id: "l2",
+                name: "Урок №2",
+                description: "Какая-то инфа по уроку",
+                status: LessonStatus.canceled,
+                dateTimeStart: DateTime.now(),
+                dateTimeEnd: DateTime.now().add(
+                  const Duration(hours: 2),
+                ),
+              ),
+              Lesson(
+                id: "l3",
+                name: "Урок №3",
+                description: "Какая-то инфа по уроку",
+                status: LessonStatus.moved,
+                dateTimeStart: DateTime.now(),
+                dateTimeEnd: DateTime.now().add(
+                  const Duration(hours: 2),
+                ),
+              ),
+            ],
+            rocketChatReference: "",
+          ),
           presents: 7,
           homeTasks: 5,
-          lessons: [
-            Lesson(
-              status: LessonStatus.done,
-              dateTimeStart: DateTime.now(),
-              dateTimeEnd: DateTime.now().add(
-                const Duration(hours: 2),
-              ),
-            ),
-            Lesson(
-              status: LessonStatus.canceled,
-              dateTimeStart: DateTime.now(),
-              dateTimeEnd: DateTime.now().add(
-                const Duration(hours: 2),
-              ),
-            ),
-            Lesson(
-              status: LessonStatus.moved,
-              dateTimeStart: DateTime.now(),
-              dateTimeEnd: DateTime.now().add(
-                const Duration(hours: 2),
-              ),
-            ),
-          ],
         ),
       ],
     );

@@ -258,7 +258,7 @@ class StudentsInfoCalendar extends Calendar {
 
     OUTER:
     for (var discipline in statistics!.disciplines) {
-      for (var lesson in discipline.lessons) {
+      for (var lesson in discipline.discipline.lessons) {
         if (lesson.dateTimeStart.isSameDate(day)) {
           switch (lesson.status) {
             case LessonStatus.done:
