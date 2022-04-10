@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:repiton/core/comparing/date_comparing.dart';
+import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
 import 'package:repiton/model/student.dart';
@@ -14,8 +15,8 @@ class Teachers with ChangeNotifier {
   FinancialStatistics? _statistics;
   List<StudentFinancialStatistics> _students = [];
 
-  List<Lesson> _lessons = [];
-  List<Lesson> _todayLessons = [];
+  List<Discipline> _disciplines = [];
+  List<Discipline> _todayLessons = [];
 
   List<Teacher> get teachers {
     return [..._teachers];
@@ -29,11 +30,11 @@ class Teachers with ChangeNotifier {
     return [..._students];
   }
 
-  List<Lesson> get lessons {
-    return [..._lessons];
+  List<Discipline> get disciplines {
+    return [..._disciplines];
   }
 
-  List<Lesson> get todayLessons {
+  List<Discipline> get todayLessons {
     return [..._todayLessons];
   }
 
@@ -180,35 +181,65 @@ class Teachers with ChangeNotifier {
   }
 
   Future<void> fetchAndSetLessons(DateTime showDate) async {
-    _todayLessons = [];
+    //_todayLessons = [];
 
     await Future.delayed(const Duration(milliseconds: 500));
 
     DateTime dateFrom = DateTime(showDate.year, showDate.month, 1);
     DateTime dateTo = DateTime(showDate.year, showDate.month + 1, 0);
 
-    _lessons = [
-      Lesson(
-          id: "l4",
-          name: "Урок №4",
-          description: "Какая-то инфа по уроку",
-          status: LessonStatus.planned,
-          dateTimeStart: DateTime.now(),
-          dateTimeEnd: DateTime.now())
+    _disciplines = [
+      Discipline(
+          id: "d1",
+          name: "Информатика",
+          teacher: Teacher.empty(),
+          student: Student.empty()
+            ..id = "s1"
+            ..name = "Виталий"
+            ..lastName = "Евпанько"
+            ..imageUrl =
+                "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+          lessons: [
+            Lesson(
+              id: "l4",
+              name: "Урок №4",
+              description: "Какая-то инфа по уроку",
+              status: LessonStatus.planned,
+              dateTimeStart: DateTime.now(),
+              dateTimeEnd: DateTime.now(),
+            ),
+            Lesson(
+              id: "l5",
+              name: "Урок №5",
+              description: "Какая-то инфа по уроку",
+              status: LessonStatus.done,
+              dateTimeStart: DateTime.now().subtract(const Duration(hours: 4)),
+              dateTimeEnd: DateTime.now(),
+            ),
+          ],
+          rocketChatReference: "")
     ];
     notifyListeners();
   }
 
   void fecthAndSetLessonsForADay(DateTime day) {
     _todayLessons = [];
-    if (_lessons.isEmpty) {
+    if (_disciplines.isEmpty) {
       return;
     }
 
-    _todayLessons = _lessons
-        .where((lesson) => lesson.dateTimeStart.isSameDate(day))
-        .toList();
-
+    for (var discipline in _disciplines) {
+      for (var lesson in discipline.lessons) {
+        if (lesson.dateTimeStart.isSameDate(day)) {
+          var tempDiscipline = discipline
+            ..lessons = discipline.lessons
+                .where((lesson) => lesson.dateTimeStart.isSameDate(day))
+                .toList();
+          _todayLessons.add(tempDiscipline);
+          break;
+        }
+      }
+    }
     notifyListeners();
   }
 }

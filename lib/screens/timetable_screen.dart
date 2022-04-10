@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:repiton/model/lesson.dart';
 import 'package:repiton/provider/teachers.dart';
 import 'package:repiton/screens/lesson_screen.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
@@ -61,70 +62,117 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                   );
                 } else {
                   return Consumer<Teachers>(
-                    builder: (context, teachers, _) => Column(
-                      children: [
-                        TimeTableCalendar(
-                          provider: teachers,
-                          format: CalendarFormat.month,
-                          selectAction: (date) {
-                            teachers.fecthAndSetLessonsForADay(date);
-                          },
-                        ),
-                        const Divider(),
-                        //TODO: Make scrollable
-                        ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) => ListTile(
-                            //TODO: change data to models
-                            title: Text(
-                              "Дима Носов",
-                              style: const TextStyle(
-                                fontSize: 24,
-                              ),
-                            ),
-                            subtitle: Text(
-                              "Информатика",
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            trailing: Column(
-                              children: [
-                                Text(
-                                  DateFormat("HH:mm").format(
-                                    teachers.todayLessons[index].dateTimeStart,
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  DateFormat("dd.MM").format(
-                                    teachers.todayLessons[index].dateTimeStart,
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => LessonScreen(
-                                    lesson: teachers.todayLessons[index],
-                                  ),
-                                ),
-                              );
-                            },
+                    builder: (context, teachers, _) => Expanded(
+                      child: Column(
+                        children: [
+                          TimeTableCalendar(
+                            provider: teachers,
+                            format: CalendarFormat.month,
+                            selectAction: teachers.fecthAndSetLessonsForADay,
+                            pageChangeAction: teachers.fetchAndSetLessons,
                           ),
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemCount: teachers.todayLessons.length,
-                        ),
-                        const Divider(),
-                      ],
+                          const Divider(),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ...(() {
+                                    List<Widget> result = [];
+                                    for (var discipline
+                                        in teachers.todayLessons) {
+                                      for (var lesson in discipline.lessons) {
+                                        result.add(
+                                          ListTile(
+                                            title: Text(
+                                              discipline.student.fullName,
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              discipline.name,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            trailing: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 2.5,
+                                                horizontal: 5,
+                                              ),
+                                              color: (() {
+                                                switch (lesson.status) {
+                                                  case LessonStatus.done:
+                                                    return const Color(
+                                                        0xFF9DCBAA);
+                                                  case LessonStatus.canceled:
+                                                    return const Color(
+                                                        0xFFDE9898);
+                                                  case LessonStatus.moved:
+                                                    return const Color(
+                                                        0xFFFFEE97);
+                                                  case LessonStatus.planned:
+                                                    return Colors.transparent;
+                                                  default:
+                                                    return null;
+                                                }
+                                              }()),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    DateFormat("HH:mm").format(
+                                                      lesson.dateTimeStart,
+                                                    ),
+                                                    style: const TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    DateFormat("dd.MM").format(
+                                                      lesson.dateTimeStart,
+                                                    ),
+                                                    style: const TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LessonScreen(
+                                                    disciplineName:
+                                                        discipline.name,
+                                                    studentName: discipline
+                                                        .student.fullName,
+                                                    lesson: lesson,
+                                                    rocketChatRef: discipline
+                                                        .rocketChatReference,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                        result.add(
+                                          const Divider(),
+                                        );
+                                      }
+                                    }
+                                    return result;
+                                  }()),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }

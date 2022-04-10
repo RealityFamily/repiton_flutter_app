@@ -159,20 +159,39 @@ class _ControllFinancinalStatisticsWidgetState
                               "Всего посещений",
                               style: TextStyle(fontSize: 20),
                             ),
-                            Text(
-                              students.statictics!.allPresents.toString() +
-                                  "/" +
-                                  students.statictics!.countAllLessons
-                                      .toString() +
-                                  " (" +
-                                  (students.statictics!.allPresents *
-                                          100 /
-                                          students.statictics!.countAllLessons)
-                                      .toStringAsFixed(0) +
-                                  "%)",
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500,
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                    alignment: PlaceholderAlignment.middle,
+                                    child: Text(
+                                      students.statictics!.allPresents
+                                              .toString() +
+                                          "/" +
+                                          students.statictics!.countAllLessons
+                                              .toString(),
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: " (" +
+                                        (students.statictics!.allPresents *
+                                                100 /
+                                                students.statictics!
+                                                    .countAllLessons)
+                                            .toStringAsFixed(0) +
+                                        "%)",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black45,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -187,20 +206,39 @@ class _ControllFinancinalStatisticsWidgetState
                               "Всего выполненных ДЗ",
                               style: TextStyle(fontSize: 20),
                             ),
-                            Text(
-                              students.statictics!.allHomeTasks.toString() +
-                                  "/" +
-                                  students.statictics!.countAllLessons
-                                      .toString() +
-                                  " (" +
-                                  (students.statictics!.allPresents *
-                                          100 /
-                                          students.statictics!.countAllLessons)
-                                      .toStringAsFixed(0) +
-                                  "%)",
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500,
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                    alignment: PlaceholderAlignment.middle,
+                                    child: Text(
+                                      students.statictics!.allHomeTasks
+                                              .toString() +
+                                          "/" +
+                                          students.statictics!.countAllLessons
+                                              .toString(),
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: " (" +
+                                        (students.statictics!.allHomeTasks *
+                                                100 /
+                                                students.statictics!
+                                                    .countAllLessons)
+                                            .toStringAsFixed(0) +
+                                        "%)",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black45,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -266,30 +304,31 @@ class _ControllFinancinalStatisticsWidgetState
                             return ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  students.disciplines[index].discipline.teacher
-                                      .imageUrl,
+                                  students.showingDisciplines[index].discipline
+                                      .teacher.imageUrl,
                                 ),
                               ),
                               title: Text(
-                                students.disciplines[index].discipline.name,
+                                students
+                                    .showingDisciplines[index].discipline.name,
                               ),
                               subtitle: Text(
-                                students.disciplines[index].discipline.teacher
-                                        .lastName +
+                                students.showingDisciplines[index].discipline
+                                        .teacher.lastName +
                                     " " +
-                                    students.disciplines[index].discipline
-                                        .teacher.name +
+                                    students.showingDisciplines[index]
+                                        .discipline.teacher.name +
                                     " " +
-                                    students.disciplines[index].discipline
-                                        .teacher.fatherName,
+                                    students.showingDisciplines[index]
+                                        .discipline.teacher.fatherName,
                               ),
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (ctx) =>
                                         ControllStudentTeacherInfo(
-                                      studentStatistics: students
-                                          .statictics!.disciplines[index],
+                                      studentStatistics:
+                                          students.showingDisciplines[index],
                                     ),
                                   ),
                                 );
@@ -297,7 +336,7 @@ class _ControllFinancinalStatisticsWidgetState
                             );
                           },
                           separatorBuilder: (context, index) => const Divider(),
-                          itemCount: students.disciplines.length,
+                          itemCount: students.showingDisciplines.length,
                         ),
                       ],
                     ),

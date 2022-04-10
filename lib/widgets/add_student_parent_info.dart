@@ -31,6 +31,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите фамилию";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.lastName = newValue!;
@@ -45,6 +46,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите имя";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.name = newValue!;
@@ -59,6 +61,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите отчество";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.fatherName = newValue!;
@@ -73,6 +76,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите телефон";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.phone = newValue!;

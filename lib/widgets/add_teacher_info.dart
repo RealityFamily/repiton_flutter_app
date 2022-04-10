@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:repiton/model/teacher.dart';
 
@@ -46,6 +45,7 @@ class _AddTeacherInfoState extends State<AddTeacherInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите фамилию";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.lastName = newValue!;
@@ -60,6 +60,7 @@ class _AddTeacherInfoState extends State<AddTeacherInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите имя";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.name = newValue!;
@@ -74,6 +75,7 @@ class _AddTeacherInfoState extends State<AddTeacherInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите отчество";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.fatherName = newValue!;
@@ -110,6 +112,7 @@ class _AddTeacherInfoState extends State<AddTeacherInfo> {
                   if (value == null || value.isEmpty || pickedDate == null) {
                     return "Введите дату рождения";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.birthDay = pickedDate!;
@@ -124,6 +127,7 @@ class _AddTeacherInfoState extends State<AddTeacherInfo> {
                   if (value == null || value.isEmpty || !value.contains("@")) {
                     return "Введите почту";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.email = newValue!;
@@ -138,6 +142,7 @@ class _AddTeacherInfoState extends State<AddTeacherInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите телефон";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.phone = newValue!;
@@ -150,6 +155,7 @@ class _AddTeacherInfoState extends State<AddTeacherInfo> {
                   if (value == null || value.isEmpty) {
                     return "Выберите полученное образование";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.education = newValue!;

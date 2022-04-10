@@ -8,6 +8,7 @@ class Lesson {
   late DateTime dateTimeStart;
   late DateTime dateTimeEnd;
   HomeTask? homeTask;
+  String? jitsyLink;
 
   Lesson({
     required this.id,
@@ -17,6 +18,7 @@ class Lesson {
     required this.dateTimeStart,
     required this.dateTimeEnd,
     this.homeTask,
+    this.jitsyLink,
   });
 
   Lesson.empty() {
@@ -27,6 +29,7 @@ class Lesson {
     dateTimeStart = DateTime.now();
     dateTimeEnd = DateTime.now();
     homeTask = null;
+    jitsyLink = null;
   }
 }
 

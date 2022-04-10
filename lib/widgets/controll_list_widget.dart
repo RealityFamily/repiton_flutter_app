@@ -19,8 +19,11 @@ class ControllListWidget extends StatelessWidget {
     return ListTile(
       title: Text(name),
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(
-          imageUrl,
+        child: FadeInImage(
+          placeholder: const AssetImage("assets/images/user.png"),
+          image: NetworkImage(
+            imageUrl,
+          ),
         ),
       ),
       onTap: () {

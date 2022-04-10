@@ -93,21 +93,39 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                             "Посещений",
                             style: TextStyle(fontSize: 20),
                           ),
-                          Text(
-                            studentStatistics.presents.toString() +
-                                "/" +
-                                studentStatistics.discipline.lessons.length
-                                    .toString() +
-                                " (" +
-                                (studentStatistics.presents *
-                                        100 /
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: Text(
+                                    studentStatistics.presents.toString() +
+                                        "/" +
                                         studentStatistics
-                                            .discipline.lessons.length)
-                                    .toStringAsFixed(0) +
-                                "%)",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w500,
+                                            .discipline.lessons.length
+                                            .toString(),
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " (" +
+                                      (studentStatistics.presents *
+                                              100 /
+                                              studentStatistics
+                                                  .discipline.lessons.length)
+                                          .toStringAsFixed(0) +
+                                      "%)",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -122,21 +140,39 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                             "Выполненных д/з",
                             style: TextStyle(fontSize: 20),
                           ),
-                          Text(
-                            studentStatistics.homeTasks.toString() +
-                                "/" +
-                                studentStatistics.discipline.lessons.length
-                                    .toString() +
-                                " (" +
-                                (studentStatistics.presents *
-                                        100 /
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: Text(
+                                    studentStatistics.homeTasks.toString() +
+                                        "/" +
                                         studentStatistics
-                                            .discipline.lessons.length)
-                                    .toStringAsFixed(0) +
-                                "%)",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w500,
+                                            .discipline.lessons.length
+                                            .toString(),
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " (" +
+                                      (studentStatistics.homeTasks *
+                                              100 /
+                                              studentStatistics
+                                                  .discipline.lessons.length)
+                                          .toStringAsFixed(0) +
+                                      "%)",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

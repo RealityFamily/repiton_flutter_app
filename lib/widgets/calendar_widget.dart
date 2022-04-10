@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:repiton/core/comparing/date_comparing.dart';
+import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
 import 'package:repiton/provider/students.dart';
@@ -288,46 +289,49 @@ class StudentsInfoCalendar extends Calendar {
 }
 
 class TimeTableCalendar extends Calendar {
-  late final List<Lesson> lessons;
+  late final List<Discipline> disciplines;
 
   TimeTableCalendar({
     required Teachers provider,
     required CalendarFormat format,
     required Function(DateTime) selectAction,
+    required Function(DateTime) pageChangeAction,
     Key? key,
   }) : super(
           format: format,
           lastDay: DateTime(DateTime.now().year, DateTime.now().month + 2, 0),
           selectAction: selectAction,
-          pageChangeAction: provider.fetchAndSetLessons,
+          pageChangeAction: pageChangeAction,
           key: key,
         ) {
-    lessons = provider.lessons;
+    disciplines = provider.disciplines;
   }
 
   @override
   Color? getColor(DateTime day) {
     LessonStatus? result;
-    if (lessons.isEmpty) {
+    if (disciplines.isEmpty) {
       return null;
     }
 
-    CYCLE:
-    for (var lesson in lessons) {
-      if (lesson.dateTimeStart.isSameDate(day)) {
-        switch (lesson.status) {
-          case LessonStatus.done:
-            result ??= LessonStatus.done;
-            break;
-          case LessonStatus.canceled:
-            result = LessonStatus.canceled;
-            break CYCLE;
-          case LessonStatus.moved:
-            result = LessonStatus.moved;
-            break;
-          case LessonStatus.planned:
-            result = LessonStatus.planned;
-            break;
+    OUTER:
+    for (var discipline in disciplines) {
+      for (var lesson in discipline.lessons) {
+        if (lesson.dateTimeStart.isSameDate(day)) {
+          switch (lesson.status) {
+            case LessonStatus.done:
+              result ??= LessonStatus.done;
+              break;
+            case LessonStatus.canceled:
+              result = LessonStatus.canceled;
+              break OUTER;
+            case LessonStatus.moved:
+              result = LessonStatus.moved;
+              break;
+            case LessonStatus.planned:
+              result = LessonStatus.planned;
+              break;
+          }
         }
       }
     }
@@ -339,7 +343,7 @@ class TimeTableCalendar extends Calendar {
       case LessonStatus.moved:
         return const Color(0xFFFFEE97);
       case LessonStatus.planned:
-        return const Color(0xFFFFEE97);
+        return const Color.fromARGB(255, 151, 187, 255);
       default:
         return null;
     }

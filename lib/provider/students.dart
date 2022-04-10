@@ -13,7 +13,7 @@ class Students with ChangeNotifier {
   late List<Student> _students;
 
   LearnStatistics? _statistics;
-  List<DisciplineLearnStatistics> _disciplines = [];
+  List<DisciplineLearnStatistics> _showingDisciplines = [];
 
   Students({
     required List<Student>? prevStudents,
@@ -50,8 +50,8 @@ class Students with ChangeNotifier {
     return _statistics;
   }
 
-  List<DisciplineLearnStatistics> get disciplines {
-    return [..._disciplines];
+  List<DisciplineLearnStatistics> get showingDisciplines {
+    return [..._showingDisciplines];
   }
 
   void addStudent(Student student) {
@@ -72,7 +72,7 @@ class Students with ChangeNotifier {
   }
 
   void fecthAndSetTeachersInfoForADay(DateTime day) {
-    _disciplines = [];
+    _showingDisciplines = [];
     if (_statistics == null) {
       return;
     }
@@ -80,7 +80,7 @@ class Students with ChangeNotifier {
     for (var discipline in _statistics!.disciplines) {
       for (var lesson in discipline.discipline.lessons) {
         if (lesson.dateTimeStart.isSameDate(day)) {
-          _disciplines.add(discipline);
+          _showingDisciplines.add(discipline);
         }
       }
     }
@@ -88,7 +88,7 @@ class Students with ChangeNotifier {
   }
 
   void fecthAndSetTeachersInfoForAPeriod(DateTime startDay, DateTime endDay) {
-    _disciplines = [];
+    _showingDisciplines = [];
     if (_statistics == null) {
       return;
     }
@@ -99,7 +99,7 @@ class Students with ChangeNotifier {
                 lesson.dateTimeStart.isSameDate(startDay)) &&
             (lesson.dateTimeStart.isBefore(endDay) ||
                 lesson.dateTimeStart.isSameDate(endDay))) {
-          _disciplines.add(discipline);
+          _showingDisciplines.add(discipline);
         }
       }
     }
@@ -110,7 +110,7 @@ class Students with ChangeNotifier {
     DateTime fromDate,
     DateTime toDate,
   ) async {
-    _disciplines = [];
+    _showingDisciplines = [];
 
     await Future.delayed(const Duration(milliseconds: 500));
 
@@ -135,7 +135,9 @@ class Students with ChangeNotifier {
                 name: "Урок №1",
                 description: "Какая-то инфа по уроку",
                 status: LessonStatus.done,
-                dateTimeStart: DateTime.now(),
+                dateTimeStart: DateTime.now().subtract(Duration(
+                  days: 1,
+                )),
                 dateTimeEnd: DateTime.now().add(
                   const Duration(hours: 2),
                 ),
@@ -145,7 +147,7 @@ class Students with ChangeNotifier {
                 name: "Урок №2",
                 description: "Какая-то инфа по уроку",
                 status: LessonStatus.canceled,
-                dateTimeStart: DateTime.now(),
+                dateTimeStart: DateTime.now().subtract(Duration(days: 3)),
                 dateTimeEnd: DateTime.now().add(
                   const Duration(hours: 2),
                 ),

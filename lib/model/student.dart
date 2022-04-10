@@ -46,6 +46,8 @@ class Student {
     required this.hours,
   });
 
+  String get fullName => lastName + " " + name;
+
   @override
   String toString() {
     return "id: " +

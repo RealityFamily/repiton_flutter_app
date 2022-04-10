@@ -45,6 +45,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите фамилию";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.lastName = newValue!;
@@ -59,6 +60,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите имя";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.name = newValue!;
@@ -95,6 +97,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   if (value == null || value.isEmpty || pickedDate == null) {
                     return "Введите дату рождения";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.birthDay = pickedDate!;
@@ -109,6 +112,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   if (value == null || value.isEmpty || !value.contains("@")) {
                     return "Введите почту";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.email = newValue!;
@@ -123,6 +127,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Введите телефон";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.phone = newValue!;
@@ -135,6 +140,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   if (value == null || value.isEmpty) {
                     return "Выберите полученное образование";
                   }
+                  return null;
                 },
                 onSaved: (newValue) {
                   widget.result.education = newValue!;
@@ -187,6 +193,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                             double.tryParse(value) == null) {
                           return "Введите ставку";
                         }
+                        return null;
                       },
                       onSaved: (newValue) {
                         widget.result.price = double.parse(newValue!);
@@ -209,6 +216,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                             int.tryParse(value) == null) {
                           return "Введите количество занятий";
                         }
+                        return null;
                       },
                       onSaved: (newValue) {
                         widget.result.hours = int.parse(newValue!);
