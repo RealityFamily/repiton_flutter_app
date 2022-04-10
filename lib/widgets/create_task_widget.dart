@@ -81,8 +81,25 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 ),
               ),
             ),
-            IconButton(
-              onPressed: () async {
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.add),
+              itemBuilder: (_) => ["Добавить фото...", "Добавить файл..."]
+                  .map(
+                    (item) => PopupMenuItem<String>(
+                      value: item,
+                      child: Row(
+                        children: [
+                          Icon(item.contains("фото") ? Icons.image : Icons.attach_file),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(item),
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onSelected: (fileType) async {
                 setState(() {
                   _isLoading = true;
                 });
@@ -94,8 +111,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                   _isLoading = false;
                 });
               },
-              icon: const Icon(Icons.add),
-            )
+            ),
           ],
         ),
         SizedBox(
