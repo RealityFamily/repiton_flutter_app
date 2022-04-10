@@ -1,3 +1,4 @@
+import 'package:repiton/model/remote_file.dart';
 import 'package:repiton/model/test.dart';
 
 class HomeTask {
@@ -7,7 +8,7 @@ class HomeTask {
   late String? markDescription;
   late HomeTaskType type;
   Test? test;
-  late List<String> files;
+  late List<RemoteFile> files;
 
   HomeTask({
     this.id,
