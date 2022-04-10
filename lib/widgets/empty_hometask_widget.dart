@@ -25,7 +25,8 @@ class EmptyHometaskWidget extends StatelessWidget {
           color: Color(0xFFB4B4B4),
           thickness: 1,
         ),
-        Expanded(
+        SizedBox(
+          height: (MediaQuery.of(context).size.height - 450 > 150 ? MediaQuery.of(context).size.height - 450 : 150),
           child: Center(
             child: Container(
               width: double.infinity,
@@ -55,8 +56,7 @@ class EmptyHometaskWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             ),
             onPressed: () async {
-              HomeTask? _newHometask =
-                  await Navigator.of(context).push<HomeTask>(
+              HomeTask? _newHometask = await Navigator.of(context).push<HomeTask>(
                 MaterialPageRoute(
                   builder: (context) => const CreateHometaskScreen(),
                 ),

@@ -108,7 +108,8 @@ class _RocketChatMessangerWidgetState extends State<RocketChatMessangerWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Expanded(
+        SizedBox(
+          height: (MediaQuery.of(context).size.height - 340 > 110 ? MediaQuery.of(context).size.height - 340 : 110),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: FutureBuilder(

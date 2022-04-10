@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,7 +59,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
             Container(
               constraints: BoxConstraints(
                 minHeight: 100,
-                maxHeight: constraint.maxHeight - 354,
+                maxHeight: (constraint.maxHeight - 354 > 100 ? constraint.maxHeight - 354 : 100),
               ),
               alignment: Alignment.center,
               child: _descriptionVisibility
@@ -120,7 +121,10 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                     if (fileType.contains("фото")) {
                       var result = await ImagePicker().pickImage(source: ImageSource.gallery);
                       newFile = result != null ? File(result.path) : null;
-                    } else {}
+                    } else {
+                      var result = await FilePicker.platform.pickFiles();
+                      newFile = result != null ? File(result.files.single.path!) : null;
+                    }
 
                     // TODO: Upload file for task
                     await Future.delayed(const Duration(milliseconds: 500));

@@ -23,6 +23,8 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
         child: TextFormField(
           validator: (value) => value == null || value.isEmpty ? "Введите описание урока!" : null,
           onSaved: (_newValue) => result = _newValue,
+          maxLines: null,
+          keyboardType: TextInputType.multiline,
           decoration: const InputDecoration(
             labelText: "Описание урока...",
           ),
@@ -90,19 +92,24 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
           color: Color(0xFFB4B4B4),
           thickness: 1,
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: Consumer<Lessons>(
-                builder: (context, lessons, _) => Text(
-                  lessons.lesson.description,
-                  style: const TextStyle(
-                    fontSize: 18,
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 10,
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            child: Consumer<Lessons>(
+              builder: (context, lessons, _) => SizedBox(
+                height:
+                    (MediaQuery.of(context).size.height - 484 > 150 ? MediaQuery.of(context).size.height - 484 : 150),
+                child: SingleChildScrollView(
+                  child: Text(
+                    lessons.lesson.description,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                    maxLines: null,
                   ),
                 ),
               ),

@@ -177,13 +177,11 @@ class _RocketChatScreenState extends State<RocketChatScreen> {
                   ],
                 ),
                 if (_channel != null)
-                  Expanded(
-                    child: ChangeNotifierProvider(
-                      create: (context) => RocketChatMessages(),
-                      child: RocketChatMessangerWidget(
-                        api: widget.api,
-                        channelName: _channel!.id!,
-                      ),
+                  ChangeNotifierProvider(
+                    create: (context) => RocketChatMessages(),
+                    child: RocketChatMessangerWidget(
+                      api: widget.api,
+                      channelName: _channel!.id!,
                     ),
                   ),
               ],

@@ -20,50 +20,50 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "Расписание",
-              style: TextStyle(
-                fontSize: 34,
-              ),
-            ),
-            const SizedBox(
-              height: 23,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    width: 3,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                labelText: "Поиск",
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: const Icon(
-                    Icons.cancel_outlined,
-                  ),
-                  onPressed: () {
-                    debugPrint("Cancel search");
-                  },
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Расписание",
+                style: TextStyle(
+                  fontSize: 34,
                 ),
               ),
-            ),
-            FutureBuilder(
-              future: _getLessons(DateTime.now()),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return Consumer<Teachers>(
-                    builder: (context, teachers, _) => Expanded(
-                      child: Column(
+              const SizedBox(
+                height: 23,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 3,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  labelText: "Поиск",
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    icon: const Icon(
+                      Icons.cancel_outlined,
+                    ),
+                    onPressed: () {
+                      debugPrint("Cancel search");
+                    },
+                  ),
+                ),
+              ),
+              FutureBuilder(
+                future: _getLessons(DateTime.now()),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Consumer<Teachers>(
+                      builder: (context, teachers, _) => Column(
                         children: [
                           TimeTableCalendar(
                             provider: teachers,
@@ -72,123 +72,107 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                             pageChangeAction: teachers.fetchAndSetLessons,
                           ),
                           const Divider(),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  ...(() {
-                                    List<Widget> result = [];
-                                    for (var discipline
-                                        in teachers.todayLessons) {
-                                      for (var lesson in discipline.lessons) {
-                                        result.add(
-                                          ListTile(
-                                            title: Text(
-                                              discipline.student.fullName,
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              discipline.name,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            trailing: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 2.5,
-                                                horizontal: 5,
-                                              ),
-                                              color: (() {
-                                                switch (lesson.status) {
-                                                  case LessonStatus.done:
-                                                    return const Color(
-                                                        0xFF9DCBAA);
-                                                  case LessonStatus.canceled:
-                                                    return const Color(
-                                                        0xFFDE9898);
-                                                  case LessonStatus.moved:
-                                                    return const Color(
-                                                        0xFFFFEE97);
-                                                  case LessonStatus.planned:
-                                                    return Colors.transparent;
-                                                  default:
-                                                    return null;
-                                                }
-                                              }()),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    DateFormat("HH:mm").format(
-                                                      lesson.dateTimeStart,
-                                                    ),
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    DateFormat("dd.MM").format(
-                                                      lesson.dateTimeStart,
-                                                    ),
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      LessonScreen(
-                                                    disciplineName:
-                                                        discipline.name,
-                                                    studentName: discipline
-                                                        .student.fullName,
-                                                    lesson: lesson,
-                                                    rocketChatRef: discipline
-                                                        .rocketChatReference,
-                                                  ),
-                                                ),
-                                              );
-                                            },
+                          Column(
+                            children: [
+                              ...(() {
+                                List<Widget> result = [];
+                                for (var discipline in teachers.todayLessons) {
+                                  for (var lesson in discipline.lessons) {
+                                    result.add(
+                                      ListTile(
+                                        title: Text(
+                                          discipline.student.fullName,
+                                          style: const TextStyle(
+                                            fontSize: 24,
                                           ),
-                                        );
-                                        result.add(
-                                          const Divider(),
-                                        );
-                                      }
-                                    }
-                                    return result;
-                                  }()),
-                                ],
-                              ),
-                            ),
+                                        ),
+                                        subtitle: Text(
+                                          discipline.name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        trailing: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 2.5,
+                                            horizontal: 5,
+                                          ),
+                                          color: (() {
+                                            switch (lesson.status) {
+                                              case LessonStatus.done:
+                                                return const Color(0xFF9DCBAA);
+                                              case LessonStatus.canceled:
+                                                return const Color(0xFFDE9898);
+                                              case LessonStatus.moved:
+                                                return const Color(0xFFFFEE97);
+                                              case LessonStatus.planned:
+                                                return Colors.transparent;
+                                              default:
+                                                return null;
+                                            }
+                                          }()),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                DateFormat("HH:mm").format(
+                                                  lesson.dateTimeStart,
+                                                ),
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                DateFormat("dd.MM").format(
+                                                  lesson.dateTimeStart,
+                                                ),
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => LessonScreen(
+                                                disciplineName: discipline.name,
+                                                studentName: discipline.student.fullName,
+                                                lesson: lesson,
+                                                rocketChatRef: discipline.rocketChatReference,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                    result.add(
+                                      const Divider(),
+                                    );
+                                  }
+                                }
+                                return result;
+                              }()),
+                            ],
                           ),
                         ],
                       ),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Future<void> _getLessons(DateTime dateTime) async {
-    await Provider.of<Teachers>(context, listen: false)
-        .fetchAndSetLessons(dateTime);
+    await Provider.of<Teachers>(context, listen: false).fetchAndSetLessons(dateTime);
 
-    Provider.of<Teachers>(context, listen: false)
-        .fecthAndSetLessonsForADay(dateTime);
+    Provider.of<Teachers>(context, listen: false).fecthAndSetLessonsForADay(dateTime);
   }
 }

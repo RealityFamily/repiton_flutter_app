@@ -47,82 +47,83 @@ class _LessonScreenState extends State<LessonScreen> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: Column(
-              children: [
-                Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    Column(
-                      children: [
-                        if (_newState != _states[_states.length - 1]) ...{
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Consumer<Lessons>(
-                                builder: (context, lessons, _) => Text(
-                                  lessons.lesson.name,
-                                  style: const TextStyle(
-                                    fontSize: 34,
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      Column(
+                        children: [
+                          if (_newState != _states[_states.length - 1]) ...{
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Consumer<Lessons>(
+                                  builder: (context, lessons, _) => Text(
+                                    lessons.lesson.name,
+                                    style: const TextStyle(
+                                      fontSize: 34,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                          },
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: "Ученик ",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                        },
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: "Ученик ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.grey,
+                                TextSpan(
+                                  text: widget.studentName,
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: widget.studentName,
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: Theme.of(context).colorScheme.primary,
+                                TextSpan(
+                                  text: "\n" + widget.disciplineName,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: "\n" + widget.disciplineName,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          padding: const EdgeInsets.all(16),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(Icons.arrow_back),
-                        ),
-                        const Expanded(child: SizedBox()),
-                        IconButton(
-                          padding: const EdgeInsets.all(16),
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_vert),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Column(
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            padding: const EdgeInsets.all(16),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(Icons.arrow_back),
+                          ),
+                          const Expanded(child: SizedBox()),
+                          IconButton(
+                            padding: const EdgeInsets.all(16),
+                            onPressed: () {},
+                            icon: const Icon(Icons.more_vert),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -139,8 +140,7 @@ class _LessonScreenState extends State<LessonScreen> {
                             if (_newState != _states[_states.length - 1])
                               Consumer<Lessons>(
                                 builder: (context, lessons, _) => Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     RichText(
                                       text: TextSpan(
@@ -153,12 +153,9 @@ class _LessonScreenState extends State<LessonScreen> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: DateFormat("HH:mm").format(
-                                                lessons.lesson.dateTimeStart),
+                                            text: DateFormat("HH:mm").format(lessons.lesson.dateTimeStart),
                                             style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
+                                              color: Theme.of(context).colorScheme.primary,
                                               fontSize: 18,
                                             ),
                                           ),
@@ -182,9 +179,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                               lessons.lesson.dateTimeStart,
                                             ),
                                             style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
+                                              color: Theme.of(context).colorScheme.primary,
                                               fontSize: 18,
                                             ),
                                           ),
@@ -197,34 +192,32 @@ class _LessonScreenState extends State<LessonScreen> {
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: (() {
-                          if (_newState == _states[_states.length - 1]) {
-                            return RocketChatScreen();
-                          } else if (_newState == _states[0]) {
-                            return const LessonInfoWidget();
-                          } else {
-                            return Consumer<Lessons>(
-                              builder: (context, lessons, _) {
-                                if (lessons.lesson.homeTask == null) {
-                                  return const EmptyHometaskWidget();
-                                } else {
-                                  switch (lessons.lesson.homeTask!.type) {
-                                    case HomeTaskType.test:
-                                      return const TestInfoWidget();
-                                    case HomeTaskType.task:
-                                      return const TaskInfoWidget();
-                                  }
+                      (() {
+                        if (_newState == _states[_states.length - 1]) {
+                          return RocketChatScreen();
+                        } else if (_newState == _states[0]) {
+                          return const LessonInfoWidget();
+                        } else {
+                          return Consumer<Lessons>(
+                            builder: (context, lessons, _) {
+                              if (lessons.lesson.homeTask == null) {
+                                return const EmptyHometaskWidget();
+                              } else {
+                                switch (lessons.lesson.homeTask!.type) {
+                                  case HomeTaskType.test:
+                                    return const TestInfoWidget();
+                                  case HomeTaskType.task:
+                                    return const TaskInfoWidget();
                                 }
-                              },
-                            );
-                          }
-                        }()),
-                      ),
+                              }
+                            },
+                          );
+                        }
+                      }()),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
