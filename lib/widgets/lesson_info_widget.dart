@@ -21,8 +21,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
       content: Form(
         key: _formKey,
         child: TextFormField(
-          validator: (value) =>
-              value == null || value.isEmpty ? "Введите описание урока!" : null,
+          validator: (value) => value == null || value.isEmpty ? "Введите описание урока!" : null,
           onSaved: (_newValue) => result = _newValue,
           decoration: const InputDecoration(
             labelText: "Описание урока...",
@@ -79,9 +78,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
 
                   if (_newDescription == null) return;
                   setState(() {
-                    Provider.of<Lessons>(context, listen: false)
-                        .lesson
-                        .description = _newDescription;
+                    Provider.of<Lessons>(context, listen: false).lesson.description = _newDescription;
                   });
                 },
                 icon: const Icon(Icons.edit),
@@ -129,8 +126,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () async {
                     if (lessons.lesson.jitsyLink == null) {
@@ -144,15 +140,13 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                     } else {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => JitsyCallScreen(),
+                          builder: (context) => const JitsyCallScreen(),
                         ),
                       );
                     }
                   },
                   child: Text(
-                    lessons.lesson.jitsyLink == null
-                        ? "Начать занятие"
-                        : "Подключиться к занятию",
+                    lessons.lesson.jitsyLink == null ? "Начать занятие" : "Подключиться к занятию",
                     style: const TextStyle(
                       fontSize: 18,
                     ),

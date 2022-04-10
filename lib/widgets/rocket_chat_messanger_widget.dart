@@ -34,15 +34,10 @@ class _RocketChatMessangerWidgetState extends State<RocketChatMessangerWidget> {
   WebSocketChannel? webSocketChannel;
   WebSocketService webSocketService = WebSocketService();
   User? user;
-  bool _refresh = false;
 
   final ScrollController _listViewScrollController = ScrollController();
 
   void getMessageFromSocket(dynamic event) {
-    String? message;
-    String? userName;
-    DateTime? sendTime;
-
     rocket_notification.Notification? notification =
         event is String ? rocket_notification.Notification.fromMap(jsonDecode(event)) : null;
     webSocketService.streamNotifyUserSubscribe(webSocketChannel!, user!);

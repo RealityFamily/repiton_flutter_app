@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class JitsyCallScreen extends StatefulWidget {
-  JitsyCallScreen({Key? key}) : super(key: key);
+  const JitsyCallScreen({Key? key}) : super(key: key);
 
   @override
   State<JitsyCallScreen> createState() => _JitsyCallScreenState();

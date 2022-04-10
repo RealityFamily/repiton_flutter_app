@@ -1,14 +1,12 @@
 import 'package:repiton/model/rocket_chat_message.dart';
 import 'package:rocket_chat_connector_flutter/models/authentication.dart';
 import 'package:rocket_chat_connector_flutter/models/channel.dart';
-import 'package:rocket_chat_connector_flutter/models/channel_messages.dart';
 import 'package:rocket_chat_connector_flutter/models/filters/channel_history_filter.dart';
 import 'package:rocket_chat_connector_flutter/models/message.dart';
 import 'package:rocket_chat_connector_flutter/models/new/channel_new.dart';
 import 'package:rocket_chat_connector_flutter/services/authentication_service.dart';
 import 'package:rocket_chat_connector_flutter/services/channel_service.dart';
-import 'package:rocket_chat_connector_flutter/services/http_service.dart'
-    as rocket_http_service;
+import 'package:rocket_chat_connector_flutter/services/http_service.dart' as rocket_http_service;
 
 class RocketChatRestAPI {
   final String serverUrl = "https://rocketchat.repiton.dev.realityfamily.ru/";
@@ -20,8 +18,7 @@ class RocketChatRestAPI {
     required String password,
   }) async {
     _rocketHttpService = rocket_http_service.HttpService(Uri.parse(serverUrl));
-    final AuthenticationService authenticationService =
-        AuthenticationService(_rocketHttpService);
+    final AuthenticationService authenticationService = AuthenticationService(_rocketHttpService);
     authentication = await authenticationService.login(username, password);
   }
 
@@ -53,12 +50,9 @@ class RocketChatRestAPI {
   }) async {
     ChannelService channelService = ChannelService(_rocketHttpService);
     Channel channel = Channel(id: channelID);
-    ChannelHistoryFilter channelHistoryFilter =
-        ChannelHistoryFilter(channel, count: messageCount);
+    ChannelHistoryFilter channelHistoryFilter = ChannelHistoryFilter(channel, count: messageCount);
 
-    List<Message>? response =
-        (await channelService.history(channelHistoryFilter, authentication!))
-            .messages;
+    List<Message>? response = (await channelService.history(channelHistoryFilter, authentication!)).messages;
     List<RocketChatMessage> result = [];
 
     if (response == null) {
@@ -76,10 +70,7 @@ class RocketChatRestAPI {
       }
       result.add(
         RocketChatMessage(
-            id: message.id!,
-            sender: message.user!.username!,
-            message: message.msg!,
-            sendTime: message.ts!),
+            id: message.id!, sender: message.user!.username!, message: message.msg!, sendTime: message.ts!),
       );
     }
 

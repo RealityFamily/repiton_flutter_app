@@ -48,8 +48,7 @@ class Teachers with ChangeNotifier {
         birthDay: DateTime.now(),
         email: "",
         phone: "",
-        imageUrl:
-            "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
+        imageUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
         education: "",
       ),
     ];
@@ -69,11 +68,7 @@ class Teachers with ChangeNotifier {
   }
 
   Future<Teacher> findById(String id) async {
-    if (_teachers
-            .firstWhere((teacher) => teacher.id == id,
-                orElse: () => Teacher.empty())
-            .id !=
-        "") {
+    if (_teachers.firstWhere((teacher) => teacher.id == id, orElse: () => Teacher.empty()).id != "") {
       return _teachers.firstWhere((teacher) => teacher.id == id);
     } else {
       return Teacher.empty();
@@ -96,8 +91,7 @@ class Teachers with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fecthAndSetStudentsInfoForAPeriod(
-      DateTime startDay, DateTime endDay) async {
+  Future<void> fecthAndSetStudentsInfoForAPeriod(DateTime startDay, DateTime endDay) async {
     _students = [];
     if (_statistics == null) {
       return;
@@ -105,10 +99,8 @@ class Teachers with ChangeNotifier {
 
     for (var student in _statistics!.students) {
       for (var lesson in student.lessons) {
-        if ((lesson.dateTimeStart.isAfter(startDay) ||
-                lesson.dateTimeStart.isSameDate(startDay)) &&
-            (lesson.dateTimeStart.isBefore(endDay) ||
-                lesson.dateTimeStart.isSameDate(endDay))) {
+        if ((lesson.dateTimeStart.isAfter(startDay) || lesson.dateTimeStart.isSameDate(startDay)) &&
+            (lesson.dateTimeStart.isBefore(endDay) || lesson.dateTimeStart.isSameDate(endDay))) {
           _students.add(student);
         }
       }
@@ -135,8 +127,7 @@ class Teachers with ChangeNotifier {
             ..id = "s1"
             ..name = "Виталий"
             ..lastName = "Евпанько"
-            ..imageUrl =
-                "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+            ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
           presents: 10,
           price: 15000,
           lessons: [
@@ -181,8 +172,6 @@ class Teachers with ChangeNotifier {
   }
 
   Future<void> fetchAndSetLessons(DateTime showDate) async {
-    //_todayLessons = [];
-
     await Future.delayed(const Duration(milliseconds: 500));
 
     DateTime dateFrom = DateTime(showDate.year, showDate.month, 1);
@@ -197,8 +186,7 @@ class Teachers with ChangeNotifier {
             ..id = "s1"
             ..name = "Виталий"
             ..lastName = "Евпанько"
-            ..imageUrl =
-                "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+            ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
           lessons: [
             Lesson(
               id: "l4",
@@ -232,9 +220,7 @@ class Teachers with ChangeNotifier {
       for (var lesson in discipline.lessons) {
         if (lesson.dateTimeStart.isSameDate(day)) {
           var tempDiscipline = discipline
-            ..lessons = discipline.lessons
-                .where((lesson) => lesson.dateTimeStart.isSameDate(day))
-                .toList();
+            ..lessons = discipline.lessons.where((lesson) => lesson.dateTimeStart.isSameDate(day)).toList();
           _todayLessons.add(tempDiscipline);
           break;
         }

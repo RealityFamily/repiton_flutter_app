@@ -22,8 +22,7 @@ class Lessons with ChangeNotifier {
   }
 
   Future<void> setJitsyLink() async {
-    _lesson.jitsyLink =
-        await Future<String>.delayed(Duration(milliseconds: 500), () => "");
+    _lesson.jitsyLink = await Future<String>.delayed(const Duration(milliseconds: 500), () => "");
     notifyListeners();
   }
 

@@ -30,8 +30,7 @@ class Students with ChangeNotifier {
         birthDay: DateTime.now(),
         email: "",
         phone: "",
-        imageUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
         education: "",
         parents: [],
         price: 0,
@@ -60,11 +59,7 @@ class Students with ChangeNotifier {
   }
 
   Future<Student> findById(String id) async {
-    if (_students
-            .firstWhere((teacher) => teacher.id == id,
-                orElse: () => Student.empty())
-            .id !=
-        "") {
+    if (_students.firstWhere((teacher) => teacher.id == id, orElse: () => Student.empty()).id != "") {
       return _students.firstWhere((teacher) => teacher.id == id);
     } else {
       return Student.empty();
@@ -95,10 +90,8 @@ class Students with ChangeNotifier {
 
     for (var discipline in _statistics!.disciplines) {
       for (var lesson in discipline.discipline.lessons) {
-        if ((lesson.dateTimeStart.isAfter(startDay) ||
-                lesson.dateTimeStart.isSameDate(startDay)) &&
-            (lesson.dateTimeStart.isBefore(endDay) ||
-                lesson.dateTimeStart.isSameDate(endDay))) {
+        if ((lesson.dateTimeStart.isAfter(startDay) || lesson.dateTimeStart.isSameDate(startDay)) &&
+            (lesson.dateTimeStart.isBefore(endDay) || lesson.dateTimeStart.isSameDate(endDay))) {
           _showingDisciplines.add(discipline);
         }
       }
@@ -126,8 +119,7 @@ class Students with ChangeNotifier {
               ..name = "Зинаида"
               ..lastName = "Юрьевна"
               ..fatherName = "Аркадьевна"
-              ..imageUrl =
-                  "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+              ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
             student: Student.empty(),
             lessons: [
               Lesson(
@@ -135,7 +127,7 @@ class Students with ChangeNotifier {
                 name: "Урок №1",
                 description: "Какая-то инфа по уроку",
                 status: LessonStatus.done,
-                dateTimeStart: DateTime.now().subtract(Duration(
+                dateTimeStart: DateTime.now().subtract(const Duration(
                   days: 1,
                 )),
                 dateTimeEnd: DateTime.now().add(
@@ -147,7 +139,7 @@ class Students with ChangeNotifier {
                 name: "Урок №2",
                 description: "Какая-то инфа по уроку",
                 status: LessonStatus.canceled,
-                dateTimeStart: DateTime.now().subtract(Duration(days: 3)),
+                dateTimeStart: DateTime.now().subtract(const Duration(days: 3)),
                 dateTimeEnd: DateTime.now().add(
                   const Duration(hours: 2),
                 ),

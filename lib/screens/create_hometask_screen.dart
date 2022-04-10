@@ -14,6 +14,14 @@ class CreateHometaskScreen extends StatefulWidget {
 class _CreateHometaskScreenState extends State<CreateHometaskScreen> {
   final HomeTask _homeTask = HomeTask.empty();
 
+  void creationHomeTaskCallBack(HomeTask? newHomeTask) {
+    if (newHomeTask == null) return;
+
+    // TODO: Send hometask to server
+
+    Navigator.of(context).pop(newHomeTask);
+  }
+
   final List<String> _states = ["Задание", "Тест"];
   late String _state = _states[0];
 
@@ -68,7 +76,9 @@ class _CreateHometaskScreenState extends State<CreateHometaskScreen> {
                 ),
                 child: (() {
                   if (_state == _states[0]) {
-                    return const CreateTaskWidget();
+                    return CreateTaskWidget(
+                      callBack: creationHomeTaskCallBack,
+                    );
                   } else {
                     return const ChooseTestWidget();
                   }

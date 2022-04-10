@@ -46,9 +46,12 @@ class MyApp extends StatelessWidget {
             primary: const Color(0xFF393939),
           ),
         ),
-        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+        ],
         supportedLocales: const [Locale('ru')],
-        // home: const MyHomePage(title: 'Flutter Demo Home Page'),
         home: const MainScreen(),
       ),
     );
