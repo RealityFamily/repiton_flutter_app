@@ -35,7 +35,7 @@ class TaskInfoWidget extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: SingleChildScrollView(
                   child: Text(
-                    lessons.lesson.homeTask!.description,
+                    lessons.lesson!.homeTask!.description,
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -60,7 +60,7 @@ class TaskInfoWidget extends StatelessWidget {
           SizedBox(
             height: 100,
             child: (() {
-              if (lessons.lesson.homeTask!.files.isEmpty) {
+              if (lessons.lesson!.homeTask!.files.isEmpty) {
                 return const Center(
                   child: Text("Нет прикрепленых файлов"),
                 );
@@ -68,7 +68,7 @@ class TaskInfoWidget extends StatelessWidget {
                 return ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => RemoteFileWidget(
-                    file: lessons.lesson.homeTask!.files[index],
+                    file: lessons.lesson!.homeTask!.files[index],
                     height: 100,
                   ),
                   separatorBuilder: (context, index) => const VerticalDivider(
@@ -76,7 +76,7 @@ class TaskInfoWidget extends StatelessWidget {
                     indent: 10,
                     endIndent: 10,
                   ),
-                  itemCount: lessons.lesson.homeTask!.files.length,
+                  itemCount: lessons.lesson!.homeTask!.files.length,
                 );
               }
             }()),
@@ -95,7 +95,7 @@ class TaskInfoWidget extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             ),
-            onPressed: lessons.lesson.homeTask!.isUncheckedAnswers() ? () {} : null,
+            onPressed: lessons.lesson!.homeTask!.isUncheckedAnswers() ? () {} : null,
             child: const Text(
               "Проверить домашнее задание",
               style: TextStyle(

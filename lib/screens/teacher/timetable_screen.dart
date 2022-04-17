@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/lesson.dart';
+import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/teacher/teachers_lessons.dart';
 import 'package:repiton/screens/teacher/lesson_screen.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
@@ -135,13 +136,15 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                                           ),
                                         ),
                                         onTap: () {
+                                          Provider.of<Lessons>(context, listen: false).openLesson(lesson);
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) => LessonScreen(
                                                 disciplineName: discipline.name,
                                                 studentName: discipline.student.fullName,
-                                                lesson: lesson,
                                                 rocketChatRef: discipline.rocketChatReference,
+                                                teacherImageUrl: discipline.teacher.imageUrl,
+                                                studentImageUrl: discipline.student.imageUrl,
                                               ),
                                             ),
                                           );

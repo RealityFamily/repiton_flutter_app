@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:repiton/model/lesson.dart';
 import 'package:repiton/provider/admin/students_statistics.dart';
 import 'package:repiton/provider/admin/teachers_statistics.dart';
 import 'package:repiton/provider/admin/users.dart';
 import 'package:repiton/provider/auth.dart';
+import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/student/students.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/provider/teacher/teachers_lessons.dart';
@@ -33,6 +35,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => TeachersLessons(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Lessons(),
         ),
         ChangeNotifierProvider(
           create: (context) => TearchersStatisctics(),

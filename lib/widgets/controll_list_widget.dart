@@ -19,10 +19,13 @@ class ControllListWidget extends StatelessWidget {
     return ListTile(
       title: Text(name),
       leading: CircleAvatar(
-        child: FadeInImage(
-          placeholder: const AssetImage("assets/images/user.png"),
-          image: NetworkImage(
-            imageUrl,
+        backgroundColor: Colors.transparent,
+        child: ClipOval(
+          child: FadeInImage(
+            placeholder: const AssetImage("assets/images/user_black.png"),
+            image: NetworkImage(
+              imageUrl,
+            ),
           ),
         ),
       ),

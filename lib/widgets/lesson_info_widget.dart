@@ -4,7 +4,18 @@ import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/screens/teacher/jitsy_call_screen.dart';
 
 class LessonInfoWidget extends StatefulWidget {
-  const LessonInfoWidget({Key? key}) : super(key: key);
+  final String disciplineName;
+  final String studentName;
+  final String studentImageUrl;
+  final String teacherImageUrl;
+
+  const LessonInfoWidget({
+    required this.disciplineName,
+    required this.studentName,
+    required this.studentImageUrl,
+    required this.teacherImageUrl,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<LessonInfoWidget> createState() => _LessonInfoWidgetState();
@@ -80,7 +91,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
 
                   if (_newDescription == null) return;
                   setState(() {
-                    Provider.of<Lessons>(context, listen: false).lesson.description = _newDescription;
+                    Provider.of<Lessons>(context, listen: false).lesson!.description = _newDescription;
                   });
                 },
                 icon: const Icon(Icons.edit),
@@ -105,7 +116,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                     (MediaQuery.of(context).size.height - 484 > 150 ? MediaQuery.of(context).size.height - 484 : 150),
                 child: SingleChildScrollView(
                   child: Text(
-                    lessons.lesson.description,
+                    lessons.lesson!.description,
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -136,7 +147,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () async {
-                    if (lessons.lesson.jitsyLink == null) {
+                    if (lessons.lesson!.jitsyLink == null) {
                       setState(() {
                         _isLoading = true;
                       });
@@ -147,13 +158,18 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                     } else {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const JitsyCallScreen(),
+                          builder: (context) => JitsyCallScreen(
+                            disciplineName: widget.disciplineName,
+                            studentName: widget.studentName,
+                            teacherImageUrl: widget.teacherImageUrl,
+                            studentImageUrl: widget.studentImageUrl,
+                          ),
                         ),
                       );
                     }
                   },
                   child: Text(
-                    lessons.lesson.jitsyLink == null ? "Начать занятие" : "Подключиться к занятию",
+                    lessons.lesson!.jitsyLink == null ? "Начать занятие" : "Подключиться к занятию",
                     style: const TextStyle(
                       fontSize: 18,
                     ),

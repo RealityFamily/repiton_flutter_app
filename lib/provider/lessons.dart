@@ -3,30 +3,41 @@ import 'package:repiton/model/home_task.dart';
 import 'package:repiton/model/lesson.dart';
 
 class Lessons with ChangeNotifier {
-  Lesson _lesson;
+  Lesson? _lesson;
 
-  Lessons(this._lesson);
+  Lessons();
 
-  Lesson get lesson => _lesson;
+  Lesson? get lesson => _lesson;
 
   void setDescription(String newDescription) {
-    _lesson.description = newDescription;
+    if (_lesson == null) return;
+    _lesson!.description = newDescription;
     updateDataOnServer();
     notifyListeners();
   }
 
   void setHometask(HomeTask newHomeTask) {
-    _lesson.homeTask = newHomeTask;
+    if (_lesson == null) return;
+    _lesson!.homeTask = newHomeTask;
     updateDataOnServer();
     notifyListeners();
   }
 
   Future<void> setJitsyLink() async {
-    _lesson.jitsyLink = await Future<String>.delayed(const Duration(milliseconds: 500), () => "");
+    if (_lesson == null) return;
+    _lesson!.jitsyLink = await Future<String>.delayed(const Duration(milliseconds: 500), () => "");
     notifyListeners();
   }
 
   void updateDataOnServer() {
     // TODO: PUT lesson info to server
+  }
+
+  void openLesson(Lesson newLesson) {
+    _lesson = newLesson;
+  }
+
+  void closeLesson() {
+    _lesson = null;
   }
 }
