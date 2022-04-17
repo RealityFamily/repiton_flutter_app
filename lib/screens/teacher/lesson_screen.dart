@@ -114,10 +114,28 @@ class _LessonScreenState extends State<LessonScreen> {
                             icon: const Icon(Icons.arrow_back),
                           ),
                           const Expanded(child: SizedBox()),
-                          IconButton(
+                          PopupMenuButton<String>(
                             padding: const EdgeInsets.all(16),
-                            onPressed: () {},
                             icon: const Icon(Icons.more_vert),
+                            itemBuilder: (_) => ["Перенести занятие", "Отменить занятие"]
+                                .map(
+                                  (item) => PopupMenuItem<String>(
+                                    // TODO: Delete param when would created func
+                                    enabled: false,
+                                    value: item,
+                                    child: Row(
+                                      children: [
+                                        Icon(item.contains("Перенести") ? Icons.move_down : Icons.dnd_forwardslash),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(item),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onSelected: (value) {},
                           ),
                         ],
                       ),
