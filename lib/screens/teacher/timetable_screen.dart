@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/lesson.dart';
-import 'package:repiton/provider/teachers.dart';
-import 'package:repiton/screens/lesson_screen.dart';
+import 'package:repiton/provider/teacher/teachers_lessons.dart';
+import 'package:repiton/screens/teacher/lesson_screen.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -62,7 +62,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return Consumer<Teachers>(
+                    return Consumer<TeachersLessons>(
                       builder: (context, teachers, _) => Column(
                         children: [
                           TimeTableCalendar(
@@ -171,8 +171,8 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
   }
 
   Future<void> _getLessons(DateTime dateTime) async {
-    await Provider.of<Teachers>(context, listen: false).fetchAndSetLessons(dateTime);
+    await Provider.of<TeachersLessons>(context, listen: false).fetchAndSetLessons(dateTime);
 
-    Provider.of<Teachers>(context, listen: false).fecthAndSetLessonsForADay(dateTime);
+    Provider.of<TeachersLessons>(context, listen: false).fecthAndSetLessonsForADay(dateTime);
   }
 }

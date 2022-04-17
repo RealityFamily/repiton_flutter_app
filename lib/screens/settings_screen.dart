@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/auth.dart';
-import 'package:repiton/provider/students.dart';
-import 'package:repiton/provider/teachers.dart';
+import 'package:repiton/provider/student/students.dart';
+import 'package:repiton/provider/teacher/teachers.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -90,7 +90,7 @@ class SettingsScreen extends StatelessWidget {
                   (() {
                     if (_authProvider.userRole[0] == Auth.teacher) {
                       return getUserNameAndRole<Teacher>(
-                        Provider.of<Teachers>(context, listen: false).findById(_authProvider.id),
+                        Provider.of<Teachers>(context, listen: false).getCachedTeacher(),
                         (teacher) {
                           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
                         },
@@ -98,7 +98,7 @@ class SettingsScreen extends StatelessWidget {
                       );
                     } else if (_authProvider.userRole[0] == Auth.admin) {
                       return getUserNameAndRole<Teacher>(
-                        Provider.of<Teachers>(context, listen: false).findById(_authProvider.id),
+                        Provider.of<Teachers>(context, listen: false).getCachedTeacher(),
                         (teacher) {
                           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
                         },
@@ -106,7 +106,7 @@ class SettingsScreen extends StatelessWidget {
                       );
                     } else if (_authProvider.userRole[0] == Auth.student) {
                       return getUserNameAndRole<Student>(
-                        Provider.of<Students>(context, listen: false).findById(_authProvider.id),
+                        Provider.of<Students>(context, listen: false).getCachedStudent(),
                         (student) {
                           return student.lastName + " " + student.name;
                         },

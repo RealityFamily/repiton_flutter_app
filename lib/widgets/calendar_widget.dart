@@ -4,8 +4,9 @@ import 'package:repiton/core/comparing/date_comparing.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
-import 'package:repiton/provider/students.dart';
-import 'package:repiton/provider/teachers.dart';
+import 'package:repiton/provider/admin/students_statistics.dart';
+import 'package:repiton/provider/admin/teachers_statistics.dart';
+import 'package:repiton/provider/teacher/teachers_lessons.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 abstract class Calendar extends StatefulWidget {
@@ -178,7 +179,7 @@ class TeachersInfoCalendar extends Calendar {
   late final FinancialStatistics? statistics;
 
   TeachersInfoCalendar({
-    required Teachers provider,
+    required TearchersStatisctics provider,
     required CalendarFormat format,
     required Function(DateTime) selectAction,
     required Function(DateTime) pageChangeAction,
@@ -235,7 +236,7 @@ class StudentsInfoCalendar extends Calendar {
   late final LearnStatistics? statistics;
 
   StudentsInfoCalendar({
-    required Students provider,
+    required StudentsStatistics provider,
     required CalendarFormat format,
     required Function(DateTime) selectAction,
     required Function(DateTime) pageChangeAction,
@@ -292,7 +293,7 @@ class TimeTableCalendar extends Calendar {
   late final List<Discipline> disciplines;
 
   TimeTableCalendar({
-    required Teachers provider,
+    required TeachersLessons provider,
     required CalendarFormat format,
     required Function(DateTime) selectAction,
     required Function(DateTime) pageChangeAction,

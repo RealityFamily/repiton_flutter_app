@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:repiton/provider/students.dart';
-import 'package:repiton/provider/teachers.dart';
+import 'package:repiton/provider/admin/users.dart';
+import 'package:repiton/provider/student/students.dart';
+import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
-import 'package:repiton/screens/controll_student_info.dart';
-import 'package:repiton/screens/controll_teacher_info.dart';
+import 'package:repiton/screens/admin/controll/student/controll_student_info.dart';
+import 'package:repiton/screens/admin/controll/teacher/controll_teacher_info.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
@@ -46,9 +47,7 @@ class _UsersScreenState extends State<UsersScreen> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => AddingAccountScreen(
-                                state: _states.indexOf(_state) == 0
-                                    ? AddingState.teacher
-                                    : AddingState.student),
+                                state: _states.indexOf(_state) == 0 ? AddingState.teacher : AddingState.student),
                           ),
                         );
                       },
@@ -89,38 +88,47 @@ class _UsersScreenState extends State<UsersScreen> {
               },
             ),
             Expanded(
-              child: _states.indexOf(_state) == 1
-                  ? Consumer<Students>(
-                      builder: (context, students, child) => ListView.separated(
-                        itemBuilder: (context, index) => ControllListWidget(
-                          name: students.students[index].lastName +
-                              " " +
-                              students.students[index].name,
-                          imageUrl: students.students[index].imageUrl,
-                          id: students.students[index].id,
-                          page: (id) => ControllStudentInfo(id: id),
-                        ),
-                        separatorBuilder: (context, index) => const Divider(),
-                        itemCount: students.students.length,
-                      ),
-                    )
-                  : Consumer<Teachers>(
-                      builder: (context, teachers, child) => ListView.separated(
-                        itemBuilder: (context, index) => ControllListWidget(
-                          name: teachers.teachers[index].lastName +
-                              " " +
-                              teachers.teachers[index].name +
-                              " " +
-                              teachers.teachers[index].fatherName,
-                          imageUrl: teachers.teachers[index].imageUrl,
-                          id: teachers.teachers[index].id,
-                          page: (id) => ControllTeacherInfo(id: id),
-                        ),
-                        separatorBuilder: (context, index) => const Divider(),
-                        itemCount: teachers.teachers.length,
-                      ),
-                    ),
-            ),
+              child: FutureBuilder(
+                future: _states.indexOf(_state) == 1
+                    ? Provider.of<Users>(context, listen: false).fetchStudents()
+                    : Provider.of<Users>(context, listen: false).fetchTeachers(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Consumer<Users>(
+                      builder: (context, users, child) => _states.indexOf(_state) == 1
+                          ? ListView.separated(
+                              itemBuilder: (context, index) => ControllListWidget(
+                                name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
+                                imageUrl: users.studentsList[index].imageUrl,
+                                id: users.studentsList[index].id,
+                                page: (id) => ControllStudentInfo(id: id),
+                              ),
+                              separatorBuilder: (context, index) => const Divider(),
+                              itemCount: users.studentsList.length,
+                            )
+                          : ListView.separated(
+                              itemBuilder: (context, index) => ControllListWidget(
+                                name: users.teachersList[index].lastName +
+                                    " " +
+                                    users.teachersList[index].name +
+                                    " " +
+                                    users.teachersList[index].fatherName,
+                                imageUrl: users.teachersList[index].imageUrl,
+                                id: users.teachersList[index].id,
+                                page: (id) => ControllTeacherInfo(id: id),
+                              ),
+                              separatorBuilder: (context, index) => const Divider(),
+                              itemCount: users.teachersList.length,
+                            ),
+                    );
+                  }
+                },
+              ),
+            )
           ],
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
-import 'package:repiton/provider/teachers.dart';
-import 'package:repiton/screens/controll_teacher_student_info.dart';
+import 'package:repiton/provider/admin/teachers_statistics.dart';
+import 'package:repiton/screens/admin/controll/teacher/controll_teacher_student_info.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
 import 'package:repiton/widgets/date_chooser.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -16,12 +16,10 @@ class ControllFinancinalStatisticsWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ControllFinancinalStatisticsWidget> createState() =>
-      _ControllFinancinalStatisticsWidgetState();
+  State<ControllFinancinalStatisticsWidget> createState() => _ControllFinancinalStatisticsWidgetState();
 }
 
-class _ControllFinancinalStatisticsWidgetState
-    extends State<ControllFinancinalStatisticsWidget> {
+class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalStatisticsWidget> {
   late DateTime _fromDay;
   late DateTime _toDay;
 
@@ -29,19 +27,17 @@ class _ControllFinancinalStatisticsWidgetState
     DateTime dateFrom,
     DateTime dateTo,
   ) async {
-    await Provider.of<Teachers>(context, listen: false).fetchAndSetStatistics(
+    await Provider.of<TearchersStatisctics>(context, listen: false).fetchAndSetStatistics(
       dateFrom,
       dateTo,
     );
     if (widget.state == InfoVisualisationState.custom) {
-      Provider.of<Teachers>(context, listen: false)
-          .fecthAndSetStudentsInfoForAPeriod(
+      Provider.of<TearchersStatisctics>(context, listen: false).fecthAndSetStudentsInfoForAPeriod(
         dateFrom,
         dateTo,
       );
     } else {
-      Provider.of<Teachers>(context, listen: false)
-          .fecthAndSetStudentsInfoForADay(
+      Provider.of<TearchersStatisctics>(context, listen: false).fecthAndSetStudentsInfoForADay(
         DateTime.now(),
       );
     }
@@ -51,8 +47,7 @@ class _ControllFinancinalStatisticsWidgetState
     switch (widget.state) {
       case InfoVisualisationState.week:
         _fromDay = focusDate.subtract(Duration(days: focusDate.weekday - 1));
-        _toDay = focusDate
-            .add(Duration(days: DateTime.daysPerWeek - focusDate.weekday));
+        _toDay = focusDate.add(Duration(days: DateTime.daysPerWeek - focusDate.weekday));
         break;
       case InfoVisualisationState.month:
       case InfoVisualisationState.custom:
@@ -127,7 +122,7 @@ class _ControllFinancinalStatisticsWidgetState
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return Consumer<Teachers>(
+                  return Consumer<TearchersStatisctics>(
                     builder: (context, teachers, _) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -158,8 +153,7 @@ class _ControllFinancinalStatisticsWidgetState
                               style: TextStyle(fontSize: 22),
                             ),
                             Text(
-                              teachers.statictics!.allPrice.toStringAsFixed(0) +
-                                  " ₽",
+                              teachers.statictics!.allPrice.toStringAsFixed(0) + " ₽",
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w500,
@@ -174,8 +168,7 @@ class _ControllFinancinalStatisticsWidgetState
                           TeachersInfoCalendar(
                             provider: teachers,
                             format: CalendarFormat.week,
-                            selectAction:
-                                teachers.fecthAndSetStudentsInfoForADay,
+                            selectAction: teachers.fecthAndSetStudentsInfoForADay,
                             pageChangeAction: (date) async {
                               setDates(date);
 
@@ -195,8 +188,7 @@ class _ControllFinancinalStatisticsWidgetState
                           TeachersInfoCalendar(
                             provider: teachers,
                             format: CalendarFormat.month,
-                            selectAction:
-                                teachers.fecthAndSetStudentsInfoForADay,
+                            selectAction: teachers.fecthAndSetStudentsInfoForADay,
                             pageChangeAction: (date) async {
                               setDates(date);
 
@@ -231,8 +223,7 @@ class _ControllFinancinalStatisticsWidgetState
                                   teachers.students[index].student.imageUrl,
                                 ),
                               ),
-                              title: Text(teachers
-                                      .students[index].student.name +
+                              title: Text(teachers.students[index].student.name +
                                   " " +
                                   teachers.students[index].student.lastName),
                               trailing: Text(
@@ -241,10 +232,8 @@ class _ControllFinancinalStatisticsWidgetState
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (ctx) =>
-                                        ControllTeacherStudentInfo(
-                                      studentStatistics:
-                                          teachers.students[index],
+                                    builder: (ctx) => ControllTeacherStudentInfo(
+                                      studentStatistics: teachers.students[index],
                                     ),
                                   ),
                                 );

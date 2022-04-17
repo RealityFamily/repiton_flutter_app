@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/home_task.dart';
-import 'package:repiton/screens/create_hometask_screen.dart';
+import 'package:repiton/screens/teacher/create_hometask_screen.dart';
 
 import '../provider/lessons.dart';
 

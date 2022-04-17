@@ -1,33 +1,39 @@
+import 'package:repiton/model/home_task_answer.dart';
 import 'package:repiton/model/remote_file.dart';
 import 'package:repiton/model/test.dart';
 
 class HomeTask {
-  late String? id;
+  String? id;
   late String description;
-  late String? mark;
-  late String? markDescription;
   late HomeTaskType type;
   Test? test;
   late List<RemoteFile> files;
+  late List<HomeTaskAnswer> answers = [];
 
   HomeTask({
     this.id,
     required this.description,
-    this.mark,
-    this.markDescription,
     required this.type,
     this.test,
     required this.files,
-  });
+    List<HomeTaskAnswer>? answers,
+  }) : answers = answers ?? [];
 
   HomeTask.empty() {
     id = null;
     description = "";
-    mark = null;
-    markDescription = null;
     type = HomeTaskType.task;
     test = null;
     files = [];
+    answers = [];
+  }
+
+  bool isUncheckedAnswers() {
+    if (answers.isEmpty) return false;
+    for (var answer in answers) {
+      if (answer.homeTaskMark == null) return true;
+    }
+    return false;
   }
 }
 

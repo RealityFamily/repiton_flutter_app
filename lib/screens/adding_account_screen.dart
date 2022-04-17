@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
-import 'package:repiton/provider/students.dart';
-import 'package:repiton/provider/teachers.dart';
+import 'package:repiton/provider/admin/users.dart';
+import 'package:repiton/provider/student/students.dart';
+import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/widgets/add_student_info.dart';
 import 'package:repiton/widgets/add_student_parent_info.dart';
 import 'package:repiton/widgets/add_teacher_info.dart';
@@ -11,9 +12,10 @@ import 'package:repiton/widgets/add_teacher_info.dart';
 class AddingAccountScreen extends StatefulWidget {
   final Teacher teacher = Teacher.empty();
   final Student student = Student.empty();
+  final String? teacherFrom;
   final AddingState state;
 
-  AddingAccountScreen({required this.state, Key? key}) : super(key: key);
+  AddingAccountScreen({required this.state, this.teacherFrom, Key? key}) : super(key: key);
 
   @override
   State<AddingAccountScreen> createState() => _AddingAccountScreenState();
@@ -43,15 +45,18 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
         parent.formKey.currentState!.save();
         widget.student.parents.add(parent.result);
       }
-
-      Provider.of<Students>(context, listen: false).addStudent(widget.student);
+      if (widget.teacherFrom != null) {
+        Provider.of<Teachers>(context, listen: false).registerStudent(widget.student);
+      } else {
+        Provider.of<Users>(context, listen: false).addStudent(widget.student);
+      }
     } else {
       if (!teacherFormKey.currentState!.validate()) {
         return;
       }
       teacherFormKey.currentState!.save();
 
-      Provider.of<Teachers>(context, listen: false).addTeacher(widget.teacher);
+      Provider.of<Users>(context, listen: false).addTeacher(widget.teacher);
     }
   }
 
@@ -122,8 +127,7 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
                                   },
                                   icon: Icon(
                                     Icons.add,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                 )
                               ],
@@ -144,8 +148,7 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
                                   child: item,
                                   direction: DismissDirection.endToStart,
                                   onDismissed: (direction) {
-                                    if (direction ==
-                                        DismissDirection.endToStart) {
+                                    if (direction == DismissDirection.endToStart) {
                                       setState(() {
                                         if (parentList.length > 1) {
                                           parentList.remove(item);
@@ -155,8 +158,7 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
                                   },
                                 );
                               },
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
+                              separatorBuilder: (context, index) => const SizedBox(
                                 height: 36,
                               ),
                               itemCount: parentList.length,

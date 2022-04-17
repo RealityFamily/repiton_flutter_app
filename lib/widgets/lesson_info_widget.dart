@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/provider/lessons.dart';
-import 'package:repiton/screens/jitsy_call_screen.dart';
+import 'package:repiton/screens/teacher/jitsy_call_screen.dart';
 
 class LessonInfoWidget extends StatefulWidget {
   const LessonInfoWidget({Key? key}) : super(key: key);

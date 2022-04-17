@@ -1,46 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:repiton/core/comparing/date_comparing.dart';
-import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
-import 'package:repiton/provider/auth.dart';
 
-class Teachers with ChangeNotifier {
-  late final String authToken;
-  late final List<Role> userRole;
-  late List<Teacher> _teachers;
-
+class TearchersStatisctics with ChangeNotifier {
+  Teacher? _teacher;
   FinancialStatistics? _statistics;
   List<StudentFinancialStatistics> _students = [];
 
-  List<Discipline> _disciplines = [];
-  List<Discipline> _todayLessons = [];
-
-  List<Teacher> get teachers {
-    return [..._teachers];
-  }
-
-  FinancialStatistics? get statictics {
-    return _statistics;
-  }
-
-  List<StudentFinancialStatistics> get students {
-    return [..._students];
-  }
-
-  List<Discipline> get disciplines {
-    return [..._disciplines];
-  }
-
-  List<Discipline> get todayLessons {
-    return [..._todayLessons];
-  }
-
-  Teachers.empty() {
-    _teachers = [
-      Teacher(
+  Future<Teacher> getCachedTeacher(String id) async {
+    if (_teacher == null || _teacher!.id != id) {
+      _teacher = Teacher(
         id: "t1",
         name: "Зинаида",
         lastName: "Юрьевна",
@@ -50,29 +22,18 @@ class Teachers with ChangeNotifier {
         phone: "",
         imageUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
         education: "",
-      ),
-    ];
-    userRole = [];
-    authToken = "";
-  }
-
-  Teachers({
-    required this.authToken,
-    required this.userRole,
-    required List<Teacher> prevTeachers,
-  }) : _teachers = prevTeachers;
-
-  void addTeacher(Teacher teacher) {
-    _teachers.add(teacher);
-    notifyListeners();
-  }
-
-  Future<Teacher> findById(String id) async {
-    if (_teachers.firstWhere((teacher) => teacher.id == id, orElse: () => Teacher.empty()).id != "") {
-      return _teachers.firstWhere((teacher) => teacher.id == id);
-    } else {
-      return Teacher.empty();
+      );
     }
+
+    return _teacher!;
+  }
+
+  FinancialStatistics? get statictics {
+    return _statistics;
+  }
+
+  List<StudentFinancialStatistics> get students {
+    return [..._students];
   }
 
   void fecthAndSetStudentsInfoForADay(DateTime day) {
@@ -169,63 +130,5 @@ class Teachers with ChangeNotifier {
         ),
       ],
     );
-  }
-
-  Future<void> fetchAndSetLessons(DateTime showDate) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    DateTime dateFrom = DateTime(showDate.year, showDate.month, 1);
-    DateTime dateTo = DateTime(showDate.year, showDate.month + 1, 0);
-
-    _disciplines = [
-      Discipline(
-          id: "d1",
-          name: "Информатика",
-          teacher: Teacher.empty(),
-          student: Student.empty()
-            ..id = "s1"
-            ..name = "Виталий"
-            ..lastName = "Евпанько"
-            ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
-          lessons: [
-            Lesson(
-              id: "l4",
-              name: "Урок №4",
-              description: "Какая-то инфа по уроку",
-              status: LessonStatus.planned,
-              dateTimeStart: DateTime.now(),
-              dateTimeEnd: DateTime.now(),
-            ),
-            Lesson(
-              id: "l5",
-              name: "Урок №5",
-              description: "Какая-то инфа по уроку",
-              status: LessonStatus.done,
-              dateTimeStart: DateTime.now().subtract(const Duration(hours: 4)),
-              dateTimeEnd: DateTime.now(),
-            ),
-          ],
-          rocketChatReference: "")
-    ];
-    notifyListeners();
-  }
-
-  void fecthAndSetLessonsForADay(DateTime day) {
-    _todayLessons = [];
-    if (_disciplines.isEmpty) {
-      return;
-    }
-
-    for (var discipline in _disciplines) {
-      for (var lesson in discipline.lessons) {
-        if (lesson.dateTimeStart.isSameDate(day)) {
-          var tempDiscipline = discipline
-            ..lessons = discipline.lessons.where((lesson) => lesson.dateTimeStart.isSameDate(day)).toList();
-          _todayLessons.add(tempDiscipline);
-          break;
-        }
-      }
-    }
-    notifyListeners();
   }
 }

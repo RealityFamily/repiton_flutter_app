@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/provider/auth.dart';
-import 'package:repiton/screens/controll_screen.dart';
+import 'package:repiton/screens/admin/controll/controll_screen.dart';
 import 'package:repiton/screens/settings_screen.dart';
-import 'package:repiton/screens/timetable_screen.dart';
-import 'package:repiton/screens/users_screen.dart';
+import 'package:repiton/screens/teacher/students_screen.dart';
+import 'package:repiton/screens/teacher/timetable_screen.dart';
+import 'package:repiton/screens/admin/users_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
       const SettingsScreen(),
     ],
     "TEACHER": [
-      Container(),
+      const StudentsScreen(),
       const TimeTableScreen(),
       const SettingsScreen(),
     ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
 import 'package:repiton/model/student.dart';
-import 'package:repiton/provider/students.dart';
+import 'package:repiton/provider/admin/students_statistics.dart';
 import 'package:repiton/widgets/controll_learn_statistics_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
@@ -19,13 +19,6 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
 
   final List<String> _states = ["Неделя", "Месяц", "Выбрать..."];
   late String _state = _states[0];
-  Student? student;
-
-  Future<Student> _getCachedTeacher() async {
-    student ??=
-        await Provider.of<Students>(context, listen: false).findById(widget.id);
-    return student!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +65,9 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
                 child: Column(
                   children: [
                     FutureBuilder<Student>(
-                      future: _getCachedTeacher(),
+                      future: Provider.of<StudentsStatistics>(context, listen: false).getCachedStudent(widget.id),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            snapshot.hasData) {
+                        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                           return RichText(
                             text: TextSpan(
                               children: [
@@ -87,13 +79,10 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: snapshot.data!.name +
-                                      " " +
-                                      snapshot.data!.lastName,
+                                  text: snapshot.data!.name + " " + snapshot.data!.lastName,
                                   style: TextStyle(
                                     fontSize: 22,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ],
@@ -116,14 +105,11 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
                     ),
                     (() {
                       if (_states.indexOf(_state) == 0) {
-                        return const ControllLearnStatisticsWidget(
-                            state: InfoVisualisationState.week);
+                        return const ControllLearnStatisticsWidget(state: InfoVisualisationState.week);
                       } else if (_states.indexOf(_state) == 1) {
-                        return const ControllLearnStatisticsWidget(
-                            state: InfoVisualisationState.month);
+                        return const ControllLearnStatisticsWidget(state: InfoVisualisationState.month);
                       } else {
-                        return const ControllLearnStatisticsWidget(
-                            state: InfoVisualisationState.custom);
+                        return const ControllLearnStatisticsWidget(state: InfoVisualisationState.custom);
                       }
                     }())
                   ],

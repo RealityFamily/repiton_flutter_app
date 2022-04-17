@@ -30,7 +30,6 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
-      debugPrint(constraint.maxHeight.toString());
       return SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child: Column(
@@ -154,6 +153,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) => RemoteFileWidget(
                         file: _files[index],
+                        height: 200,
                         renameFile: (newFileName) {
                           setState(() {
                             _files[index].name = newFileName + "." + _files[index].name.split(".").last;

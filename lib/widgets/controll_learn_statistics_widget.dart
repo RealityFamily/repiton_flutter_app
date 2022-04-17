@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
-import 'package:repiton/provider/students.dart';
-import 'package:repiton/screens/controll_student_teacher_info.dart';
+import 'package:repiton/provider/admin/students_statistics.dart';
+import 'package:repiton/screens/admin/controll/student/controll_student_teacher_info.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
 import 'package:repiton/widgets/date_chooser.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -16,12 +16,10 @@ class ControllLearnStatisticsWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ControllLearnStatisticsWidget> createState() =>
-      _ControllFinancinalStatisticsWidgetState();
+  State<ControllLearnStatisticsWidget> createState() => _ControllFinancinalStatisticsWidgetState();
 }
 
-class _ControllFinancinalStatisticsWidgetState
-    extends State<ControllLearnStatisticsWidget> {
+class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatisticsWidget> {
   DateTime? _choosedFromDate;
   late DateTime _fromDate;
   late DateTime _toDate;
@@ -30,19 +28,17 @@ class _ControllFinancinalStatisticsWidgetState
     DateTime fromDate,
     DateTime toDate,
   ) async {
-    await Provider.of<Students>(context, listen: false).fetchAndSetStatistics(
+    await Provider.of<StudentsStatistics>(context, listen: false).fetchAndSetStatistics(
       fromDate,
       toDate,
     );
     if (widget.state == InfoVisualisationState.custom) {
-      Provider.of<Students>(context, listen: false)
-          .fecthAndSetTeachersInfoForAPeriod(
+      Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForAPeriod(
         fromDate,
         toDate,
       );
     } else {
-      Provider.of<Students>(context, listen: false)
-          .fecthAndSetTeachersInfoForADay(
+      Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForADay(
         DateTime.now(),
       );
     }
@@ -52,16 +48,14 @@ class _ControllFinancinalStatisticsWidgetState
     switch (widget.state) {
       case InfoVisualisationState.week:
         _fromDate = focusDate.subtract(Duration(days: focusDate.weekday - 1));
-        _toDate = focusDate
-            .add(Duration(days: DateTime.daysPerWeek - focusDate.weekday));
+        _toDate = focusDate.add(Duration(days: DateTime.daysPerWeek - focusDate.weekday));
         break;
       case InfoVisualisationState.month:
         _fromDate = DateTime(focusDate.year, focusDate.month, 1);
         _toDate = DateTime(focusDate.year, focusDate.month + 1, 0);
         break;
       case InfoVisualisationState.custom:
-        _fromDate =
-            _choosedFromDate ?? DateTime(focusDate.year, focusDate.month, 1);
+        _fromDate = _choosedFromDate ?? DateTime(focusDate.year, focusDate.month, 1);
         _toDate = DateTime(focusDate.year, focusDate.month + 1, 0);
         break;
     }
@@ -90,16 +84,13 @@ class _ControllFinancinalStatisticsWidgetState
                   Expanded(
                     child: DateChooser(
                       firstDate: DateTime(2000),
-                      lastDate: DateTime.now().isBefore(_toDate)
-                          ? DateTime.now()
-                          : _toDate,
+                      lastDate: DateTime.now().isBefore(_toDate) ? DateTime.now() : _toDate,
                       callBack: (day) {
                         setState(() {
                           _fromDate = day ?? _fromDate;
                           _choosedFromDate = day;
                         });
-                        Provider.of<Students>(context, listen: false)
-                            .fecthAndSetTeachersInfoForAPeriod(
+                        Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForAPeriod(
                           _fromDate,
                           _toDate,
                         );
@@ -115,8 +106,7 @@ class _ControllFinancinalStatisticsWidgetState
                   ),
                   Expanded(
                     child: DateChooser(
-                      firstDate: _choosedFromDate == null ||
-                              DateTime(2000).isAfter(_choosedFromDate!)
+                      firstDate: _choosedFromDate == null || DateTime(2000).isAfter(_choosedFromDate!)
                           ? DateTime(2000)
                           : _choosedFromDate!,
                       lastDate: DateTime.now(),
@@ -124,8 +114,7 @@ class _ControllFinancinalStatisticsWidgetState
                         setState(() {
                           _toDate = day ?? _toDate;
                         });
-                        Provider.of<Students>(context, listen: false)
-                            .fecthAndSetTeachersInfoForAPeriod(
+                        Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForAPeriod(
                           _fromDate,
                           _toDate,
                         );
@@ -148,7 +137,7 @@ class _ControllFinancinalStatisticsWidgetState
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return Consumer<Students>(
+                  return Consumer<StudentsStatistics>(
                     builder: (context, students, _) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -165,11 +154,9 @@ class _ControllFinancinalStatisticsWidgetState
                                   WidgetSpan(
                                     alignment: PlaceholderAlignment.middle,
                                     child: Text(
-                                      students.statictics!.allPresents
-                                              .toString() +
+                                      students.statictics!.allPresents.toString() +
                                           "/" +
-                                          students.statictics!.countAllLessons
-                                              .toString(),
+                                          students.statictics!.countAllLessons.toString(),
                                       style: const TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.w500,
@@ -179,10 +166,7 @@ class _ControllFinancinalStatisticsWidgetState
                                   ),
                                   TextSpan(
                                     text: " (" +
-                                        (students.statictics!.allPresents *
-                                                100 /
-                                                students.statictics!
-                                                    .countAllLessons)
+                                        (students.statictics!.allPresents * 100 / students.statictics!.countAllLessons)
                                             .toStringAsFixed(0) +
                                         "%)",
                                     style: const TextStyle(
@@ -212,11 +196,9 @@ class _ControllFinancinalStatisticsWidgetState
                                   WidgetSpan(
                                     alignment: PlaceholderAlignment.middle,
                                     child: Text(
-                                      students.statictics!.allHomeTasks
-                                              .toString() +
+                                      students.statictics!.allHomeTasks.toString() +
                                           "/" +
-                                          students.statictics!.countAllLessons
-                                              .toString(),
+                                          students.statictics!.countAllLessons.toString(),
                                       style: const TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.w500,
@@ -226,10 +208,7 @@ class _ControllFinancinalStatisticsWidgetState
                                   ),
                                   TextSpan(
                                     text: " (" +
-                                        (students.statictics!.allHomeTasks *
-                                                100 /
-                                                students.statictics!
-                                                    .countAllLessons)
+                                        (students.statictics!.allHomeTasks * 100 / students.statictics!.countAllLessons)
                                             .toStringAsFixed(0) +
                                         "%)",
                                     style: const TextStyle(
@@ -250,8 +229,7 @@ class _ControllFinancinalStatisticsWidgetState
                           StudentsInfoCalendar(
                             provider: students,
                             format: CalendarFormat.week,
-                            selectAction:
-                                students.fecthAndSetTeachersInfoForADay,
+                            selectAction: students.fecthAndSetTeachersInfoForADay,
                             pageChangeAction: (date) async {
                               setDates(date);
 
@@ -271,8 +249,7 @@ class _ControllFinancinalStatisticsWidgetState
                           StudentsInfoCalendar(
                             provider: students,
                             format: CalendarFormat.month,
-                            selectAction:
-                                students.fecthAndSetTeachersInfoForADay,
+                            selectAction: students.fecthAndSetTeachersInfoForADay,
                             pageChangeAction: (date) async {
                               setDates(date);
 
@@ -304,31 +281,24 @@ class _ControllFinancinalStatisticsWidgetState
                             return ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  students.showingDisciplines[index].discipline
-                                      .teacher.imageUrl,
+                                  students.showingDisciplines[index].discipline.teacher.imageUrl,
                                 ),
                               ),
                               title: Text(
-                                students
-                                    .showingDisciplines[index].discipline.name,
+                                students.showingDisciplines[index].discipline.name,
                               ),
                               subtitle: Text(
-                                students.showingDisciplines[index].discipline
-                                        .teacher.lastName +
+                                students.showingDisciplines[index].discipline.teacher.lastName +
                                     " " +
-                                    students.showingDisciplines[index]
-                                        .discipline.teacher.name +
+                                    students.showingDisciplines[index].discipline.teacher.name +
                                     " " +
-                                    students.showingDisciplines[index]
-                                        .discipline.teacher.fatherName,
+                                    students.showingDisciplines[index].discipline.teacher.fatherName,
                               ),
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (ctx) =>
-                                        ControllStudentTeacherInfo(
-                                      studentStatistics:
-                                          students.showingDisciplines[index],
+                                    builder: (ctx) => ControllStudentTeacherInfo(
+                                      studentStatistics: students.showingDisciplines[index],
                                     ),
                                   ),
                                 );

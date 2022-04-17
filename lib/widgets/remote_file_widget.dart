@@ -3,10 +3,11 @@ import 'package:repiton/model/remote_file.dart';
 
 class RemoteFileWidget extends StatelessWidget {
   final RemoteFile file;
-  final Function(RemoteFile) deleteFile;
-  final Function(String) renameFile;
+  final double height;
+  final Function(RemoteFile)? deleteFile;
+  final Function(String)? renameFile;
 
-  const RemoteFileWidget({required this.file, required this.deleteFile, required this.renameFile, Key? key})
+  const RemoteFileWidget({required this.file, required this.height, this.deleteFile, this.renameFile, Key? key})
       : super(key: key);
 
   @override
@@ -46,8 +47,8 @@ class RemoteFileWidget extends StatelessWidget {
           },
         );
 
-        if (result == null) return;
-        renameFile(result);
+        if (result == null || renameFile == null) return;
+        renameFile!(result);
       },
       onLongPress: () async {
         bool result = await showDialog(
@@ -70,8 +71,8 @@ class RemoteFileWidget extends StatelessWidget {
             ) ??
             false;
 
-        if (result) {
-          deleteFile(file);
+        if (result && deleteFile != null) {
+          deleteFile!(file);
         }
       },
       child: Container(
@@ -85,8 +86,8 @@ class RemoteFileWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: 100,
-              height: 100,
+              width: height / 2,
+              height: height / 2,
               color: Colors.grey,
             ),
             const SizedBox(

@@ -5,25 +5,15 @@ import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
-import 'package:repiton/provider/auth.dart';
 
-class Students with ChangeNotifier {
-  late final String authToken;
-  late final List<Role> userRole;
-  late List<Student> _students;
-
+class StudentsStatistics with ChangeNotifier {
+  Student? _student;
   LearnStatistics? _statistics;
   List<DisciplineLearnStatistics> _showingDisciplines = [];
 
-  Students({
-    required List<Student>? prevStudents,
-    required this.authToken,
-    required this.userRole,
-  }) : _students = prevStudents ?? [];
-
-  Students.empty() {
-    _students = [
-      Student(
+  Future<Student> getCachedStudent(String id) async {
+    if (_student == null || _student!.id != id) {
+      _student = Student(
         id: "s1",
         name: "Виталий",
         lastName: "Евпанько",
@@ -35,14 +25,10 @@ class Students with ChangeNotifier {
         parents: [],
         price: 0,
         hours: 0,
-      ),
-    ];
-    authToken = "";
-    userRole = [];
-  }
+      );
+    }
 
-  List<Student> get students {
-    return [..._students];
+    return _student!;
   }
 
   LearnStatistics? get statictics {
@@ -51,19 +37,6 @@ class Students with ChangeNotifier {
 
   List<DisciplineLearnStatistics> get showingDisciplines {
     return [..._showingDisciplines];
-  }
-
-  void addStudent(Student student) {
-    _students.add(student);
-    notifyListeners();
-  }
-
-  Future<Student> findById(String id) async {
-    if (_students.firstWhere((teacher) => teacher.id == id, orElse: () => Student.empty()).id != "") {
-      return _students.firstWhere((teacher) => teacher.id == id);
-    } else {
-      return Student.empty();
-    }
   }
 
   void fecthAndSetTeachersInfoForADay(DateTime day) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
 import 'package:repiton/model/teacher.dart';
-import 'package:repiton/provider/teachers.dart';
+import 'package:repiton/provider/admin/teachers_statistics.dart';
 import 'package:repiton/widgets/controll_financinal_statistics_widget.dart';
 
 class ControllTeacherInfo extends StatefulWidget {
@@ -15,16 +15,6 @@ class ControllTeacherInfo extends StatefulWidget {
 
 class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
   InfoVisualisationState state = InfoVisualisationState.week;
-  late Teachers teachers;
-  Teacher? teacher;
-
-  Future<Teacher> getCachedTeacher() async {
-    teacher ??= await Provider.of<Teachers>(
-      context,
-      listen: false,
-    ).findById(widget.id);
-    return teacher!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,17 +59,11 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
                   child: Column(
                     children: [
                       FutureBuilder<Teacher>(
-                        future: getCachedTeacher(),
+                        future: Provider.of<TearchersStatisctics>(context, listen: false).getCachedTeacher(widget.id),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                                  ConnectionState.done &&
-                              snapshot.hasData) {
+                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                             return Text(
-                              snapshot.data!.lastName +
-                                  " " +
-                                  snapshot.data!.name +
-                                  " " +
-                                  snapshot.data!.fatherName,
+                              snapshot.data!.lastName + " " + snapshot.data!.name + " " + snapshot.data!.fatherName,
                               style: const TextStyle(fontSize: 22),
                             );
                           } else {
@@ -106,8 +90,7 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   elevation: 0,
                                   shadowColor: Colors.transparent,
                                   primary: state == InfoVisualisationState.week
@@ -141,8 +124,7 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   elevation: 0,
                                   shadowColor: Colors.transparent,
                                   primary: state == InfoVisualisationState.month
@@ -176,12 +158,10 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   elevation: 0,
                                   shadowColor: Colors.transparent,
-                                  primary: state ==
-                                          InfoVisualisationState.custom
+                                  primary: state == InfoVisualisationState.custom
                                       ? Theme.of(context).colorScheme.primary
                                       : Colors.transparent,
                                   shape: const RoundedRectangleBorder(
@@ -201,8 +181,7 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
                                 child: Text(
                                   "Выбрать...",
                                   style: TextStyle(
-                                    color: state !=
-                                            InfoVisualisationState.custom
+                                    color: state != InfoVisualisationState.custom
                                         ? Theme.of(context).colorScheme.primary
                                         : Colors.white,
                                   ),
