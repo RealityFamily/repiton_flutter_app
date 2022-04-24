@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/core/jitsy/jitsy_logic.dart';
 import 'package:repiton/provider/lessons.dart';
-import 'package:repiton/screens/teacher/jitsy_call_screen.dart';
 
 class LessonInfoWidget extends StatefulWidget {
   final String disciplineName;
@@ -159,16 +158,16 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                     } else {
                       JitsyLogic.joinMeeting();
 
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => JitsyCallScreen(
-                            disciplineName: widget.disciplineName,
-                            studentName: widget.studentName,
-                            teacherImageUrl: widget.teacherImageUrl,
-                            studentImageUrl: widget.studentImageUrl,
-                          ),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => JitsyCallScreen(
+                      //       disciplineName: widget.disciplineName,
+                      //       studentName: widget.studentName,
+                      //       teacherImageUrl: widget.teacherImageUrl,
+                      //       studentImageUrl: widget.studentImageUrl,
+                      //     ),
+                      //   ),
+                      // );
                     }
                   },
                   child: Text(
