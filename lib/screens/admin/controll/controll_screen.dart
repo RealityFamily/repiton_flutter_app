@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/provider/admin/users.dart';
-import 'package:repiton/provider/student/students.dart';
-import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/screens/admin/controll/student/controll_student_info.dart';
 import 'package:repiton/screens/admin/controll/teacher/controll_teacher_info.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
@@ -18,6 +16,14 @@ class ControllScreen extends StatefulWidget {
 class _ControllScreenState extends State<ControllScreen> {
   final List<String> _states = ["Преподаватели", "Ученики"];
   late String _state = _states[0];
+
+  Future<void> getData() {
+    if (_state == _states[1]) {
+      return Provider.of<Users>(context, listen: false).fetchStudents();
+    } else {
+      return Provider.of<Users>(context, listen: false).fetchTeachers();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +71,7 @@ class _ControllScreenState extends State<ControllScreen> {
             ),
             Expanded(
               child: FutureBuilder(
-                future: _states.indexOf(_state) == 1
-                    ? Provider.of<Users>(context, listen: false).fetchStudents()
-                    : Provider.of<Users>(context, listen: false).fetchTeachers(),
+                future: getData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -75,7 +79,7 @@ class _ControllScreenState extends State<ControllScreen> {
                     );
                   } else {
                     return Consumer<Users>(
-                      builder: (context, users, child) => _states.indexOf(_state) == 1
+                      builder: (context, users, _) => _states.indexOf(_state) == 1
                           ? ListView.separated(
                               itemBuilder: (context, index) => ControllListWidget(
                                 name: users.studentsList[index].lastName + " " + users.studentsList[index].name,

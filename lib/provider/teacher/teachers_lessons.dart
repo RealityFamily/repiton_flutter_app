@@ -27,7 +27,13 @@ class TeachersLessons with ChangeNotifier {
       Discipline(
           id: "d1",
           name: "Информатика",
-          teacher: Teacher.empty(),
+          teacher: Teacher.empty()
+            ..id = "t1"
+            ..name = "Зинаида"
+            ..lastName = "Юрьевна"
+            ..fatherName = "Аркадьевна"
+            ..birthDay = DateTime.now()
+            ..imageUrl = "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
           student: Student.empty()
             ..id = "s1"
             ..name = "Виталий"

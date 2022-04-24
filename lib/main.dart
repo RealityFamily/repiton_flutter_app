@@ -11,6 +11,7 @@ import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/student/students.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/provider/teacher/teachers_lessons.dart';
+import 'package:repiton/screens/auth_screen.dart';
 import 'package:repiton/screens/main_screen.dart';
 
 void main() {
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
           DefaultWidgetsLocalizations.delegate,
         ],
         supportedLocales: const [Locale('ru')],
-        home: const MainScreen(),
+        home: const AuthScreen(),
       ),
     );
   }

@@ -105,7 +105,8 @@ class _UsersScreenState extends State<UsersScreen> {
                                 name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
                                 imageUrl: users.studentsList[index].imageUrl,
                                 id: users.studentsList[index].id,
-                                page: (id) => ControllStudentInfo(id: id),
+                                // TODO: Change to Students info screen
+                                page: (id) => Container(),
                               ),
                               separatorBuilder: (context, index) => const Divider(),
                               itemCount: users.studentsList.length,
@@ -119,7 +120,8 @@ class _UsersScreenState extends State<UsersScreen> {
                                     users.teachersList[index].fatherName,
                                 imageUrl: users.teachersList[index].imageUrl,
                                 id: users.teachersList[index].id,
-                                page: (id) => ControllTeacherInfo(id: id),
+                                // TODO: Change to Teacher info screen
+                                page: (id) => Container(),
                               ),
                               separatorBuilder: (context, index) => const Divider(),
                               itemCount: users.teachersList.length,

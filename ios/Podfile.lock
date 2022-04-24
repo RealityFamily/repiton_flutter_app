@@ -36,6 +36,10 @@ PODS:
   - Flutter (1.0.0)
   - image_picker_ios (0.0.1):
     - Flutter
+  - jitsi_meet (0.0.1):
+    - Flutter
+    - JitsiMeetSDK (= 3.3.0)
+  - JitsiMeetSDK (3.3.0)
   - SDWebImage (5.12.5):
     - SDWebImage/Core (= 5.12.5)
   - SDWebImage/Core (5.12.5)
@@ -45,11 +49,13 @@ DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - jitsi_meet (from `.symlinks/plugins/jitsi_meet/ios`)
 
 SPEC REPOS:
   trunk:
     - DKImagePickerController
     - DKPhotoGallery
+    - JitsiMeetSDK
     - SDWebImage
     - SwiftyGif
 
@@ -60,6 +66,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  jitsi_meet:
+    :path: ".symlinks/plugins/jitsi_meet/ios"
 
 SPEC CHECKSUMS:
   DKImagePickerController: 72fd378f244cef3d27288e0aebf217a4467e4012
@@ -67,9 +75,11 @@ SPEC CHECKSUMS:
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
+  jitsi_meet: a797e5ffdbc1da9d424c52b1bfe3b2a803b05e31
+  JitsiMeetSDK: 3b1d3757f2166b28cd03f907b47091db064302b3
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: df13c5caacc5047e318d66ff685c2aa4ed383a09
 
 COCOAPODS: 1.10.1

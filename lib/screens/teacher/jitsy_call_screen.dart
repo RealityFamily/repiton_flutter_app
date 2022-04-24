@@ -54,6 +54,7 @@ class _JitsyCallScreenState extends State<JitsyCallScreen> {
                       color: Colors.white,
                     ),
                     onSelected: (value) {},
+                    // TODO: Add items to popup menu
                     itemBuilder: (_) => []
                         .map(
                           (item) => PopupMenuItem<String>(
@@ -96,10 +97,10 @@ class _JitsyCallScreenState extends State<JitsyCallScreen> {
                     children: [
                       CircleAvatar(
                         radius: 37,
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: const Color(0xFFC4C4C4),
                         child: ClipOval(
                           child: FadeInImage(
-                            image: NetworkImage(""),
+                            image: NetworkImage(widget.teacherImageUrl),
                             placeholder: const AssetImage("assets/images/user_grey.png"),
                           ),
                         ),
@@ -116,10 +117,10 @@ class _JitsyCallScreenState extends State<JitsyCallScreen> {
                       ),
                       CircleAvatar(
                         radius: 37,
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: const Color(0xFFC4C4C4),
                         child: ClipOval(
                           child: FadeInImage(
-                            image: NetworkImage(""),
+                            image: NetworkImage(widget.studentImageUrl),
                             placeholder: const AssetImage("assets/images/user_grey.png"),
                           ),
                         ),

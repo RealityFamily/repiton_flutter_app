@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
+import 'package:repiton/widgets/teacher_students_element_widget.dart';
 
 class StudentsScreen extends StatelessWidget {
   const StudentsScreen({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class StudentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+        padding: const EdgeInsets.only(top: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -44,7 +45,33 @@ class StudentsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 23,
+              height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 3,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  labelText: "Поиск",
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    icon: const Icon(
+                      Icons.cancel_outlined,
+                    ),
+                    onPressed: () {
+                      debugPrint("Cancel search");
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
             ),
             Expanded(
               child: FutureBuilder(
@@ -57,11 +84,13 @@ class StudentsScreen extends StatelessWidget {
                   } else {
                     return Consumer<Teachers>(
                       builder: (context, teacher, child) => ListView.separated(
-                        itemBuilder: (context, index) => ControllListWidget(
-                          name: teacher.teachersStudents[index].lastName + " " + teacher.teachersStudents[index].name,
-                          imageUrl: teacher.teachersStudents[index].imageUrl,
-                          id: teacher.teachersStudents[index].id,
-                          page: (id) => Container(),
+                        itemBuilder: (context, index) => TeacherStudentsElementWidget(
+                          studentName: teacher.teachersStudents[index].student.lastName +
+                              " " +
+                              teacher.teachersStudents[index].student.name,
+                          studentId: teacher.teachersStudents[index].id,
+                          disciplineName: teacher.teachersStudents[index].name,
+                          nearestLessonDateTime: teacher.getDisciplineNearestLesson(teacher.teachersStudents[index]),
                         ),
                         separatorBuilder: (context, index) => const Divider(),
                         itemCount: teacher.teachersStudents.length,

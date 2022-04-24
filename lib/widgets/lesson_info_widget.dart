@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:repiton/core/jitsy/jitsy_logic.dart';
 import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/screens/teacher/jitsy_call_screen.dart';
 
@@ -156,6 +157,8 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                         _isLoading = false;
                       });
                     } else {
+                      JitsyLogic.joinMeeting();
+
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => JitsyCallScreen(

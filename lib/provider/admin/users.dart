@@ -12,6 +12,7 @@ class Users with ChangeNotifier {
   List<Student> get studentsList => [..._studentsList];
 
   Future<void> fetchTeachers() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     _teachersList.clear();
     _teachersList.addAll(
       [
@@ -37,6 +38,7 @@ class Users with ChangeNotifier {
   }
 
   Future<void> fetchStudents() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     _studentsList.clear();
     _studentsList.addAll(
       [

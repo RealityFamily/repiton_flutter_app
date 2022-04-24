@@ -24,6 +24,10 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Требуется Ваше разрешение, на выгрузку изображений из галлереи</string>
+	<key>NSCameraUsageDescription</key>
+<string>Требуется Ваше разрешение, на работу с камерой.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Требуется Ваше разрешение, на работу с микрофоном.</string>
 	<key>UIBackgroundModes</key>
 <array>
    <string>fetch</string>
