@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:repiton/core/jitsy/jitsy_logic.dart';
+import 'package:repiton/core/network/jitsy/jitsy_logic.dart';
 import 'package:repiton/provider/lessons.dart';
 
 class LessonInfoWidget extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:repiton/core/network/rest_api_rocket_chat.dart';
+import 'package:repiton/core/network/rocket_chat/rest_api_rocket_chat.dart';
 import 'package:repiton/model/rocket_chat_message.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/rocket_chat_messages.dart';

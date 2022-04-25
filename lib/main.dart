@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:repiton/core/app_init.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/provider/admin/students_statistics.dart';
 import 'package:repiton/provider/admin/teachers_statistics.dart';
@@ -11,10 +12,12 @@ import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/student/students.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/provider/teacher/teachers_lessons.dart';
+import 'package:repiton/repos/auth_repo.dart';
 import 'package:repiton/screens/auth_screen.dart';
 import 'package:repiton/screens/main_screen.dart';
 
-void main() {
+void main() async {
+  await preInit();
   runApp(const MyApp());
 }
 
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => Auth(),
+          create: (context) => Auth(AuthRepo()),
         ),
         ChangeNotifierProvider(
           create: (context) => Users(),
@@ -69,7 +72,7 @@ class MyApp extends StatelessWidget {
           DefaultWidgetsLocalizations.delegate,
         ],
         supportedLocales: const [Locale('ru')],
-        home: const AuthScreen(),
+        home: AuthScreen(),
       ),
     );
   }

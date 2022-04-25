@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:repiton/core/network/rest_api_rocket_chat.dart';
+import 'package:repiton/core/network/rocket_chat/rest_api_rocket_chat.dart';
 import 'package:repiton/provider/rocket_chat_messages.dart';
 import 'package:repiton/widgets/rocket_chat_messanger_widget.dart';
 import 'package:rocket_chat_connector_flutter/models/channel.dart';

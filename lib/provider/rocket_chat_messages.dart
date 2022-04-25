@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:repiton/core/network/rest_api_rocket_chat.dart';
+import 'package:repiton/core/network/rocket_chat/rest_api_rocket_chat.dart';
 import 'package:repiton/model/rocket_chat_message.dart';
 
 class RocketChatMessages with ChangeNotifier {
