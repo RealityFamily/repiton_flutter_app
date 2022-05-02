@@ -4,9 +4,7 @@ import 'package:repiton/core/comparing/date_comparing.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/statistics.dart';
-import 'package:repiton/provider/admin/students_statistics.dart';
-import 'package:repiton/provider/admin/teachers_statistics.dart';
-import 'package:repiton/provider/teacher/teachers_lessons.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 abstract class Calendar extends StatefulWidget {
@@ -179,7 +177,6 @@ class TeachersInfoCalendar extends Calendar {
   late final FinancialStatistics? statistics;
 
   TeachersInfoCalendar({
-    required TearchersStatisctics provider,
     required CalendarFormat format,
     required Function(DateTime) selectAction,
     required Function(DateTime) pageChangeAction,
@@ -191,7 +188,7 @@ class TeachersInfoCalendar extends Calendar {
           pageChangeAction: pageChangeAction,
           key: key,
         ) {
-    statistics = provider.statictics;
+    statistics = RootProvider.getTearchersStatisctics().statictics;
   }
 
   @override
@@ -236,7 +233,6 @@ class StudentsInfoCalendar extends Calendar {
   late final LearnStatistics? statistics;
 
   StudentsInfoCalendar({
-    required StudentsStatistics provider,
     required CalendarFormat format,
     required Function(DateTime) selectAction,
     required Function(DateTime) pageChangeAction,
@@ -248,7 +244,7 @@ class StudentsInfoCalendar extends Calendar {
           pageChangeAction: pageChangeAction,
           key: key,
         ) {
-    statistics = provider.statictics;
+    statistics = RootProvider.getStudentsStatistics().statictics;
   }
 
   @override
@@ -293,7 +289,6 @@ class TimeTableCalendar extends Calendar {
   late final List<Discipline> disciplines;
 
   TimeTableCalendar({
-    required TeachersLessons provider,
     required CalendarFormat format,
     required Function(DateTime) selectAction,
     required Function(DateTime) pageChangeAction,
@@ -305,7 +300,7 @@ class TimeTableCalendar extends Calendar {
           pageChangeAction: pageChangeAction,
           key: key,
         ) {
-    disciplines = provider.disciplines;
+    disciplines = RootProvider.getTeachersLessons().disciplines;
   }
 
   @override

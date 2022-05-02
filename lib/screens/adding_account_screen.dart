@@ -47,17 +47,16 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
         widget.student.parents.add(parent.result);
       }
       if (widget.teacherFrom != null) {
-        RootProvider.getTeachers.registerStudent(widget.student);
+        RootProvider.getTeachers().registerStudent(widget.student);
       } else {
-        Provider.of<Users>(context, listen: false).addStudent(widget.student);
+        RootProvider.getUsers().addStudent(widget.student);
       }
     } else {
       if (!teacherFormKey.currentState!.validate()) {
         return;
       }
       teacherFormKey.currentState!.save();
-
-      Provider.of<Users>(context, listen: false).addTeacher(widget.teacher);
+      RootProvider.getUsers().addTeacher(widget.teacher);
     }
   }
 

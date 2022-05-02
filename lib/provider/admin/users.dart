@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 
-class Users with ChangeNotifier {
+class UsersProvider with ChangeNotifier {
   final List<Teacher> _teachersList = [];
   final List<Student> _studentsList = [];
 
-  Users();
+  UsersProvider();
 
   List<Teacher> get teachersList => [..._teachersList];
   List<Student> get studentsList => [..._studentsList];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/provider/admin/users.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/provider/student/students.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
@@ -90,42 +91,46 @@ class _UsersScreenState extends State<UsersScreen> {
             Expanded(
               child: FutureBuilder(
                 future: _states.indexOf(_state) == 1
-                    ? Provider.of<Users>(context, listen: false).fetchStudents()
-                    : Provider.of<Users>(context, listen: false).fetchTeachers(),
+                    ? RootProvider.getUsers().fetchStudents()
+                    : RootProvider.getUsers().fetchTeachers(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return Consumer<Users>(
-                      builder: (context, users, child) => _states.indexOf(_state) == 1
-                          ? ListView.separated(
-                              itemBuilder: (context, index) => ControllListWidget(
-                                name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
-                                imageUrl: users.studentsList[index].imageUrl,
-                                id: users.studentsList[index].id,
-                                // TODO: Change to Students info screen
-                                page: (id) => Container(),
-                              ),
-                              separatorBuilder: (context, index) => const Divider(),
-                              itemCount: users.studentsList.length,
-                            )
-                          : ListView.separated(
-                              itemBuilder: (context, index) => ControllListWidget(
-                                name: users.teachersList[index].lastName +
-                                    " " +
-                                    users.teachersList[index].name +
-                                    " " +
-                                    users.teachersList[index].fatherName,
-                                imageUrl: users.teachersList[index].imageUrl,
-                                id: users.teachersList[index].id,
-                                // TODO: Change to Teacher info screen
-                                page: (id) => Container(),
-                              ),
-                              separatorBuilder: (context, index) => const Divider(),
-                              itemCount: users.teachersList.length,
-                            ),
+                    return Consumer(
+                      builder: (context, ref, _) {
+                        final users = ref.watch(RootProvider.getUsersProvider());
+
+                        return _states.indexOf(_state) == 1
+                            ? ListView.separated(
+                                itemBuilder: (context, index) => ControllListWidget(
+                                  name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
+                                  imageUrl: users.studentsList[index].imageUrl,
+                                  id: users.studentsList[index].id,
+                                  // TODO: Change to Students info screen
+                                  page: (id) => Container(),
+                                ),
+                                separatorBuilder: (context, index) => const Divider(),
+                                itemCount: users.studentsList.length,
+                              )
+                            : ListView.separated(
+                                itemBuilder: (context, index) => ControllListWidget(
+                                  name: users.teachersList[index].lastName +
+                                      " " +
+                                      users.teachersList[index].name +
+                                      " " +
+                                      users.teachersList[index].fatherName,
+                                  imageUrl: users.teachersList[index].imageUrl,
+                                  id: users.teachersList[index].id,
+                                  // TODO: Change to Teacher info screen
+                                  page: (id) => Container(),
+                                ),
+                                separatorBuilder: (context, index) => const Divider(),
+                                itemCount: users.teachersList.length,
+                              );
+                      },
                     );
                   }
                 },

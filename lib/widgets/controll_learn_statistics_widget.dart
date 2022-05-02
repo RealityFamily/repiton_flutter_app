@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
-import 'package:repiton/provider/admin/students_statistics.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/admin/controll/student/controll_student_teacher_info.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
 import 'package:repiton/widgets/date_chooser.dart';
@@ -24,23 +24,12 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
   late DateTime _fromDate;
   late DateTime _toDate;
 
-  Future<void> _getStatistics(
-    DateTime fromDate,
-    DateTime toDate,
-  ) async {
-    await Provider.of<StudentsStatistics>(context, listen: false).fetchAndSetStatistics(
-      fromDate,
-      toDate,
-    );
+  Future<void> _getStatistics(DateTime fromDate, DateTime toDate) async {
+    await RootProvider.getStudentsStatistics().fetchAndSetStatistics(fromDate, toDate);
     if (widget.state == InfoVisualisationState.custom) {
-      Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForAPeriod(
-        fromDate,
-        toDate,
-      );
+      RootProvider.getStudentsStatistics().fecthAndSetTeachersInfoForAPeriod(fromDate, toDate);
     } else {
-      Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForADay(
-        DateTime.now(),
-      );
+      RootProvider.getStudentsStatistics().fecthAndSetTeachersInfoForADay(DateTime.now());
     }
   }
 
@@ -90,7 +79,7 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
                           _fromDate = day ?? _fromDate;
                           _choosedFromDate = day;
                         });
-                        Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForAPeriod(
+                        RootProvider.getStudentsStatistics().fecthAndSetTeachersInfoForAPeriod(
                           _fromDate,
                           _toDate,
                         );
@@ -114,7 +103,7 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
                         setState(() {
                           _toDate = day ?? _toDate;
                         });
-                        Provider.of<StudentsStatistics>(context, listen: false).fecthAndSetTeachersInfoForAPeriod(
+                        RootProvider.getStudentsStatistics().fecthAndSetTeachersInfoForAPeriod(
                           _fromDate,
                           _toDate,
                         );
@@ -137,179 +126,185 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return Consumer<StudentsStatistics>(
-                    builder: (context, students, _) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Всего посещений",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  WidgetSpan(
-                                    alignment: PlaceholderAlignment.middle,
-                                    child: Text(
-                                      students.statictics!.allPresents.toString() +
-                                          "/" +
-                                          students.statictics!.countAllLessons.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
+                  return Consumer(
+                    builder: (context, ref, _) {
+                      final studentsStatistics = ref.watch(RootProvider.getStudentsStatisticsProvider());
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Всего посещений",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Text(
+                                        studentsStatistics.statictics!.allPresents.toString() +
+                                            "/" +
+                                            studentsStatistics.statictics!.countAllLessons.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  TextSpan(
-                                    text: " (" +
-                                        (students.statictics!.allPresents * 100 / students.statictics!.countAllLessons)
-                                            .toStringAsFixed(0) +
-                                        "%)",
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black45,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Всего выполненных ДЗ",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  WidgetSpan(
-                                    alignment: PlaceholderAlignment.middle,
-                                    child: Text(
-                                      students.statictics!.allHomeTasks.toString() +
-                                          "/" +
-                                          students.statictics!.countAllLessons.toString(),
+                                    TextSpan(
+                                      text: " (" +
+                                          (studentsStatistics.statictics!.allPresents *
+                                                  100 /
+                                                  studentsStatistics.statictics!.countAllLessons)
+                                              .toStringAsFixed(0) +
+                                          "%)",
                                       style: const TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.black,
+                                        color: Colors.black45,
                                       ),
                                     ),
-                                  ),
-                                  TextSpan(
-                                    text: " (" +
-                                        (students.statictics!.allHomeTasks * 100 / students.statictics!.countAllLessons)
-                                            .toStringAsFixed(0) +
-                                        "%)",
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black45,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        if (widget.state == InfoVisualisationState.week)
-                          StudentsInfoCalendar(
-                            provider: students,
-                            format: CalendarFormat.week,
-                            selectAction: students.fecthAndSetTeachersInfoForADay,
-                            pageChangeAction: (date) async {
-                              setDates(date);
-
-                              await students.fetchAndSetStatistics(
-                                _fromDate,
-                                _toDate,
-                              );
-                              switch (widget.state) {
-                                case InfoVisualisationState.week:
-                                case InfoVisualisationState.month:
-                                  students.fecthAndSetTeachersInfoForADay(date);
-                                  break;
-                              }
-                            },
-                          ),
-                        if (widget.state == InfoVisualisationState.month)
-                          StudentsInfoCalendar(
-                            provider: students,
-                            format: CalendarFormat.month,
-                            selectAction: students.fecthAndSetTeachersInfoForADay,
-                            pageChangeAction: (date) async {
-                              setDates(date);
-
-                              await students.fetchAndSetStatistics(
-                                _fromDate,
-                                _toDate,
-                              );
-                              switch (widget.state) {
-                                case InfoVisualisationState.week:
-                                case InfoVisualisationState.month:
-                                  students.fecthAndSetTeachersInfoForADay(date);
-                                  break;
-                              }
-                            },
-                          ),
-                        const SizedBox(
-                          height: 37,
-                        ),
-                        const Text(
-                          "Подробнее по дисциплинам",
-                          style: TextStyle(
-                            fontSize: 24,
-                          ),
-                        ),
-                        ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  students.showingDisciplines[index].discipline.teacher.imageUrl,
+                                  ],
                                 ),
                               ),
-                              title: Text(
-                                students.showingDisciplines[index].discipline.name,
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Всего выполненных ДЗ",
+                                style: TextStyle(fontSize: 20),
                               ),
-                              subtitle: Text(
-                                students.showingDisciplines[index].discipline.teacher.lastName +
-                                    " " +
-                                    students.showingDisciplines[index].discipline.teacher.name +
-                                    " " +
-                                    students.showingDisciplines[index].discipline.teacher.fatherName,
-                              ),
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (ctx) => ControllStudentTeacherInfo(
-                                      studentStatistics: students.showingDisciplines[index],
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Text(
+                                        studentsStatistics.statictics!.allHomeTasks.toString() +
+                                            "/" +
+                                            studentsStatistics.statictics!.countAllLessons.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    TextSpan(
+                                      text: " (" +
+                                          (studentsStatistics.statictics!.allHomeTasks *
+                                                  100 /
+                                                  studentsStatistics.statictics!.countAllLessons)
+                                              .toStringAsFixed(0) +
+                                          "%)",
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 26,
+                          ),
+                          if (widget.state == InfoVisualisationState.week)
+                            StudentsInfoCalendar(
+                              format: CalendarFormat.week,
+                              selectAction: studentsStatistics.fecthAndSetTeachersInfoForADay,
+                              pageChangeAction: (date) async {
+                                setDates(date);
+
+                                await studentsStatistics.fetchAndSetStatistics(
+                                  _fromDate,
+                                  _toDate,
                                 );
+                                switch (widget.state) {
+                                  case InfoVisualisationState.week:
+                                  case InfoVisualisationState.month:
+                                    studentsStatistics.fecthAndSetTeachersInfoForADay(date);
+                                    break;
+                                }
                               },
-                            );
-                          },
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemCount: students.showingDisciplines.length,
-                        ),
-                      ],
-                    ),
+                            ),
+                          if (widget.state == InfoVisualisationState.month)
+                            StudentsInfoCalendar(
+                              format: CalendarFormat.month,
+                              selectAction: studentsStatistics.fecthAndSetTeachersInfoForADay,
+                              pageChangeAction: (date) async {
+                                setDates(date);
+
+                                await studentsStatistics.fetchAndSetStatistics(
+                                  _fromDate,
+                                  _toDate,
+                                );
+                                switch (widget.state) {
+                                  case InfoVisualisationState.week:
+                                  case InfoVisualisationState.month:
+                                    studentsStatistics.fecthAndSetTeachersInfoForADay(date);
+                                    break;
+                                }
+                              },
+                            ),
+                          const SizedBox(
+                            height: 37,
+                          ),
+                          const Text(
+                            "Подробнее по дисциплинам",
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    studentsStatistics.showingDisciplines[index].discipline.teacher.imageUrl,
+                                  ),
+                                ),
+                                title: Text(
+                                  studentsStatistics.showingDisciplines[index].discipline.name,
+                                ),
+                                subtitle: Text(
+                                  studentsStatistics.showingDisciplines[index].discipline.teacher.lastName +
+                                      " " +
+                                      studentsStatistics.showingDisciplines[index].discipline.teacher.name +
+                                      " " +
+                                      studentsStatistics.showingDisciplines[index].discipline.teacher.fatherName,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => ControllStudentTeacherInfo(
+                                        studentStatistics: studentsStatistics.showingDisciplines[index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) => const Divider(),
+                            itemCount: studentsStatistics.showingDisciplines.length,
+                          ),
+                        ],
+                      );
+                    },
                   );
                 }
               },

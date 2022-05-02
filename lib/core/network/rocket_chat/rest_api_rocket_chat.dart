@@ -9,7 +9,7 @@ import 'package:rocket_chat_connector_flutter/services/channel_service.dart';
 import 'package:rocket_chat_connector_flutter/services/http_service.dart' as rocket_http_service;
 
 class RocketChatRestAPI {
-  final String serverUrl = "https://rocketchat.repiton.dev.realityfamily.ru/";
+  final String _serverUrl = "https://rocketchat.repiton.dev.realityfamily.ru/";
   Authentication? authentication;
   late final rocket_http_service.HttpService _rocketHttpService;
 
@@ -17,7 +17,7 @@ class RocketChatRestAPI {
     required String username,
     required String password,
   }) async {
-    _rocketHttpService = rocket_http_service.HttpService(Uri.parse(serverUrl));
+    _rocketHttpService = rocket_http_service.HttpService(Uri.parse(_serverUrl));
     final AuthenticationService authenticationService = AuthenticationService(_rocketHttpService);
     authentication = await authenticationService.login(username, password);
   }

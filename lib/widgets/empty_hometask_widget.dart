@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/model/home_task.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/teacher/create_hometask_screen.dart';
-
-import '../provider/lessons.dart';
 
 class EmptyHometaskWidget extends StatelessWidget {
   const EmptyHometaskWidget({Key? key}) : super(key: key);
@@ -47,31 +46,35 @@ class EmptyHometaskWidget extends StatelessWidget {
         const SizedBox(
           height: 14,
         ),
-        Consumer<Lessons>(
-          builder: (context, lessons, _) => ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            ),
-            onPressed: () async {
-              HomeTask? _newHometask = await Navigator.of(context).push<HomeTask>(
-                MaterialPageRoute(
-                  builder: (context) => const CreateHometaskScreen(),
-                ),
-              );
+        Consumer(
+          builder: (context, ref, _) {
+            final lessons = ref.watch(RootProvider.getLessonsProvider());
 
-              if (_newHometask == null) return;
-              lessons.setHometask(_newHometask);
-            },
-            child: const Text(
-              "Создать домашнее задание",
-              style: TextStyle(
-                fontSize: 18,
+            return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               ),
-            ),
-          ),
+              onPressed: () async {
+                HomeTask? _newHometask = await Navigator.of(context).push<HomeTask>(
+                  MaterialPageRoute(
+                    builder: (context) => const CreateHometaskScreen(),
+                  ),
+                );
+
+                if (_newHometask == null) return;
+                lessons.setHometask(_newHometask);
+              },
+              child: const Text(
+                "Создать домашнее задание",
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            );
+          },
         ),
       ],
     );

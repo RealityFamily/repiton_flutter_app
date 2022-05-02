@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/provider/admin/students_statistics.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/controll_learn_statistics_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
@@ -65,7 +66,7 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
                 child: Column(
                   children: [
                     FutureBuilder<Student>(
-                      future: Provider.of<StudentsStatistics>(context, listen: false).getCachedStudent(widget.id),
+                      future: RootProvider.getStudentsStatistics().getCachedStudent(widget.id),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                           return RichText(

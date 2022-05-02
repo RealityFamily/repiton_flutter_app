@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
-import 'package:repiton/provider/admin/teachers_statistics.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/admin/controll/teacher/controll_teacher_student_info.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
 import 'package:repiton/widgets/date_chooser.dart';
@@ -27,17 +27,17 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
     DateTime dateFrom,
     DateTime dateTo,
   ) async {
-    await Provider.of<TearchersStatisctics>(context, listen: false).fetchAndSetStatistics(
+    await RootProvider.getTearchersStatisctics().fetchAndSetStatistics(
       dateFrom,
       dateTo,
     );
     if (widget.state == InfoVisualisationState.custom) {
-      Provider.of<TearchersStatisctics>(context, listen: false).fecthAndSetStudentsInfoForAPeriod(
+      RootProvider.getTearchersStatisctics().fecthAndSetStudentsInfoForAPeriod(
         dateFrom,
         dateTo,
       );
     } else {
-      Provider.of<TearchersStatisctics>(context, listen: false).fecthAndSetStudentsInfoForADay(
+      RootProvider.getTearchersStatisctics().fecthAndSetStudentsInfoForADay(
         DateTime.now(),
       );
     }
@@ -122,129 +122,131 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return Consumer<TearchersStatisctics>(
-                    builder: (context, teachers, _) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Всего проведенных занятий",
-                              style: TextStyle(fontSize: 22),
-                            ),
-                            Text(
-                              teachers.statictics!.allLessons.toString(),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Итого к оплате",
-                              style: TextStyle(fontSize: 22),
-                            ),
-                            Text(
-                              teachers.statictics!.allPrice.toStringAsFixed(0) + " ₽",
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        if (widget.state == InfoVisualisationState.week)
-                          TeachersInfoCalendar(
-                            provider: teachers,
-                            format: CalendarFormat.week,
-                            selectAction: teachers.fecthAndSetStudentsInfoForADay,
-                            pageChangeAction: (date) async {
-                              setDates(date);
+                  return Consumer(
+                    builder: (context, ref, _) {
+                      final teachersStatistics = ref.watch(RootProvider.getTearchersStatiscticsProvider());
 
-                              await teachers.fetchAndSetStatistics(
-                                _fromDay,
-                                _toDay,
-                              );
-                              switch (widget.state) {
-                                case InfoVisualisationState.week:
-                                case InfoVisualisationState.month:
-                                  teachers.fecthAndSetStudentsInfoForADay(date);
-                                  break;
-                              }
-                            },
-                          ),
-                        if (widget.state == InfoVisualisationState.month)
-                          TeachersInfoCalendar(
-                            provider: teachers,
-                            format: CalendarFormat.month,
-                            selectAction: teachers.fecthAndSetStudentsInfoForADay,
-                            pageChangeAction: (date) async {
-                              setDates(date);
-
-                              await teachers.fetchAndSetStatistics(
-                                _fromDay,
-                                _toDay,
-                              );
-                              switch (widget.state) {
-                                case InfoVisualisationState.week:
-                                case InfoVisualisationState.month:
-                                  teachers.fecthAndSetStudentsInfoForADay(date);
-                                  break;
-                              }
-                            },
-                          ),
-                        const SizedBox(
-                          height: 37,
-                        ),
-                        const Text(
-                          "Подробнее по ученикам",
-                          style: TextStyle(
-                            fontSize: 24,
-                          ),
-                        ),
-                        ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  teachers.students[index].student.imageUrl,
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Всего проведенных занятий",
+                                style: TextStyle(fontSize: 22),
+                              ),
+                              Text(
+                                teachersStatistics.statictics!.allLessons.toString(),
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              title: Text(teachers.students[index].student.name +
-                                  " " +
-                                  teachers.students[index].student.lastName),
-                              trailing: Text(
-                                teachers.students[index].presents.toString(),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Итого к оплате",
+                                style: TextStyle(fontSize: 22),
                               ),
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (ctx) => ControllTeacherStudentInfo(
-                                      studentStatistics: teachers.students[index],
-                                    ),
-                                  ),
+                              Text(
+                                teachersStatistics.statictics!.allPrice.toStringAsFixed(0) + " ₽",
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 26,
+                          ),
+                          if (widget.state == InfoVisualisationState.week)
+                            TeachersInfoCalendar(
+                              format: CalendarFormat.week,
+                              selectAction: teachersStatistics.fecthAndSetStudentsInfoForADay,
+                              pageChangeAction: (date) async {
+                                setDates(date);
+
+                                await teachersStatistics.fetchAndSetStatistics(
+                                  _fromDay,
+                                  _toDay,
                                 );
+                                switch (widget.state) {
+                                  case InfoVisualisationState.week:
+                                  case InfoVisualisationState.month:
+                                    teachersStatistics.fecthAndSetStudentsInfoForADay(date);
+                                    break;
+                                }
                               },
-                            );
-                          },
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemCount: teachers.students.length,
-                        ),
-                      ],
-                    ),
+                            ),
+                          if (widget.state == InfoVisualisationState.month)
+                            TeachersInfoCalendar(
+                              format: CalendarFormat.month,
+                              selectAction: teachersStatistics.fecthAndSetStudentsInfoForADay,
+                              pageChangeAction: (date) async {
+                                setDates(date);
+
+                                await teachersStatistics.fetchAndSetStatistics(
+                                  _fromDay,
+                                  _toDay,
+                                );
+                                switch (widget.state) {
+                                  case InfoVisualisationState.week:
+                                  case InfoVisualisationState.month:
+                                    teachersStatistics.fecthAndSetStudentsInfoForADay(date);
+                                    break;
+                                }
+                              },
+                            ),
+                          const SizedBox(
+                            height: 37,
+                          ),
+                          const Text(
+                            "Подробнее по ученикам",
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    teachersStatistics.students[index].student.imageUrl,
+                                  ),
+                                ),
+                                title: Text(teachersStatistics.students[index].student.name +
+                                    " " +
+                                    teachersStatistics.students[index].student.lastName),
+                                trailing: Text(
+                                  teachersStatistics.students[index].presents.toString(),
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => ControllTeacherStudentInfo(
+                                        studentStatistics: teachersStatistics.students[index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) => const Divider(),
+                            itemCount: teachersStatistics.students.length,
+                          ),
+                        ],
+                      );
+                    },
                   );
                 }
               },

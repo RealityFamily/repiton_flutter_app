@@ -5,7 +5,7 @@ import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 
-class TeachersLessons with ChangeNotifier {
+class TeachersLessonsProvider with ChangeNotifier {
   List<Discipline> _disciplines = [];
   List<Discipline> _todayLessons = [];
 

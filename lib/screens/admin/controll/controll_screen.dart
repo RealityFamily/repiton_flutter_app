@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:repiton/provider/admin/users.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/admin/controll/student/controll_student_info.dart';
 import 'package:repiton/screens/admin/controll/teacher/controll_teacher_info.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
@@ -19,9 +19,9 @@ class _ControllScreenState extends State<ControllScreen> {
 
   Future<void> getData() {
     if (_state == _states[1]) {
-      return Provider.of<Users>(context, listen: false).fetchStudents();
+      return RootProvider.getUsers().fetchStudents();
     } else {
-      return Provider.of<Users>(context, listen: false).fetchTeachers();
+      return RootProvider.getUsers().fetchTeachers();
     }
   }
 
@@ -78,8 +78,10 @@ class _ControllScreenState extends State<ControllScreen> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return Consumer<Users>(
-                      builder: (context, users, _) => _states.indexOf(_state) == 1
+                    return Consumer(builder: (context, ref, _) {
+                      final users = ref.watch(RootProvider.getUsersProvider());
+
+                      return _states.indexOf(_state) == 1
                           ? ListView.separated(
                               itemBuilder: (context, index) => ControllListWidget(
                                 name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
@@ -103,8 +105,8 @@ class _ControllScreenState extends State<ControllScreen> {
                               ),
                               separatorBuilder: (context, index) => const Divider(),
                               itemCount: users.teachersList.length,
-                            ),
-                    );
+                            );
+                    });
                   }
                 },
               ),

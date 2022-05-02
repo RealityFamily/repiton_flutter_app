@@ -2,10 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:repiton/model/home_task.dart';
 import 'package:repiton/model/lesson.dart';
 
-class Lessons with ChangeNotifier {
+class LessonsProvider with ChangeNotifier {
   Lesson? _lesson;
-
-  Lessons();
 
   Lesson? get lesson => _lesson;
 

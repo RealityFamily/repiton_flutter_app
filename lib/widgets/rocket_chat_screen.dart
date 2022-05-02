@@ -1,45 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/core/network/rocket_chat/rest_api_rocket_chat.dart';
-import 'package:repiton/provider/rocket_chat_messages.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/rocket_chat_messanger_widget.dart';
 import 'package:rocket_chat_connector_flutter/models/channel.dart';
 
-class RocketChatScreen extends StatefulWidget {
-  late final RocketChatRestAPI api = RocketChatRestAPI();
-
-  RocketChatScreen({
-    Key? key,
-  }) : super(key: key);
+class RocketChatScreen extends ConsumerWidget {
+  const RocketChatScreen({Key? key}) : super(key: key);
 
   @override
-  State<RocketChatScreen> createState() => _RocketChatScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = ref.watch(RootProvider.getRocketChatMessagesProvider(refresh: true));
 
-class _RocketChatScreenState extends State<RocketChatScreen> {
-  Channel? _channel;
-
-  Future<List<Channel>> getChannels() async {
-    if (widget.api.authentication == null) {
-      await widget.api.auth(
-        username: "leonis13579@gmail.com",
-        password: "1357924680",
-      );
-    }
-
-    List<Channel> result = await widget.api.getChannels();
-
-    return result;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Channel>>(
-        future: getChannels(),
+    return FutureBuilder(
+        future: provider.fetchAndSetChannels(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -52,17 +32,15 @@ class _RocketChatScreenState extends State<RocketChatScreen> {
                       child: DropdownButton<Channel>(
                         isExpanded: true,
                         alignment: Alignment.center,
-                        value: _channel,
-                        items: snapshot.data!.map((channel) {
+                        value: provider.choosedChannel,
+                        items: provider.channels.map((channel) {
                           return DropdownMenuItem<Channel>(
                             child: ChannelNameWidget(name: channel.name!),
                             value: channel,
                           );
                         }).toList(),
                         onChanged: (newValue) {
-                          setState(() {
-                            _channel = newValue;
-                          });
+                          provider.setChannel(newValue);
                         },
                       ),
                     ),
@@ -113,21 +91,14 @@ class _RocketChatScreenState extends State<RocketChatScreen> {
                         if (newChannelName == null) {
                           return;
                         }
-                        Channel? newChannel = await widget.api.addChannel(newChannelName);
-
-                        if (newChannel == null) {
-                          return;
-                        }
-                        setState(() {
-                          _channel = newChannel;
-                        });
+                        RootProvider.getRocketChatMessages().addChannel(newChannelName);
                       },
                       icon: const Icon(Icons.add),
                     ),
-                    if (_channel != null &&
-                        _channel!.name != null &&
-                        _channel!.name! != "general" &&
-                        _channel!.name! != "someShit")
+                    if (provider.choosedChannel != null &&
+                        provider.choosedChannel!.name != null &&
+                        provider.choosedChannel!.name! != "general" &&
+                        provider.choosedChannel!.name! != "someShit")
                       IconButton(
                         onPressed: () async {
                           bool confirm = (await showDialog(
@@ -160,14 +131,7 @@ class _RocketChatScreenState extends State<RocketChatScreen> {
                           if (!confirm) {
                             return;
                           }
-
-                          bool result = await widget.api.deleteChannel(_channel!);
-                          if (!result) {
-                            return;
-                          }
-                          setState(() {
-                            _channel = null;
-                          });
+                          await provider.deleteChannel();
                         },
                         icon: const Icon(
                           Icons.delete,
@@ -176,18 +140,9 @@ class _RocketChatScreenState extends State<RocketChatScreen> {
                       )
                   ],
                 ),
-                if (_channel != null)
-                  ChangeNotifierProvider(
-                    create: (context) => RocketChatMessages(),
-                    child: RocketChatMessangerWidget(
-                      api: widget.api,
-                      channelName: _channel!.id!,
-                    ),
-                  ),
+                if (provider.choosedChannel != null) RocketChatMessangerWidget(),
               ],
             );
-          } else {
-            return const Center(child: CircularProgressIndicator());
           }
         });
   }

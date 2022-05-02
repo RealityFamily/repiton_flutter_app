@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:repiton/model/home_task.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/provider/lessons.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/empty_hometask_widget.dart';
 import 'package:repiton/widgets/lesson_info_widget.dart';
 import 'package:repiton/widgets/rocket_chat_screen.dart';
@@ -61,13 +62,16 @@ class _LessonScreenState extends State<LessonScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Consumer<Lessons>(
-                                builder: (context, lessons, _) => Text(
-                                  lessons.lesson!.name,
-                                  style: const TextStyle(
-                                    fontSize: 34,
-                                  ),
-                                ),
+                              Consumer(
+                                builder: (context, ref, _) {
+                                  final lessons = ref.watch(RootProvider.getLessonsProvider());
+                                  return Text(
+                                    lessons.lesson!.name,
+                                    style: const TextStyle(
+                                      fontSize: 34,
+                                    ),
+                                  );
+                                },
                               )
                             ],
                           ),
@@ -110,7 +114,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         IconButton(
                           padding: const EdgeInsets.all(16),
                           onPressed: () {
-                            Provider.of<Lessons>(context, listen: false).closeLesson();
+                            RootProvider.getLessons().closeLesson();
                             Navigator.of(context).pop();
                           },
                           icon: const Icon(Icons.arrow_back),
@@ -158,56 +162,60 @@ class _LessonScreenState extends State<LessonScreen> {
                             },
                           ),
                           if (_newState != _states[_states.length - 1])
-                            Consumer<Lessons>(
-                              builder: (context, lessons, _) => Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        const TextSpan(
-                                          text: "Время ",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 18,
+                            Consumer(
+                              builder: (context, ref, _) {
+                                final lessons = ref.watch(RootProvider.getLessonsProvider());
+
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const TextSpan(
+                                            text: "Время ",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 18,
+                                            ),
                                           ),
-                                        ),
-                                        TextSpan(
-                                          text: DateFormat("HH:mm").format(lessons.lesson!.dateTimeStart),
-                                          style: TextStyle(
-                                            color: Theme.of(context).colorScheme.primary,
-                                            fontSize: 18,
+                                          TextSpan(
+                                            text: DateFormat("HH:mm").format(lessons.lesson!.dateTimeStart),
+                                            style: TextStyle(
+                                              color: Theme.of(context).colorScheme.primary,
+                                              fontSize: 18,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        const TextSpan(
-                                          text: "Дата ",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 18,
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const TextSpan(
+                                            text: "Дата ",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 18,
+                                            ),
                                           ),
-                                        ),
-                                        TextSpan(
-                                          text: DateFormat(
-                                            "dd.MM.yyyy",
-                                          ).format(
-                                            lessons.lesson!.dateTimeStart,
+                                          TextSpan(
+                                            text: DateFormat(
+                                              "dd.MM.yyyy",
+                                            ).format(
+                                              lessons.lesson!.dateTimeStart,
+                                            ),
+                                            style: TextStyle(
+                                              color: Theme.of(context).colorScheme.primary,
+                                              fontSize: 18,
+                                            ),
                                           ),
-                                          style: TextStyle(
-                                            color: Theme.of(context).colorScheme.primary,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                );
+                              },
                             ),
                         ],
                       ),
@@ -223,8 +231,10 @@ class _LessonScreenState extends State<LessonScreen> {
                           studentImageUrl: widget.studentImageUrl,
                         );
                       } else {
-                        return Consumer<Lessons>(
-                          builder: (context, lessons, _) {
+                        return Consumer(
+                          builder: (context, ref, _) {
+                            final lessons = ref.watch(RootProvider.getLessonsProvider());
+
                             if (lessons.lesson!.homeTask == null) {
                               return const EmptyHometaskWidget();
                             } else {

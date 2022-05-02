@@ -4,10 +4,8 @@ import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/provider/student/students.dart';
-import 'package:repiton/provider/teacher/teachers.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   Widget getUserNameAndRole<T>(Future<T> futureAction, String Function(T) userName, String userRole) {
@@ -46,8 +44,8 @@ class SettingsScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final _auth = RootProvider.getAuth;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _auth = ref.watch(RootProvider.getAuthProvider());
 
     return SafeArea(
       child: Column(
@@ -66,18 +64,13 @@ class SettingsScreen extends StatelessWidget {
                   )
                 ],
               ),
-              if (RootProvider.getAuth.userRole.length > 1)
-                Consumer(
-                  builder: (context, ref, _) {
-                    final auth = ref.watch(RootProvider.getAuthProvider);
-                    return IconButton(
-                      padding: const EdgeInsets.all(16),
-                      onPressed: () {
-                        auth.changeRoles();
-                      },
-                      icon: const Icon(Icons.change_circle_outlined),
-                    );
+              if (_auth.isMultiRoleUser)
+                IconButton(
+                  padding: const EdgeInsets.all(16),
+                  onPressed: () {
+                    _auth.changeRoles();
                   },
+                  icon: const Icon(Icons.change_circle_outlined),
                 ),
             ],
           ),
@@ -92,32 +85,33 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   (() {
-                    if (_auth.userRole[0] == AuthProvider.teacherRole) {
+                    if (_auth.userRole == AuthProvider.teacherRole) {
                       return getUserNameAndRole<Teacher>(
-                        RootProvider.getTeachers.getCachedTeacher(),
+                        RootProvider.getTeachers().getCachedTeacher(),
                         (teacher) {
                           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
                         },
                         "Преподаватель",
                       );
-                    } else if (_auth.userRole[0] == AuthProvider.adminRole) {
+                    } else if (_auth.userRole == AuthProvider.adminRole) {
                       // TODO: Change to admin provider
                       return getUserNameAndRole<Teacher>(
-                        RootProvider.getTeachers.getCachedTeacher(),
+                        RootProvider.getTeachers().getCachedTeacher(),
                         (teacher) {
                           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
                         },
                         "Администратор",
                       );
-                    } else if (_auth.userRole[0] == AuthProvider.studentRole) {
+                    } else if (_auth.userRole == AuthProvider.studentRole) {
                       return getUserNameAndRole<Student>(
-                        RootProvider.getStudents.getCachedStudent(),
+                        RootProvider.getStudents().getCachedStudent(),
                         (student) {
                           return student.lastName + " " + student.name;
                         },
                         "Ученик",
                       );
                     } else {
+                      debugPrint(_auth.userRole[0]);
                       return Container();
                     }
                   }())

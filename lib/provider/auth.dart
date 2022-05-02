@@ -20,7 +20,8 @@ class AuthProvider with ChangeNotifier {
 
   void changeRoles() {
     if (_userRole.length > 1) {
-      _userRole.insert(1, _userRole.removeAt(0));
+      final String first = _userRole.removeAt(0);
+      _userRole.add(first);
       notifyListeners();
     }
   }
@@ -35,12 +36,17 @@ class AuthProvider with ChangeNotifier {
 
     GetIt.I.get<RepitonApiContainer>().setToken(_token);
 
-    debugPrint(_token);
+    notifyListeners();
   }
 
-  List<String> get userRole {
-    return [..._userRole];
+  String get userRole {
+    if (_userRole.isNotEmpty) {
+      return _userRole[0];
+    }
+    return "Nan";
   }
+
+  bool get isMultiRoleUser => _userRole.length > 1;
 
   String get id {
     return _id ?? "";
@@ -52,6 +58,10 @@ class AuthProvider with ChangeNotifier {
 
   String get authToken {
     return _token ?? "";
+  }
+
+  bool get isAuthenticated {
+    return _token != null && _token!.isNotEmpty;
   }
 
   String get refresh {

@@ -6,7 +6,7 @@ import 'package:repiton/model/statistics.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 
-class StudentsStatistics with ChangeNotifier {
+class StudentsStatisticsProvider with ChangeNotifier {
   Student? _student;
   LearnStatistics? _statistics;
   List<DisciplineLearnStatistics> _showingDisciplines = [];

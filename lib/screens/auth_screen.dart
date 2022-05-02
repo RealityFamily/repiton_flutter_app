@@ -13,9 +13,9 @@ class AuthScreen extends StatelessWidget {
 
     _formKey.currentState!.save();
     if (login.contains("@")) {
-      RootProvider.getAuth.auth(null, login, password);
+      RootProvider.getAuth().auth(null, login, password);
     } else {
-      RootProvider.getAuth.auth(login, null, password);
+      RootProvider.getAuth().auth(login, null, password);
     }
   }
 

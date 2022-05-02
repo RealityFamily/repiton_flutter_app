@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/admin/teachers_statistics.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/controll_financinal_statistics_widget.dart';
 
 class ControllTeacherInfo extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
                   child: Column(
                     children: [
                       FutureBuilder<Teacher>(
-                        future: Provider.of<TearchersStatisctics>(context, listen: false).getCachedTeacher(widget.id),
+                        future: RootProvider.getTearchersStatisctics().getCachedTeacher(widget.id),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                             return Text(

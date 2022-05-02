@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/core/network/jitsy/jitsy_logic.dart';
-import 'package:repiton/provider/lessons.dart';
+import 'package:repiton/provider/root_provider.dart';
 
 class LessonInfoWidget extends StatefulWidget {
   final String disciplineName;
@@ -91,7 +91,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
 
                   if (_newDescription == null) return;
                   setState(() {
-                    Provider.of<Lessons>(context, listen: false).lesson!.description = _newDescription;
+                    RootProvider.getLessons().lesson!.description = _newDescription;
                   });
                 },
                 icon: const Icon(Icons.edit),
@@ -110,20 +110,24 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
           ),
           child: SizedBox(
             width: double.infinity,
-            child: Consumer<Lessons>(
-              builder: (context, lessons, _) => SizedBox(
-                height:
-                    (MediaQuery.of(context).size.height - 484 > 150 ? MediaQuery.of(context).size.height - 484 : 150),
-                child: SingleChildScrollView(
-                  child: Text(
-                    lessons.lesson!.description,
-                    style: const TextStyle(
-                      fontSize: 18,
+            child: Consumer(
+              builder: (context, ref, _) {
+                final lessons = ref.watch(RootProvider.getLessonsProvider());
+
+                return SizedBox(
+                  height:
+                      (MediaQuery.of(context).size.height - 484 > 150 ? MediaQuery.of(context).size.height - 484 : 150),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      lessons.lesson!.description,
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                      maxLines: null,
                     ),
-                    maxLines: null,
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ),
@@ -134,49 +138,42 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
         const SizedBox(
           height: 14,
         ),
-        Consumer<Lessons>(
-          builder: (context, lessons, _) => _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  ),
-                  onPressed: () async {
-                    if (lessons.lesson!.jitsyLink == null) {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      await lessons.setJitsyLink();
-                      setState(() {
-                        _isLoading = false;
-                      });
-                    } else {
-                      JitsyLogic.joinMeeting();
+        Consumer(
+          builder: (context, ref, _) {
+            final lessons = ref.watch(RootProvider.getLessonsProvider());
 
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => JitsyCallScreen(
-                      //       disciplineName: widget.disciplineName,
-                      //       studentName: widget.studentName,
-                      //       teacherImageUrl: widget.teacherImageUrl,
-                      //       studentImageUrl: widget.studentImageUrl,
-                      //     ),
-                      //   ),
-                      // );
-                    }
-                  },
-                  child: Text(
-                    lessons.lesson!.jitsyLink == null ? "Начать занятие" : "Подключиться к занятию",
-                    style: const TextStyle(
-                      fontSize: 18,
+            return _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     ),
-                  ),
-                ),
+                    onPressed: () async {
+                      if (lessons.lesson!.jitsyLink == null) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await lessons.setJitsyLink();
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      } else {
+                        JitsyLogic.joinMeeting();
+                      }
+                    },
+                    child: Text(
+                      lessons.lesson!.jitsyLink == null ? "Начать занятие" : "Подключиться к занятию",
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  );
+          },
         ),
       ],
     );
