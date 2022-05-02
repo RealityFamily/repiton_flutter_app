@@ -75,14 +75,14 @@ class StudentsScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder(
-                future: Provider.of<Teachers>(context, listen: false).fetchTeacherStudents(),
+                future: Provider.of<TeachersProvider>(context, listen: false).fetchTeacherStudents(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return Consumer<Teachers>(
+                    return Consumer<TeachersProvider>(
                       builder: (context, teacher, child) => ListView.separated(
                         itemBuilder: (context, index) => TeacherStudentsElementWidget(
                           studentName: teacher.teachersStudents[index].student.lastName +

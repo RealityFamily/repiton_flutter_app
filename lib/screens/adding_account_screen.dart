@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/admin/users.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/provider/student/students.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/widgets/add_student_info.dart';
@@ -46,7 +47,7 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
         widget.student.parents.add(parent.result);
       }
       if (widget.teacherFrom != null) {
-        Provider.of<Teachers>(context, listen: false).registerStudent(widget.student);
+        RootProvider.getTeachers.registerStudent(widget.student);
       } else {
         Provider.of<Users>(context, listen: false).addStudent(widget.student);
       }

@@ -126,7 +126,7 @@ class _RocketChatMessangerWidgetState extends State<RocketChatMessangerWidget> {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  String userName = Provider.of<Auth>(context, listen: false).userName;
+                  String userName = Provider.of<AuthProvider>(context, listen: false).userName;
                   return Consumer<RocketChatMessages>(
                     builder: (context, messages, _) => ListView.separated(
                       physics: const AlwaysScrollableScrollPhysics(),
@@ -217,7 +217,7 @@ class _RocketChatMessangerWidgetState extends State<RocketChatMessangerWidget> {
                   ).addMessage(
                     RocketChatMessage(
                       id: "",
-                      sender: Provider.of<Auth>(
+                      sender: Provider.of<AuthProvider>(
                         context,
                         listen: false,
                       ).userName,

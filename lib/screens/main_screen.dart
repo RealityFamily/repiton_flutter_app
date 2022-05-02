@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/provider/auth.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/admin/controll/controll_screen.dart';
 import 'package:repiton/screens/settings_screen.dart';
 import 'package:repiton/screens/teacher/students_screen.dart';
 import 'package:repiton/screens/teacher/timetable_screen.dart';
 import 'package:repiton/screens/admin/users_screen.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  ConsumerState<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends ConsumerState<MainScreen> {
   final pages = {
-    "ADMIN": [
+    AuthProvider.adminRole: [
       const UsersScreen(),
       const ControllScreen(),
       const SettingsScreen(),
     ],
-    "TEACHER": [
+    AuthProvider.teacherRole: [
       const StudentsScreen(),
       const TimeTableScreen(),
       const SettingsScreen(),
     ],
-    "STUDENT": [
+    AuthProvider.studentRole: [
       Container(),
       Container(),
       const SettingsScreen(),
     ],
   };
   final buttons = {
-    "ADMIN": const [
+    AuthProvider.adminRole: const [
       BottomNavigationBarItem(
         icon: Icon(Icons.people_alt_outlined),
         activeIcon: Icon(Icons.people_alt),
@@ -50,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
         label: "Настроики",
       ),
     ],
-    "TEACHER": const [
+    AuthProvider.teacherRole: const [
       BottomNavigationBarItem(
         icon: Icon(Icons.people_alt_outlined),
         activeIcon: Icon(Icons.people_alt),
@@ -67,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
         label: "Настроики",
       ),
     ],
-    "STUDENT": const [
+    AuthProvider.studentRole: const [
       BottomNavigationBarItem(
         icon: Icon(Icons.add_outlined),
         activeIcon: Icon(Icons.add),
@@ -89,19 +90,19 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Auth>(
-      builder: (context, auth, _) => Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: pageIndex,
-          items: buttons[auth.userRole[0].name]!,
-          onTap: (value) {
-            setState(() {
-              pageIndex = value;
-            });
-          },
-        ),
-        body: pages[auth.userRole[0].name]![pageIndex],
+    final auth = ref.watch(RootProvider.getAuthProvider);
+
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: pageIndex,
+        items: buttons[auth.userRole[0]]!,
+        onTap: (value) {
+          setState(() {
+            pageIndex = value;
+          });
+        },
       ),
+      body: pages[auth.userRole[0]]![pageIndex],
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/auth.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/provider/student/students.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 
@@ -46,7 +47,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _authProvider = Provider.of<Auth>(context);
+    final _auth = RootProvider.getAuth;
 
     return SafeArea(
       child: Column(
@@ -65,15 +66,18 @@ class SettingsScreen extends StatelessWidget {
                   )
                 ],
               ),
-              if (Provider.of<Auth>(context).userRole.contains(Auth.admin))
-                Consumer<Auth>(
-                  builder: (context, auth, _) => IconButton(
-                    padding: const EdgeInsets.all(16),
-                    onPressed: () {
-                      auth.changeRoles();
-                    },
-                    icon: const Icon(Icons.change_circle_outlined),
-                  ),
+              if (RootProvider.getAuth.userRole.length > 1)
+                Consumer(
+                  builder: (context, ref, _) {
+                    final auth = ref.watch(RootProvider.getAuthProvider);
+                    return IconButton(
+                      padding: const EdgeInsets.all(16),
+                      onPressed: () {
+                        auth.changeRoles();
+                      },
+                      icon: const Icon(Icons.change_circle_outlined),
+                    );
+                  },
                 ),
             ],
           ),
@@ -88,25 +92,26 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   (() {
-                    if (_authProvider.userRole[0] == Auth.teacher) {
+                    if (_auth.userRole[0] == AuthProvider.teacherRole) {
                       return getUserNameAndRole<Teacher>(
-                        Provider.of<Teachers>(context, listen: false).getCachedTeacher(),
+                        RootProvider.getTeachers.getCachedTeacher(),
                         (teacher) {
                           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
                         },
                         "Преподаватель",
                       );
-                    } else if (_authProvider.userRole[0] == Auth.admin) {
+                    } else if (_auth.userRole[0] == AuthProvider.adminRole) {
+                      // TODO: Change to admin provider
                       return getUserNameAndRole<Teacher>(
-                        Provider.of<Teachers>(context, listen: false).getCachedTeacher(),
+                        RootProvider.getTeachers.getCachedTeacher(),
                         (teacher) {
                           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
                         },
                         "Администратор",
                       );
-                    } else if (_authProvider.userRole[0] == Auth.student) {
+                    } else if (_auth.userRole[0] == AuthProvider.studentRole) {
                       return getUserNameAndRole<Student>(
-                        Provider.of<Students>(context, listen: false).getCachedStudent(),
+                        RootProvider.getStudents.getCachedStudent(),
                         (student) {
                           return student.lastName + " " + student.name;
                         },

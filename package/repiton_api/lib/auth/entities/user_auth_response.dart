@@ -9,6 +9,7 @@ class UserAuthResponse {
   @JsonKey(name: "refresh_token")
   String refreshToken;
   String id;
+  @JsonKey(name: "username")
   String userName;
   List<String> roles;
 

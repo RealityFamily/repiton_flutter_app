@@ -4,15 +4,11 @@ import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 
-class Teachers with ChangeNotifier {
+class TeachersProvider with ChangeNotifier {
   Teacher? _teacher;
   final List<Discipline> _teacherStudents = [];
 
-  Teachers.empty();
-
-  Teachers({
-    required Teachers prevTeachers,
-  }) : _teacher = prevTeachers._teacher;
+  TeachersProvider();
 
   List<Discipline> get teachersStudents => [..._teacherStudents];
 

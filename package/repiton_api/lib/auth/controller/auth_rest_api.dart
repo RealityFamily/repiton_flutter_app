@@ -11,6 +11,6 @@ abstract class AuthRestApi {
 
   factory AuthRestApi(Dio dio, {String baseUrl}) = _AuthRestApi;
 
-  @POST("user/singin")
+  @POST("user/signin")
   Future<UserAuthResponse> auth({@Body() required UserAuthRequest body});
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:repiton/provider/auth.dart';
+import 'package:repiton/provider/root_provider.dart';
 
 class AuthScreen extends StatelessWidget {
   AuthScreen({Key? key}) : super(key: key);
@@ -9,14 +8,14 @@ class AuthScreen extends StatelessWidget {
   String login = "";
   String password = "";
 
-  void _authButtonPressed(BuildContext context) {
+  void _authButtonPressed() {
     if (!_formKey.currentState!.validate()) return;
 
     _formKey.currentState!.save();
     if (login.contains("@")) {
-      Provider.of<Auth>(context, listen: false).auth(null, login, password);
+      RootProvider.getAuth.auth(null, login, password);
     } else {
-      Provider.of<Auth>(context, listen: false).auth(login, null, password);
+      RootProvider.getAuth.auth(login, null, password);
     }
   }
 
@@ -71,7 +70,7 @@ class AuthScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             ElevatedButton(
-                              onPressed: () => _authButtonPressed(context),
+                              onPressed: _authButtonPressed,
                               style: ElevatedButton.styleFrom(
                                 textStyle: const TextStyle(fontSize: 18),
                                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
