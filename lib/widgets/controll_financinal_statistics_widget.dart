@@ -183,6 +183,8 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
                                   case InfoVisualisationState.month:
                                     teachersStatistics.fecthAndSetStudentsInfoForADay(date);
                                     break;
+                                  case InfoVisualisationState.custom:
+                                    break;
                                 }
                               },
                             ),
@@ -201,6 +203,8 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
                                   case InfoVisualisationState.week:
                                   case InfoVisualisationState.month:
                                     teachersStatistics.fecthAndSetStudentsInfoForADay(date);
+                                    break;
+                                  case InfoVisualisationState.custom:
                                     break;
                                 }
                               },
