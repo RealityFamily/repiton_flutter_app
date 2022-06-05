@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:repiton/provider/teacher/teachers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
 import 'package:repiton/widgets/teacher_students_element_widget.dart';
 
@@ -74,15 +74,17 @@ class StudentsScreen extends StatelessWidget {
             ),
             Expanded(
               child: FutureBuilder(
-                future: Provider.of<TeachersProvider>(context, listen: false).fetchTeacherStudents(),
+                future: RootProvider.getTeachers().fetchTeacherStudents(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return Consumer<TeachersProvider>(
-                      builder: (context, teacher, child) => ListView.separated(
+                    return Consumer(builder: (context, ref, _) {
+                      final teacher = ref.watch(RootProvider.getTeachersProvider());
+
+                      return ListView.separated(
                         itemBuilder: (context, index) => TeacherStudentsElementWidget(
                           studentName: teacher.teachersStudents[index].student.lastName +
                               " " +
@@ -93,8 +95,8 @@ class StudentsScreen extends StatelessWidget {
                         ),
                         separatorBuilder: (context, index) => const Divider(),
                         itemCount: teacher.teachersStudents.length,
-                      ),
-                    );
+                      );
+                    });
                   }
                 },
               ),
