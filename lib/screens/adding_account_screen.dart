@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
-import 'package:repiton/provider/admin/users.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/provider/student/students.dart';
-import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/widgets/add_student_info.dart';
 import 'package:repiton/widgets/add_student_parent_info.dart';
 import 'package:repiton/widgets/add_teacher_info.dart';

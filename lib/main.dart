@@ -36,7 +36,7 @@ class MyApp extends ConsumerWidget {
         DefaultWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [Locale('ru')],
-      home: auth.isAuthenticated ? const MainScreen() : AuthScreen(),
+      home: auth.isAuthenticated ? const MainScreen() : const AuthScreen(),
     );
   }
 }

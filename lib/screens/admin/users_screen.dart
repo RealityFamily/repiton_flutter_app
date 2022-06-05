@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:repiton/provider/admin/users.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/provider/student/students.dart';
-import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
-import 'package:repiton/screens/admin/controll/student/controll_student_info.dart';
-import 'package:repiton/screens/admin/controll/teacher/controll_teacher_info.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 

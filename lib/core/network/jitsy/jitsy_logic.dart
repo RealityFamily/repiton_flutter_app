@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:jitsi_meet/feature_flag/feature_flag.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 class JitsyLogic {

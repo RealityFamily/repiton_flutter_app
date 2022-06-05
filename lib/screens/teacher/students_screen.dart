@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/screens/adding_account_screen.dart';
-import 'package:repiton/widgets/controll_list_widget.dart';
 import 'package:repiton/widgets/teacher_students_element_widget.dart';
 
 class StudentsScreen extends StatelessWidget {

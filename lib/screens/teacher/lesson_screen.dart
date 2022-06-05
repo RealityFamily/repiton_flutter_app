@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:repiton/model/home_task.dart';
-import 'package:repiton/model/lesson.dart';
-import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/empty_hometask_widget.dart';
 import 'package:repiton/widgets/lesson_info_widget.dart';
@@ -222,7 +220,7 @@ class _LessonScreenState extends State<LessonScreen> {
                     ),
                     (() {
                       if (_newState == _states[_states.length - 1]) {
-                        return RocketChatScreen();
+                        return const RocketChatScreen();
                       } else if (_newState == _states[0]) {
                         return LessonInfoWidget(
                           disciplineName: widget.disciplineName,

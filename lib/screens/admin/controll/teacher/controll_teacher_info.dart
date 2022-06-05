@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
 import 'package:repiton/model/teacher.dart';
-import 'package:repiton/provider/admin/teachers_statistics.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/controll_financinal_statistics_widget.dart';
 

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:repiton/core/network/rocket_chat/rest_api_rocket_chat.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/rocket_chat_messanger_widget.dart';
 import 'package:rocket_chat_connector_flutter/models/channel.dart';
@@ -140,7 +139,7 @@ class RocketChatScreen extends ConsumerWidget {
                       )
                   ],
                 ),
-                if (provider.choosedChannel != null) RocketChatMessangerWidget(),
+                if (provider.choosedChannel != null) const RocketChatMessangerWidget(),
               ],
             );
           }
