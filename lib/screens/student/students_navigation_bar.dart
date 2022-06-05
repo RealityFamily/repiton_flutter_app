@@ -13,14 +13,14 @@ class StudentsBottomNavigationController extends BottomNavigationController {
   @override
   List<BottomNavigationBarItem> buttons = const [
     BottomNavigationBarItem(
-      icon: Icon(Icons.add_outlined),
-      activeIcon: Icon(Icons.add),
-      label: "Добавление",
+      icon: Icon(Icons.stacked_bar_chart_outlined),
+      activeIcon: Icon(Icons.stacked_bar_chart),
+      label: "Успеваемость",
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.people_alt_outlined),
-      activeIcon: Icon(Icons.people),
-      label: "Ведение",
+      icon: Icon(Icons.calendar_today_outlined),
+      activeIcon: Icon(Icons.calendar_today),
+      label: "Занятия",
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.settings_outlined),
