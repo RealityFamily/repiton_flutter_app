@@ -6,6 +6,7 @@ import '../settings_screen.dart';
 
 class TeachersNavigationBar extends StatefulWidget {
   final Function(Widget?) onPageChanged;
+  static Widget get initPage => const TimeTableScreen();
 
   const TeachersNavigationBar({required this.onPageChanged, Key? key}) : super(key: key);
 

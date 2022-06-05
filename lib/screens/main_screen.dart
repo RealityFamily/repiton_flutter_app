@@ -3,13 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/admin/admin_navigation_bar.dart';
-import 'package:repiton/screens/admin/controll/controll_screen.dart';
-import 'package:repiton/screens/settings_screen.dart';
 import 'package:repiton/screens/student/students_navigation_bar.dart';
-import 'package:repiton/screens/teacher/students_screen.dart';
 import 'package:repiton/screens/teacher/teachers_navigation_bar.dart';
-import 'package:repiton/screens/teacher/timetable_screen.dart';
-import 'package:repiton/screens/admin/users_screen.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -30,10 +25,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   Widget bottomNavigationBarOnRole(String role) {
     if (role == AuthProvider.adminRole) {
+      content = content ?? AdminsNavigationBar.initPage;
       return AdminsNavigationBar(onPageChanged: contentChanged);
     } else if (role == AuthProvider.teacherRole) {
+      content = content ?? TeachersNavigationBar.initPage;
       return TeachersNavigationBar(onPageChanged: contentChanged);
     } else if (role == AuthProvider.studentRole) {
+      content = content ?? StudentsNavigationBar.initPage;
       return StudentsNavigationBar(onPageChanged: contentChanged);
     } else {
       throw Exception("[MainScreen] Unidentified user role - $role");

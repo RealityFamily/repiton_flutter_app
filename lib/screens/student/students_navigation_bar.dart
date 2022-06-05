@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:repiton/screens/teacher/students_screen.dart';
-import 'package:repiton/screens/teacher/timetable_screen.dart';
 
 import '../settings_screen.dart';
 
 class StudentsNavigationBar extends StatefulWidget {
   final Function(Widget?) onPageChanged;
+  static Widget get initPage => Container();
 
   const StudentsNavigationBar({required this.onPageChanged, Key? key}) : super(key: key);
 

@@ -6,6 +6,7 @@ import 'controll/controll_screen.dart';
 
 class AdminsNavigationBar extends StatefulWidget {
   final Function(Widget?) onPageChanged;
+  static Widget get initPage => const ControllScreen();
 
   const AdminsNavigationBar({required this.onPageChanged, Key? key}) : super(key: key);
 
