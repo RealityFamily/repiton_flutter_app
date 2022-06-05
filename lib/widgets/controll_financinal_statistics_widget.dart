@@ -52,7 +52,9 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
       case InfoVisualisationState.month:
       case InfoVisualisationState.custom:
         _fromDay = DateTime(focusDate.year, focusDate.month, 1);
-        _toDay = DateTime(focusDate.year, focusDate.month + 1, 0);
+        _toDay = DateTime(focusDate.year, focusDate.month + 1, 0).isBefore(DateTime.now())
+            ? DateTime(focusDate.year, focusDate.month + 1, 0)
+            : DateTime.now();
         break;
     }
   }
@@ -80,7 +82,7 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
                   Expanded(
                     child: DateChooser(
                       firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
+                      lastDate: _toDay,
                       callBack: (day) {
                         setState(() {
                           _fromDay = day ?? _fromDay;
@@ -97,7 +99,7 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
                   ),
                   Expanded(
                     child: DateChooser(
-                      firstDate: DateTime(2000),
+                      firstDate: _fromDay,
                       lastDate: DateTime.now(),
                       callBack: (day) {
                         setState(() {

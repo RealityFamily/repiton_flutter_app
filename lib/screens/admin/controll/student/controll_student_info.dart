@@ -14,10 +14,18 @@ class ControllStudentInfo extends StatefulWidget {
 }
 
 class _ControllTeacherInfoState extends State<ControllStudentInfo> {
-  InfoVisualisationState state = InfoVisualisationState.week;
-
   final List<String> _states = ["Неделя", "Месяц", "Выбрать..."];
   late String _state = _states[0];
+
+  Widget _getContent() {
+    if (_states.indexOf(_state) == 0) {
+      return ControllLearnStatisticsWidget(state: InfoVisualisationState.week, key: ValueKey(_state));
+    } else if (_states.indexOf(_state) == 1) {
+      return ControllLearnStatisticsWidget(state: InfoVisualisationState.month, key: ValueKey(_state));
+    } else {
+      return ControllLearnStatisticsWidget(state: InfoVisualisationState.custom, key: ValueKey(_state));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,15 +110,7 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
                         });
                       },
                     ),
-                    (() {
-                      if (_states.indexOf(_state) == 0) {
-                        return const ControllLearnStatisticsWidget(state: InfoVisualisationState.week);
-                      } else if (_states.indexOf(_state) == 1) {
-                        return const ControllLearnStatisticsWidget(state: InfoVisualisationState.month);
-                      } else {
-                        return const ControllLearnStatisticsWidget(state: InfoVisualisationState.custom);
-                      }
-                    }())
+                    _getContent()
                   ],
                 ),
               )),
