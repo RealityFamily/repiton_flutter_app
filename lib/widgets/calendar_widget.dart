@@ -212,6 +212,8 @@ class TeachersInfoCalendar extends Calendar {
             case LessonStatus.moved:
               result = LessonStatus.moved;
               break;
+            case LessonStatus.planned:
+              break;
           }
         }
       }
@@ -267,6 +269,8 @@ class StudentsInfoCalendar extends Calendar {
               break OUTER;
             case LessonStatus.moved:
               result = LessonStatus.moved;
+              break;
+            case LessonStatus.planned:
               break;
           }
         }

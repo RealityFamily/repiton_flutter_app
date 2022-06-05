@@ -101,9 +101,7 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                                   child: Text(
                                     studentStatistics.presents.toString() +
                                         "/" +
-                                        studentStatistics
-                                            .discipline.lessons.length
-                                            .toString(),
+                                        studentStatistics.discipline.lessons.length.toString(),
                                     style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.w500,
@@ -113,10 +111,7 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: " (" +
-                                      (studentStatistics.presents *
-                                              100 /
-                                              studentStatistics
-                                                  .discipline.lessons.length)
+                                      (studentStatistics.presents * 100 / studentStatistics.discipline.lessons.length)
                                           .toStringAsFixed(0) +
                                       "%)",
                                   style: const TextStyle(
@@ -148,9 +143,7 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                                   child: Text(
                                     studentStatistics.homeTasks.toString() +
                                         "/" +
-                                        studentStatistics
-                                            .discipline.lessons.length
-                                            .toString(),
+                                        studentStatistics.discipline.lessons.length.toString(),
                                     style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.w500,
@@ -160,10 +153,7 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: " (" +
-                                      (studentStatistics.homeTasks *
-                                              100 /
-                                              studentStatistics
-                                                  .discipline.lessons.length)
+                                      (studentStatistics.homeTasks * 100 / studentStatistics.discipline.lessons.length)
                                           .toStringAsFixed(0) +
                                       "%)",
                                   style: const TextStyle(
@@ -184,9 +174,7 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          List<Lesson> lessons = studentStatistics
-                              .discipline.lessons.reversed
-                              .toList();
+                          List<Lesson> lessons = studentStatistics.discipline.lessons.reversed.toList();
                           Color background = Colors.transparent;
                           String trailing = "";
 
@@ -202,6 +190,8 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                             case LessonStatus.moved:
                               background = const Color(0xFFFFEE97);
                               trailing = "Перенесено";
+                              break;
+                            case LessonStatus.planned:
                               break;
                           }
 

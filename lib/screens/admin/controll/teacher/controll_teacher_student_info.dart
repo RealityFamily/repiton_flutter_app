@@ -59,10 +59,7 @@ class ControllTeacherStudentInfo extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: " " +
-                          studentStatistics.student.name +
-                          " " +
-                          studentStatistics.student.lastName,
+                      text: " " + studentStatistics.student.name + " " + studentStatistics.student.lastName,
                       style: TextStyle(
                         fontSize: 22,
                         color: Theme.of(context).colorScheme.primary,
@@ -123,8 +120,7 @@ class ControllTeacherStudentInfo extends StatelessWidget {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          List<Lesson> lessons =
-                              studentStatistics.lessons.reversed.toList();
+                          List<Lesson> lessons = studentStatistics.lessons.reversed.toList();
                           Color background = Colors.transparent;
                           String trailing = "";
 
@@ -140,6 +136,8 @@ class ControllTeacherStudentInfo extends StatelessWidget {
                             case LessonStatus.moved:
                               background = const Color(0xFFFFEE97);
                               trailing = "Перенесено";
+                              break;
+                            case LessonStatus.planned:
                               break;
                           }
 
