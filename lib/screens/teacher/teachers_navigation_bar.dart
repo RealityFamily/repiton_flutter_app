@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:repiton/screens/main_screen.dart';
 import 'package:repiton/screens/teacher/students_screen.dart';
 import 'package:repiton/screens/teacher/timetable_screen.dart';
 
 import '../settings_screen.dart';
 
-class TeachersNavigationBar extends StatefulWidget {
-  final Function(Widget?) onPageChanged;
-  static Widget get initPage => const TimeTableScreen();
-
-  const TeachersNavigationBar({required this.onPageChanged, Key? key}) : super(key: key);
-
-  @override
-  State<TeachersNavigationBar> createState() => _TeachersNavigationBarState();
-}
-
-class _TeachersNavigationBarState extends State<TeachersNavigationBar> {
-  int pageIndex = 1;
-
-  final pages = [
+class TeachersBottomNavigationController extends BottomNavigationController {
+  final List<Widget> _pages = [
     const StudentsScreen(),
     const TimeTableScreen(),
     const SettingsScreen(),
   ];
-  final buttons = const [
+
+  @override
+  List<BottomNavigationBarItem> buttons = const [
     BottomNavigationBarItem(
       icon: Icon(Icons.people_alt_outlined),
       activeIcon: Icon(Icons.people_alt),
@@ -41,16 +32,5 @@ class _TeachersNavigationBarState extends State<TeachersNavigationBar> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: pageIndex,
-      items: buttons,
-      onTap: (value) {
-        setState(() {
-          pageIndex = value;
-        });
-        widget.onPageChanged(pages[pageIndex]);
-      },
-    );
-  }
+  Widget getPage(int index) => _pages[index];
 }

@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:repiton/screens/main_screen.dart';
 
 import '../settings_screen.dart';
 
-class StudentsNavigationBar extends StatefulWidget {
-  final Function(Widget?) onPageChanged;
-  static Widget get initPage => Container();
-
-  const StudentsNavigationBar({required this.onPageChanged, Key? key}) : super(key: key);
-
-  @override
-  State<StudentsNavigationBar> createState() => _StudentsNavigationBarState();
-}
-
-class _StudentsNavigationBarState extends State<StudentsNavigationBar> {
-  int pageIndex = 1;
-
-  final pages = [
+class StudentsBottomNavigationController extends BottomNavigationController {
+  final List<Widget> _pages = [
     Container(),
     Container(),
     const SettingsScreen(),
   ];
-  final buttons = const [
+
+  @override
+  List<BottomNavigationBarItem> buttons = const [
     BottomNavigationBarItem(
       icon: Icon(Icons.add_outlined),
       activeIcon: Icon(Icons.add),
@@ -39,16 +30,5 @@ class _StudentsNavigationBarState extends State<StudentsNavigationBar> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: pageIndex,
-      items: buttons,
-      onTap: (value) {
-        setState(() {
-          pageIndex = value;
-        });
-        widget.onPageChanged(pages[pageIndex]);
-      },
-    );
-  }
+  Widget getPage(int index) => _pages[index];
 }

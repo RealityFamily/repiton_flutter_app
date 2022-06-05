@@ -15,27 +15,50 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _MainScreenState extends ConsumerState<MainScreen> {
   Widget? content;
+  int pageIndex = 1;
 
-  void contentChanged(Widget? newContent) {
-    if (newContent == null) return;
-    setState(() {
-      content = newContent;
-    });
-  }
-
-  Widget bottomNavigationBarOnRole(String role) {
+  List<BottomNavigationBarItem> _getBottomNavigationControllerButtons(String role) {
     if (role == AuthProvider.adminRole) {
-      content = content ?? AdminsNavigationBar.initPage;
-      return AdminsNavigationBar(onPageChanged: contentChanged);
+      return AdminsBottomNavigationController().buttons;
     } else if (role == AuthProvider.teacherRole) {
-      content = content ?? TeachersNavigationBar.initPage;
-      return TeachersNavigationBar(onPageChanged: contentChanged);
+      return TeachersBottomNavigationController().buttons;
     } else if (role == AuthProvider.studentRole) {
-      content = content ?? StudentsNavigationBar.initPage;
-      return StudentsNavigationBar(onPageChanged: contentChanged);
+      return StudentsBottomNavigationController().buttons;
     } else {
       throw Exception("[MainScreen] Unidentified user role - $role");
     }
+  }
+
+  Widget? _getBottomNavigationControllerNewContent(String role, int index) {
+    if (role == AuthProvider.adminRole) {
+      return AdminsBottomNavigationController().getPage(index);
+    } else if (role == AuthProvider.teacherRole) {
+      return TeachersBottomNavigationController().getPage(index);
+    } else if (role == AuthProvider.studentRole) {
+      return StudentsBottomNavigationController().getPage(index);
+    } else {
+      throw Exception("[MainScreen] Unidentified user role - $role");
+    }
+  }
+
+  Widget _bottomNavBar(String role) {
+    return BottomNavigationBar(
+      currentIndex: pageIndex,
+      items: _getBottomNavigationControllerButtons(role),
+      onTap: (value) {
+        final newContent = _getBottomNavigationControllerNewContent(role, value);
+        setState(() {
+          pageIndex = value;
+          if (newContent != null) content = newContent;
+        });
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    content = _getBottomNavigationControllerNewContent(RootProvider.getAuth().userRole, pageIndex);
+    super.initState();
   }
 
   @override
@@ -43,8 +66,14 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     final auth = ref.watch(RootProvider.getAuthProvider());
 
     return Scaffold(
-      bottomNavigationBar: bottomNavigationBarOnRole(auth.userRole),
+      bottomNavigationBar: _bottomNavBar(auth.userRole),
       body: content,
     );
   }
+}
+
+abstract class BottomNavigationController {
+  List<BottomNavigationBarItem> get buttons;
+
+  Widget getPage(int index);
 }

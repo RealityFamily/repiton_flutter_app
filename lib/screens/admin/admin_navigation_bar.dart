@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:repiton/screens/admin/users_screen.dart';
+import 'package:repiton/screens/main_screen.dart';
 
 import '../settings_screen.dart';
 import 'controll/controll_screen.dart';
 
-class AdminsNavigationBar extends StatefulWidget {
-  final Function(Widget?) onPageChanged;
-  static Widget get initPage => const ControllScreen();
-
-  const AdminsNavigationBar({required this.onPageChanged, Key? key}) : super(key: key);
-
-  @override
-  State<AdminsNavigationBar> createState() => _AdminsNavigationBarState();
-}
-
-class _AdminsNavigationBarState extends State<AdminsNavigationBar> {
-  int pageIndex = 1;
-
-  final pages = [
+class AdminsBottomNavigationController extends BottomNavigationController {
+  final List<Widget> _pages = [
     const UsersScreen(),
     const ControllScreen(),
     const SettingsScreen(),
   ];
-  final buttons = const [
+
+  @override
+  List<BottomNavigationBarItem> buttons = const [
     BottomNavigationBarItem(
       icon: Icon(Icons.people_alt_outlined),
       activeIcon: Icon(Icons.people_alt),
@@ -41,16 +32,5 @@ class _AdminsNavigationBarState extends State<AdminsNavigationBar> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: pageIndex,
-      items: buttons,
-      onTap: (value) {
-        setState(() {
-          pageIndex = value;
-        });
-        widget.onPageChanged(pages[pageIndex]);
-      },
-    );
-  }
+  Widget getPage(int index) => _pages[index];
 }
