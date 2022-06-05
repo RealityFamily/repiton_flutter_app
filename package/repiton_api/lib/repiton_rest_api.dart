@@ -13,6 +13,6 @@ class RepitonRestApi {
       : _auth = AuthRestApi(_dio, baseUrl: baseUrl + "user-keycloak-service/");
 
   void setToken(String? token) {
-    _dio.options.headers = {..._dio.options.headers, "Authorization": "Bearer $token"};
+    _dio.options.headers = {..._dio.options.headers, "Authorization": token != null ? "Bearer $token" : null};
   }
 }
