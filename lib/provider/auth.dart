@@ -26,15 +26,33 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> auth(String? login, String? email, String password) async {
+  Future<bool> auth(String? login, String? email, String password) async {
     final response = await _repo.auth(login, email, password);
-    _id = response.id;
-    _userName = response.userName;
-    _token = response.token;
-    _refresh = response.refreshToken;
-    _userRole = response.roles;
 
-    GetIt.I.get<RepitonApiContainer>().setToken(_token);
+    if (response != null) {
+      _id = response.id;
+      _userName = response.userName;
+      _token = response.token;
+      _refresh = response.refreshToken;
+      _userRole = response.roles;
+
+      GetIt.I.get<RepitonApiContainer>().setToken(_token);
+
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void logout() {
+    _id = null;
+    _userName = null;
+    _token = null;
+    _refresh = null;
+    _userRole = [];
+
+    GetIt.I.get<RepitonApiContainer>().setToken(null);
 
     notifyListeners();
   }
