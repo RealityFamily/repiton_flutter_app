@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/screens/main_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
     if (!result) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ошибка входа")));
+    } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()));
     }
   }
 
