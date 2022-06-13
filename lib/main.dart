@@ -3,23 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:repiton/core/app_init.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/screens/auth_screen.dart';
-import 'package:repiton/screens/main_screen.dart';
+import 'package:repiton/screens/splash_screen.dart';
 
 void main() async {
   await preInit();
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-
-    final auth = ref.watch(RootProvider.getAuthProvider());
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -35,7 +31,7 @@ class MyApp extends ConsumerWidget {
         DefaultWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [Locale('ru')],
-      home: auth.isAuthenticated ? const MainScreen() : const AuthScreen(),
+      home: const SplashScreen(),
     );
   }
 }
