@@ -15,6 +15,8 @@ class SplashScreen extends StatelessWidget {
   void _moveToInitPage(BuildContext context) async {
     bool isAuth = (await Future.wait<dynamic>([_isAuth, _minSplashTimeout]))[0];
 
+    if (!isAuth) RootProvider.getAuth().logout();
+
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => isAuth ? const MainScreen() : const AuthScreen()));
   }
