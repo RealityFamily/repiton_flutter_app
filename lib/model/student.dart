@@ -13,9 +13,6 @@ class Student {
 
   late List<Parent> parents;
 
-  late double price;
-  late int hours;
-
   Student.empty() {
     id = "";
     name = "";
@@ -27,9 +24,6 @@ class Student {
     education = "";
 
     parents = [];
-
-    price = 0;
-    hours = 0;
   }
 
   Student({
@@ -42,8 +36,6 @@ class Student {
     required this.imageUrl,
     required this.education,
     required this.parents,
-    required this.price,
-    required this.hours,
   });
 
   String get fullName => lastName + " " + name;
@@ -67,10 +59,6 @@ class Student {
         "\neducation: " +
         education +
         "\nparents: " +
-        parents.toString() +
-        "\nprice: " +
-        price.toString() +
-        "\nhours: " +
-        hours.toString();
+        parents.toString();
   }
 }

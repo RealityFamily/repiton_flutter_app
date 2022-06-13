@@ -9,7 +9,7 @@ class Discipline {
   late Student student;
   late List<Lesson> lessons;
 
-  late String rocketChatReference;
+  late List<String> rocketChatReference;
 
   Discipline({
     required this.id,
@@ -26,6 +26,6 @@ class Discipline {
     teacher = Teacher.empty();
     student = Student.empty();
     lessons = [];
-    rocketChatReference = "";
+    rocketChatReference = [];
   }
 }
