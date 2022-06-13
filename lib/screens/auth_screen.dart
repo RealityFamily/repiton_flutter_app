@@ -66,6 +66,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             TextFormField(
                               style: const TextStyle(fontSize: 18),
                               decoration: const InputDecoration(
+                                constraints: BoxConstraints(maxWidth: 500),
                                 labelText: "Логин",
                               ),
                               validator: (value) =>
@@ -74,21 +75,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               textInputAction: TextInputAction.next,
                             ),
                             const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    style: const TextStyle(fontSize: 18),
-                                    obscureText: isObscure,
-                                    decoration: const InputDecoration(
-                                      labelText: "Пароль",
-                                    ),
-                                    validator: (value) =>
-                                        value == null || value.length <= 5 ? "Введите корректный пароль" : null,
-                                    onSaved: (value) => password = value ?? "",
-                                  ),
-                                ),
-                                IconButton(
+                            TextFormField(
+                              style: const TextStyle(fontSize: 18),
+                              obscureText: isObscure,
+                              decoration: InputDecoration(
+                                constraints: const BoxConstraints(maxWidth: 500),
+                                labelText: "Пароль",
+                                suffix: IconButton(
                                   onPressed: () {
                                     setState(() {
                                       isObscure = !isObscure;
@@ -99,14 +92,17 @@ class _AuthScreenState extends State<AuthScreen> {
                                     color: Colors.black,
                                   ),
                                 ),
-                              ],
+                              ),
+                              validator: (value) =>
+                                  value == null || value.length <= 5 ? "Введите корректный пароль" : null,
+                              onSaved: (value) => password = value ?? "",
                             ),
                             const SizedBox(height: 20),
                             ElevatedButton(
                               onPressed: () => _authButtonPressed(context),
                               style: ElevatedButton.styleFrom(
                                 textStyle: const TextStyle(fontSize: 18),
-                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                               ),
                               child: const Text(
                                 "Войти",
