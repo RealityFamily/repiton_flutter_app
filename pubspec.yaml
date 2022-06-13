@@ -45,6 +45,7 @@ dependencies:
   jitsi_meet: ^4.0.0
   dio: ^4.0.6
   get_it: ^7.2.0
+  flutter_secure_storage: ^5.0.2
 
   repiton_api:
     path: ./package/repiton_api
