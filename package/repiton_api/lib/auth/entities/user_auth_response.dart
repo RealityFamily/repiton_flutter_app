@@ -5,9 +5,9 @@ part 'user_auth_response.g.dart';
 @JsonSerializable()
 class UserAuthResponse {
   @JsonKey(name: "access_token")
-  String token;
+  String? token;
   @JsonKey(name: "refresh_token")
-  String refreshToken;
+  String? refreshToken;
   String id;
   @JsonKey(name: "username")
   String userName;
