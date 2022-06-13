@@ -12,7 +12,7 @@ class RepitonApiContainer extends RepitonRestApi {
     dioInstance.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         debugPrint(
-            "[http request]: ${options.method} ${options.uri} query:${options.queryParameters} body:${options.data}");
+            "[http request]: ${options.method} ${options.uri} headers:${options.headers} query:${options.queryParameters} body:${options.data}");
         handler.next(options);
       },
     ));
