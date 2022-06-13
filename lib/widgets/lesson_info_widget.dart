@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/core/network/jitsy/jitsy_logic.dart';
 import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/screens/web_jitsi_call_screen.dart';
 
 class LessonInfoWidget extends StatefulWidget {
   final String disciplineName;
@@ -163,7 +165,12 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                           _isLoading = false;
                         });
                       } else {
-                        JitsyLogic.joinMeeting();
+                        if (kIsWeb) {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => const WebJitsiCallScreen()));
+                        } else {
+                          JitsyLogic.joinMeeting();
+                        }
                       }
                     },
                     child: Text(

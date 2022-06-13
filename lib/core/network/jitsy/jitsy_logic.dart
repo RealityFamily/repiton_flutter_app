@@ -17,11 +17,19 @@ class JitsyLogic {
             ..audioOnly = true
             ..audioMuted = true
             ..videoMuted = true
-            ..featureFlags = featureFlag;
+            ..featureFlags = featureFlag
+            ..webOptions = {
+              "roomName": "RocketChatZ4Sdr5B2CN5kuKsHfGENERAL",
+              "width": "100%",
+              "height": "100%",
+              "enableWelcomePage": false,
+              "chromeExtensionBanner": null,
+              "userInfo": {"displayName": "My Name"}
+            };
 
       await JitsiMeet.joinMeeting(options);
-    } catch (error) {
-      debugPrint("error: $error");
+    } catch (error, stackTrace) {
+      debugPrint("error: $error \n $stackTrace");
     }
   }
 }

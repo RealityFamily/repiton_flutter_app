@@ -41,7 +41,7 @@ class _AuthRestApi implements AuthRestApi {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UserAuthResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'user/tokenValidate',
+                .compose(_dio.options, 'user/validateToken',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserAuthResponse.fromJson(_result.data!);

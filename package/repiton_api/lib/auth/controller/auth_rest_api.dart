@@ -14,6 +14,6 @@ abstract class AuthRestApi {
   @POST("user/signin")
   Future<UserAuthResponse> auth({@Body() required UserAuthRequest body});
 
-  @GET("user/tokenValidate")
+  @GET("user/validateToken")
   Future<UserAuthResponse> getUserInfo();
 }
