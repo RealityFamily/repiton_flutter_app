@@ -3,7 +3,7 @@ import 'package:repiton/screens/main_screen.dart';
 
 import '../settings_screen.dart';
 
-class StudentsBottomNavigationController extends BottomNavigationController {
+class StudentsBottomNavigationController extends NavigationController {
   final List<Widget> _pages = [
     Container(),
     Container(),
@@ -11,21 +11,21 @@ class StudentsBottomNavigationController extends BottomNavigationController {
   ];
 
   @override
-  List<BottomNavigationBarItem> buttons = const [
-    BottomNavigationBarItem(
+  List<NavigationControllerButton> buttons = const [
+    NavigationControllerButton(
       icon: Icon(Icons.stacked_bar_chart_outlined),
-      activeIcon: Icon(Icons.stacked_bar_chart),
-      label: "Успеваемость",
+      focusIcon: Icon(Icons.stacked_bar_chart),
+      title: "Успеваемость",
     ),
-    BottomNavigationBarItem(
+    NavigationControllerButton(
       icon: Icon(Icons.calendar_today_outlined),
-      activeIcon: Icon(Icons.calendar_today),
-      label: "Занятия",
+      focusIcon: Icon(Icons.calendar_today),
+      title: "Занятия",
     ),
-    BottomNavigationBarItem(
+    NavigationControllerButton(
       icon: Icon(Icons.settings_outlined),
-      activeIcon: Icon(Icons.settings),
-      label: "Настроики",
+      focusIcon: Icon(Icons.settings),
+      title: "Настроики",
     ),
   ];
 

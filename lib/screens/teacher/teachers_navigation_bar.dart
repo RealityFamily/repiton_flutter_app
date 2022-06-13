@@ -5,7 +5,7 @@ import 'package:repiton/screens/teacher/timetable_screen.dart';
 
 import '../settings_screen.dart';
 
-class TeachersBottomNavigationController extends BottomNavigationController {
+class TeachersBottomNavigationController extends NavigationController {
   final List<Widget> _pages = [
     const StudentsScreen(),
     const TimeTableScreen(),
@@ -13,21 +13,21 @@ class TeachersBottomNavigationController extends BottomNavigationController {
   ];
 
   @override
-  List<BottomNavigationBarItem> buttons = const [
-    BottomNavigationBarItem(
+  List<NavigationControllerButton> buttons = const [
+    NavigationControllerButton(
       icon: Icon(Icons.people_alt_outlined),
-      activeIcon: Icon(Icons.people_alt),
-      label: "Ученики",
+      focusIcon: Icon(Icons.people_alt),
+      title: "Ученики",
     ),
-    BottomNavigationBarItem(
+    NavigationControllerButton(
       icon: Icon(Icons.calendar_today_outlined),
-      activeIcon: Icon(Icons.calendar_today),
-      label: "Расписание",
+      focusIcon: Icon(Icons.calendar_today),
+      title: "Расписание",
     ),
-    BottomNavigationBarItem(
+    NavigationControllerButton(
       icon: Icon(Icons.settings_outlined),
-      activeIcon: Icon(Icons.settings),
-      label: "Настроики",
+      focusIcon: Icon(Icons.settings),
+      title: "Настроики",
     ),
   ];
 

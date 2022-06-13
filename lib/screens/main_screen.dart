@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/provider/auth.dart';
@@ -5,6 +6,8 @@ import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/admin/admin_navigation_bar.dart';
 import 'package:repiton/screens/student/students_navigation_bar.dart';
 import 'package:repiton/screens/teacher/teachers_navigation_bar.dart';
+import 'package:repiton/widgets/bottom_navigation.dart';
+import 'package:repiton/widgets/side_bar_menu.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -17,7 +20,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget? content;
   int pageIndex = 1;
 
-  List<BottomNavigationBarItem> _getBottomNavigationControllerButtons(String role) {
+  List<NavigationControllerButton> _getBottomNavigationControllerButtons(String role) {
     if (role == AuthProvider.adminRole) {
       return AdminsBottomNavigationController().buttons;
     } else if (role == AuthProvider.teacherRole) {
@@ -41,18 +44,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     }
   }
 
-  Widget _bottomNavBar(String role) {
-    return BottomNavigationBar(
-      currentIndex: pageIndex,
-      items: _getBottomNavigationControllerButtons(role),
-      onTap: (value) {
-        final newContent = _getBottomNavigationControllerNewContent(role, value);
-        setState(() {
-          pageIndex = value;
-          if (newContent != null) content = newContent;
-        });
-      },
-    );
+  void _onPageChanged(int newPage, String role) {
+    final newContent = _getBottomNavigationControllerNewContent(role, newPage);
+    setState(() {
+      pageIndex = newPage;
+      if (newContent != null) content = newContent;
+    });
   }
 
   @override
@@ -61,19 +58,52 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     super.initState();
   }
 
+  double get sideBarWidth => MediaQuery.of(context).size.width * 0.25;
+
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(RootProvider.getAuthProvider());
 
-    return Scaffold(
-      bottomNavigationBar: _bottomNavBar(auth.userRole),
-      body: content,
-    );
+    if (kIsWeb) {
+      return Scaffold(
+        body: Row(
+          children: [
+            SizedBox(
+              width: sideBarWidth,
+              child: SideBarMenu(
+                pageIndex: pageIndex,
+                buttons: _getBottomNavigationControllerButtons(auth.userRole),
+                onPageChanged: (newPage) => _onPageChanged(newPage, auth.userRole),
+              ),
+            ),
+            const VerticalDivider(),
+            Expanded(child: content ?? Container())
+          ],
+        ),
+      );
+    } else {
+      return Scaffold(
+        bottomNavigationBar: PhoneBottomNavigation(
+          pageIndex: pageIndex,
+          buttons: _getBottomNavigationControllerButtons(auth.userRole),
+          onPageChanged: (newPage) => _onPageChanged(newPage, auth.userRole),
+        ),
+        body: content,
+      );
+    }
   }
 }
 
-abstract class BottomNavigationController {
-  List<BottomNavigationBarItem> get buttons;
+abstract class NavigationController {
+  List<NavigationControllerButton> get buttons;
 
   Widget getPage(int index);
+}
+
+class NavigationControllerButton {
+  final String title;
+  final Icon icon;
+  final Icon focusIcon;
+
+  const NavigationControllerButton({required this.title, required this.icon, required this.focusIcon});
 }
