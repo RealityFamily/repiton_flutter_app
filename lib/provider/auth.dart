@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:repiton/core/network/repiton_api/repiton_api_container.dart';
+import 'package:repiton/core/tokenStorage/secure_token_storage.dart';
 import 'package:repiton/repos/auth_repo.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -12,9 +13,9 @@ class AuthProvider with ChangeNotifier {
 
   AuthProvider(this._repo);
 
-  String? _id = "t1";
-  String? _userName = "leonis13579";
-  String? _token;
+  String? _id;
+  String? _userName;
+  String? _token = GetIt.I.get<SecureTokenStorage>().authToken;
   String? _refresh;
   List<String> _userRole = [];
 
@@ -36,7 +37,26 @@ class AuthProvider with ChangeNotifier {
       _refresh = response.refreshToken;
       _userRole = response.roles;
 
-      GetIt.I.get<RepitonApiContainer>().setToken(_token);
+      if (_token != null) {
+        GetIt.I.get<SecureTokenStorage>().setToken(_token!);
+        GetIt.I.get<RepitonApiContainer>().setToken(_token!);
+      }
+
+      notifyListeners();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> _getUserInfo() async {
+    final response = await _repo.getUserInfo();
+
+    if (response != null) {
+      _id = response.id;
+      _userName = response.userName;
+      _refresh = response.refreshToken;
+      _userRole = response.roles;
 
       notifyListeners();
       return true;
@@ -52,7 +72,8 @@ class AuthProvider with ChangeNotifier {
     _refresh = null;
     _userRole = [];
 
-    GetIt.I.get<RepitonApiContainer>().setToken(null);
+    GetIt.I.get<SecureTokenStorage>().deleteToken();
+    GetIt.I.get<RepitonApiContainer>().invalidateToken();
 
     notifyListeners();
   }
@@ -78,8 +99,12 @@ class AuthProvider with ChangeNotifier {
     return _token ?? "";
   }
 
-  bool get isAuthenticated {
-    return _token != null && _token!.isNotEmpty;
+  Future<bool> isAuthenticated() async {
+    if (_token != null && _token!.isNotEmpty) {
+      return await _getUserInfo();
+    } else {
+      return false;
+    }
   }
 
   String get refresh {
