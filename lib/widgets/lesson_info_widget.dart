@@ -169,7 +169,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) => const WebJitsiCallScreen()));
                         } else {
-                          JitsyLogic.joinMeeting();
+                          JitsyLogic.joinMeeting("Leonis", "Leonis13579", "1234-123456");
                         }
                       }
                     },

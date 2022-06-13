@@ -6,7 +6,7 @@ class WebJitsiCallScreen extends StatelessWidget {
   const WebJitsiCallScreen({Key? key}) : super(key: key);
 
   void _connectToCall(_) {
-    JitsyLogic.joinMeeting();
+    JitsyLogic.joinMeeting("Leonis", "Leonis13579", "123-456-789");
   }
 
   @override
