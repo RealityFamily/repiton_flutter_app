@@ -67,6 +67,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     if (kIsWeb) {
       return Scaffold(
         body: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               width: sideBarWidth,
