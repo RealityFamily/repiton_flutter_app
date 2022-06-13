@@ -19,8 +19,14 @@ class SideBarMenu extends StatelessWidget {
     return InkWell(
       onTap: () => onPageChanged(index),
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        color: isSelected ? Colors.grey[100] : Colors.transparent,
         child: Row(
-          children: [isSelected ? button.focusIcon : button.icon, const SizedBox(width: 8), Text(button.title)],
+          children: [
+            isSelected ? button.focusIcon : button.icon,
+            const SizedBox(width: 16),
+            Text(button.title, style: TextStyle(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
+          ],
         ),
       ),
     );
@@ -33,11 +39,12 @@ class SideBarMenu extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Repiton"),
-          SizedBox(height: 16),
-          ListView.builder(
+          const Text("Repiton", style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 16),
+          ListView.separated(
             shrinkWrap: true,
             itemBuilder: (context, index) => _getSideBarMenuButton(buttons[index], index),
+            separatorBuilder: (_, __) => const SizedBox(height: 8),
             itemCount: buttons.length,
           )
         ],
