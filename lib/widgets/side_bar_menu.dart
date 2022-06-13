@@ -13,10 +13,15 @@ class SideBarMenu extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Widget _getSideBarMenuButton(NavigationControllerButton button, bool isSelected) {
-    return Container(
-      child: Row(
-        children: [isSelected ? button.focusIcon : button.icon, const SizedBox(width: 8), Text(button.title)],
+  Widget _getSideBarMenuButton(NavigationControllerButton button, int index) {
+    final isSelected = index == pageIndex;
+
+    return InkWell(
+      onTap: () => onPageChanged(index),
+      child: Container(
+        child: Row(
+          children: [isSelected ? button.focusIcon : button.icon, const SizedBox(width: 8), Text(button.title)],
+        ),
       ),
     );
   }
@@ -26,12 +31,13 @@ class SideBarMenu extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Repiton"),
           SizedBox(height: 16),
           ListView.builder(
             shrinkWrap: true,
-            itemBuilder: (context, index) => _getSideBarMenuButton(buttons[index], index == pageIndex),
+            itemBuilder: (context, index) => _getSideBarMenuButton(buttons[index], index),
             itemCount: buttons.length,
           )
         ],
