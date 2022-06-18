@@ -46,7 +46,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
     }
   }
 
-  Widget _lessonButton() => Consumer(
+  Widget get _lessonButton => Consumer(
         builder: (context, ref, _) {
           final lessons = ref.watch(RootProvider.getLessonsProvider());
 
@@ -56,23 +56,19 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                 )
               : ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () => _onLessonButtonTap(lessons),
                   child: Text(
                     lessons.lesson!.status == LessonStatus.started ? "Подключиться к занятию" : "Начать занятие",
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 );
         },
       );
 
-  Widget getEditDialog() {
+  Widget get _editDialog {
     String? result;
     GlobalKey<FormState> _formKey = GlobalKey();
     return AlertDialog(
@@ -84,18 +80,11 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
           onSaved: (_newValue) => result = _newValue,
           maxLines: null,
           keyboardType: TextInputType.multiline,
-          decoration: const InputDecoration(
-            labelText: "Описание урока...",
-          ),
+          decoration: const InputDecoration(labelText: "Описание урока..."),
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text("ОТМЕНА"),
-        ),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("ОТМЕНА")),
         TextButton(
           onPressed: () {
             if (!_formKey.currentState!.validate()) return;
@@ -108,13 +97,73 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
     );
   }
 
+  Widget get _editDescriptionButton => IconButton(
+        icon: const Icon(Icons.edit),
+        onPressed: () async {
+          String? _newDescription = await showDialog<String>(
+            context: context,
+            builder: (context) => _editDialog,
+          );
+
+          if (_newDescription == null) return;
+          setState(() {
+            RootProvider.getLessons().lesson!.description = _newDescription;
+          });
+        },
+      );
+
+  Widget get _lessonDescriptionContent {
+    if (kIsWeb) {
+      if (MediaQuery.of(context).size.width < 600) {
+        return _tinyDescriptionContent;
+      } else {
+        return _wideDescriptionContent;
+      }
+    } else {
+      return _tinyDescriptionContent;
+    }
+  }
+
+  Widget get _wideDescriptionContent => Expanded(
+        child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 50),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(border: Border.all(color: const Color(0xFFB4B4B4)), borderRadius: BorderRadius.circular(20)),
+          child: _innerDescriptionContent,
+        ),
+      );
+
+  Widget get _tinyDescriptionContent => Expanded(
+        child: Column(
+          children: [
+            const Divider(color: Color(0xFFB4B4B4), thickness: 1),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: SizedBox(width: double.infinity, child: _innerDescriptionContent),
+              ),
+            ),
+            const Divider(color: Color(0xFFB4B4B4), thickness: 1),
+          ],
+        ),
+      );
+
+  Widget get _innerDescriptionContent => Consumer(
+        builder: (context, ref, _) {
+          final lessons = ref.watch(RootProvider.getLessonsProvider());
+
+          return SingleChildScrollView(
+            child: Text(lessons.lesson!.description, style: const TextStyle(fontSize: 18), maxLines: null),
+          );
+        },
+      );
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(
-          height: 30,
-        ),
+        const SizedBox(height: 30),
         SizedBox(
           width: double.infinity,
           child: Stack(
@@ -123,70 +172,16 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
               Container(
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: const Text(
-                  "Описание",
-                  style: TextStyle(
-                    fontSize: 24,
-                  ),
-                ),
+                child: const Text("Описание", style: TextStyle(fontSize: 24)),
               ),
-              IconButton(
-                onPressed: () async {
-                  String? _newDescription = await showDialog<String>(
-                    context: context,
-                    builder: (context) => getEditDialog(),
-                  );
-
-                  if (_newDescription == null) return;
-                  setState(() {
-                    RootProvider.getLessons().lesson!.description = _newDescription;
-                  });
-                },
-                icon: const Icon(Icons.edit),
-              )
+              _editDescriptionButton,
             ],
           ),
         ),
-        const Divider(
-          color: Color(0xFFB4B4B4),
-          thickness: 1,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 10,
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            child: Consumer(
-              builder: (context, ref, _) {
-                final lessons = ref.watch(RootProvider.getLessonsProvider());
-
-                return SizedBox(
-                  height:
-                      (MediaQuery.of(context).size.height - 484 > 150 ? MediaQuery.of(context).size.height - 484 : 150),
-                  child: SingleChildScrollView(
-                    child: Text(
-                      lessons.lesson!.description,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                      maxLines: null,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        const Divider(
-          color: Color(0xFFB4B4B4),
-          thickness: 1,
-        ),
-        const SizedBox(
-          height: 14,
-        ),
-        _lessonButton(),
+        _lessonDescriptionContent,
+        const SizedBox(height: 20),
+        _lessonButton,
+        const SizedBox(height: 20),
       ],
     );
   }

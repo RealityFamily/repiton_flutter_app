@@ -40,216 +40,178 @@ class _LessonScreenState extends State<LessonScreen> {
     _newState = _states[0];
   }
 
+  Widget get _lessonHeader => Column(children: [_lessonHeaderTitle, const SizedBox(height: 12), _lessonHeaderSubTitle]);
+
+  Widget get _lessonHeaderTitle => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Consumer(
+            builder: (context, ref, _) {
+              final lessons = ref.watch(RootProvider.getLessonsProvider());
+              return Text(lessons.lesson!.name, style: const TextStyle(fontSize: 34));
+            },
+          )
+        ],
+      );
+
+  Widget get _lessonHeaderSubTitle => RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: [
+            const TextSpan(text: "Ученик ", style: TextStyle(fontSize: 18, color: Colors.grey)),
+            TextSpan(text: widget.studentName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+            TextSpan(text: "\n" + widget.disciplineName, style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.primary)),
+          ],
+        ),
+      );
+
+  Widget get _lessonHeaderAction => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [_lessonHeaderActionBackButton, _lessonHeaderActionMenuButton],
+      );
+
+  Widget get _lessonHeaderActionBackButton => IconButton(
+        padding: const EdgeInsets.all(16),
+        onPressed: () {
+          RootProvider.getLessons().closeLesson();
+          Navigator.of(context).pop();
+        },
+        icon: const Icon(Icons.arrow_back),
+      );
+
+  Widget get _lessonHeaderActionMenuButton => PopupMenuButton<String>(
+        padding: const EdgeInsets.all(16),
+        icon: const Icon(Icons.more_vert),
+        itemBuilder: (_) => ["Перенести занятие", "Отменить занятие"]
+            .map(
+              (item) => PopupMenuItem<String>(
+                // TODO: Delete param when would created func
+                enabled: false,
+                value: item,
+                child: Row(
+                  children: [
+                    Icon(item.contains("Перенести") ? Icons.move_down : Icons.dnd_forwardslash),
+                    const SizedBox(width: 5),
+                    Text(item),
+                  ],
+                ),
+              ),
+            )
+            .toList(),
+        onSelected: (value) {},
+      );
+
+  Widget get _mainLessonInfo => Consumer(
+        builder: (context, ref, _) {
+          final lessons = ref.watch(RootProvider.getLessonsProvider());
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Время ",
+                      style: TextStyle(color: Colors.grey, fontSize: 18),
+                    ),
+                    TextSpan(
+                      text: DateFormat("HH:mm").format(lessons.lesson!.dateTimeStart),
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(text: "Дата ", style: TextStyle(color: Colors.grey, fontSize: 18)),
+                    TextSpan(
+                      text: DateFormat("dd.MM.yyyy").format(lessons.lesson!.dateTimeStart),
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+
+  Widget get _choosedInfoStateContent {
+    if (_newState == _states[_states.length - 1]) {
+      return const RocketChatScreen();
+    } else if (_newState == _states[0]) {
+      return LessonInfoWidget(
+        disciplineName: widget.disciplineName,
+        studentName: widget.studentName,
+        teacherImageUrl: widget.teacherImageUrl,
+        studentImageUrl: widget.studentImageUrl,
+      );
+    } else {
+      return Consumer(
+        builder: (context, ref, _) {
+          final lessons = ref.watch(RootProvider.getLessonsProvider());
+
+          if (lessons.lesson!.homeTask == null) {
+            return const EmptyHometaskWidget();
+          } else {
+            switch (lessons.lesson!.homeTask!.type) {
+              case HomeTaskType.test:
+                return const TestInfoWidget();
+              case HomeTaskType.task:
+                return const TaskInfoWidget();
+            }
+          }
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 8),
-          child: SingleChildScrollView(
+          child: CustomScrollView(
             physics: const ClampingScrollPhysics(),
-            child: Column(
-              children: [
-                Stack(
-                  alignment: Alignment.topCenter,
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
                   children: [
-                    Column(
-                      children: [
-                        if (_newState != _states[_states.length - 1]) ...{
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Consumer(
-                                builder: (context, ref, _) {
-                                  final lessons = ref.watch(RootProvider.getLessonsProvider());
-                                  return Text(
-                                    lessons.lesson!.name,
-                                    style: const TextStyle(
-                                      fontSize: 34,
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                        },
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: "Ученик ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              TextSpan(
-                                text: widget.studentName,
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "\n" + widget.disciplineName,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      children: [_lessonHeader, _lessonHeaderAction],
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          padding: const EdgeInsets.all(16),
-                          onPressed: () {
-                            RootProvider.getLessons().closeLesson();
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(Icons.arrow_back),
-                        ),
-                        const Expanded(child: SizedBox()),
-                        PopupMenuButton<String>(
-                          padding: const EdgeInsets.all(16),
-                          icon: const Icon(Icons.more_vert),
-                          itemBuilder: (_) => ["Перенести занятие", "Отменить занятие"]
-                              .map(
-                                (item) => PopupMenuItem<String>(
-                                  // TODO: Delete param when would created func
-                                  enabled: false,
-                                  value: item,
-                                  child: Row(
-                                    children: [
-                                      Icon(item.contains("Перенести") ? Icons.move_down : Icons.dnd_forwardslash),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(item),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          onSelected: (value) {},
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                    Expanded(
                       child: Column(
                         children: [
-                          StateChooser(
-                            items: _states,
-                            onStateChange: (newState) {
-                              setState(() {
-                                _newState = newState;
-                              });
-                            },
-                          ),
-                          if (_newState != _states[_states.length - 1])
-                            Consumer(
-                              builder: (context, ref, _) {
-                                final lessons = ref.watch(RootProvider.getLessonsProvider());
-
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          const TextSpan(
-                                            text: "Время ",
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: DateFormat("HH:mm").format(lessons.lesson!.dateTimeStart),
-                                            style: TextStyle(
-                                              color: Theme.of(context).colorScheme.primary,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          const TextSpan(
-                                            text: "Дата ",
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: DateFormat(
-                                              "dd.MM.yyyy",
-                                            ).format(
-                                              lessons.lesson!.dateTimeStart,
-                                            ),
-                                            style: TextStyle(
-                                              color: Theme.of(context).colorScheme.primary,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              children: [
+                                StateChooser(
+                                  items: _states,
+                                  onStateChange: (newState) {
+                                    setState(() {
+                                      _newState = newState;
+                                    });
+                                  },
+                                ),
+                                if (_newState != _states[_states.length - 1]) _mainLessonInfo
+                              ],
                             ),
+                          ),
+                          Expanded(child: _choosedInfoStateContent),
                         ],
                       ),
                     ),
-                    (() {
-                      if (_newState == _states[_states.length - 1]) {
-                        return const RocketChatScreen();
-                      } else if (_newState == _states[0]) {
-                        return LessonInfoWidget(
-                          disciplineName: widget.disciplineName,
-                          studentName: widget.studentName,
-                          teacherImageUrl: widget.teacherImageUrl,
-                          studentImageUrl: widget.studentImageUrl,
-                        );
-                      } else {
-                        return Consumer(
-                          builder: (context, ref, _) {
-                            final lessons = ref.watch(RootProvider.getLessonsProvider());
-
-                            if (lessons.lesson!.homeTask == null) {
-                              return const EmptyHometaskWidget();
-                            } else {
-                              switch (lessons.lesson!.homeTask!.type) {
-                                case HomeTaskType.test:
-                                  return const TestInfoWidget();
-                                case HomeTaskType.task:
-                                  return const TaskInfoWidget();
-                              }
-                            }
-                          },
-                        );
-                      }
-                    }()),
                   ],
                 ),
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
