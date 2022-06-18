@@ -8,8 +8,7 @@ import 'package:repiton/widgets/lesson_info_widget.dart';
 import 'package:repiton/widgets/rocket_chat_screen.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 import 'package:repiton/widgets/task_info_widget.dart';
-
-import '../../widgets/test_info_widget.dart';
+import 'package:repiton/widgets/test_info_widget.dart';
 
 class LessonScreen extends StatefulWidget {
   final String disciplineName;
