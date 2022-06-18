@@ -13,6 +13,7 @@ class StudentsStatisticsProvider with ChangeNotifier {
 
   Future<Student> getCachedStudent(String id) async {
     if (_student == null || _student!.id != id) {
+      // TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=user-service#/Student/studentIdGet
       _student = Student(
         id: "s1",
         name: "Виталий",
@@ -23,8 +24,6 @@ class StudentsStatisticsProvider with ChangeNotifier {
         imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
         education: "",
         parents: [],
-        price: 0,
-        hours: 0,
       );
     }
 
@@ -78,6 +77,8 @@ class StudentsStatisticsProvider with ChangeNotifier {
   ) async {
     _showingDisciplines = [];
 
+    // TODO: Call API method
+
     await Future.delayed(const Duration(milliseconds: 500));
 
     _statistics = LearnStatistics(
@@ -111,7 +112,7 @@ class StudentsStatisticsProvider with ChangeNotifier {
                 id: "l2",
                 name: "Урок №2",
                 description: "Какая-то инфа по уроку",
-                status: LessonStatus.canceled,
+                status: LessonStatus.canceledByStudent,
                 dateTimeStart: DateTime.now().subtract(const Duration(days: 3)),
                 dateTimeEnd: DateTime.now().add(
                   const Duration(hours: 2),
@@ -128,7 +129,9 @@ class StudentsStatisticsProvider with ChangeNotifier {
                 ),
               ),
             ],
-            rocketChatReference: "",
+            rocketChatReference: [],
+            minutes: 45,
+            price: 1000,
           ),
           presents: 7,
           homeTasks: 5,

@@ -20,7 +20,8 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     switch (status) {
       case LessonStatus.done:
         return const Color(0xFF9DCBAA);
-      case LessonStatus.canceled:
+      case LessonStatus.canceledByStudent:
+      case LessonStatus.canceledByTeacher:
         return const Color(0xFFDE9898);
       case LessonStatus.moved:
         return const Color(0xFFFFEE97);

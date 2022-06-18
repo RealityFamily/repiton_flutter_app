@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/core/network/jitsy/jitsy_logic.dart';
+import 'package:repiton/model/lesson.dart';
+import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/web_jitsi_call_screen.dart';
 
@@ -25,6 +27,50 @@ class LessonInfoWidget extends StatefulWidget {
 
 class _LessonInfoWidgetState extends State<LessonInfoWidget> {
   bool _isLoading = false;
+
+  void _onLessonButtonTap(LessonsProvider lessons) async {
+    if (lessons.lesson!.status == LessonStatus.started) {
+      if (kIsWeb) {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WebJitsiCallScreen()));
+      } else {
+        JitsyLogic.joinMeeting("Leonis", "Leonis13579", lessons.lesson!.id);
+      }
+    } else {
+      setState(() {
+        _isLoading = true;
+      });
+      await lessons.startLesson();
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Widget _lessonButton() => Consumer(
+        builder: (context, ref, _) {
+          final lessons = ref.watch(RootProvider.getLessonsProvider());
+
+          return _isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  ),
+                  onPressed: () => _onLessonButtonTap(lessons),
+                  child: Text(
+                    lessons.lesson!.status == LessonStatus.started ? "Подключиться к занятию" : "Начать занятие",
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                );
+        },
+      );
 
   Widget getEditDialog() {
     String? result;
@@ -140,48 +186,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
         const SizedBox(
           height: 14,
         ),
-        Consumer(
-          builder: (context, ref, _) {
-            final lessons = ref.watch(RootProvider.getLessonsProvider());
-
-            return _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    ),
-                    onPressed: () async {
-                      if (lessons.lesson!.jitsyLink == null) {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        await lessons.setJitsyLink();
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      } else {
-                        if (kIsWeb) {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) => const WebJitsiCallScreen()));
-                        } else {
-                          JitsyLogic.joinMeeting("Leonis", "Leonis13579", "1234-123456");
-                        }
-                      }
-                    },
-                    child: Text(
-                      lessons.lesson!.jitsyLink == null ? "Начать занятие" : "Подключиться к занятию",
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  );
-          },
-        ),
+        _lessonButton(),
       ],
     );
   }

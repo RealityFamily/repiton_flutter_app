@@ -23,41 +23,46 @@ class TeachersLessonsProvider with ChangeNotifier {
     DateTime dateFrom = DateTime(showDate.year, showDate.month, 1);
     DateTime dateTo = DateTime(showDate.year, showDate.month + 1, 0);
 
+    // TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=discipline-lesson-service#/Timetable/getTeacherIdTimetable
+
     _disciplines = [
       Discipline(
-          id: "d1",
-          name: "Информатика",
-          teacher: Teacher.empty()
-            ..id = "t1"
-            ..name = "Зинаида"
-            ..lastName = "Юрьевна"
-            ..fatherName = "Аркадьевна"
-            ..birthDay = DateTime.now()
-            ..imageUrl = "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
-          student: Student.empty()
-            ..id = "s1"
-            ..name = "Виталий"
-            ..lastName = "Евпанько"
-            ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
-          lessons: [
-            Lesson(
-              id: "l4",
-              name: "Урок №4",
-              description: "Какая-то инфа по уроку",
-              status: LessonStatus.planned,
-              dateTimeStart: DateTime.now(),
-              dateTimeEnd: DateTime.now(),
-            ),
-            Lesson(
-              id: "l5",
-              name: "Урок №5",
-              description: "Какая-то инфа по уроку",
-              status: LessonStatus.done,
-              dateTimeStart: DateTime.now().subtract(const Duration(hours: 4)),
-              dateTimeEnd: DateTime.now(),
-            ),
-          ],
-          rocketChatReference: "")
+        id: "d1",
+        name: "Информатика",
+        teacher: Teacher.empty()
+          ..id = "t1"
+          ..name = "Зинаида"
+          ..lastName = "Юрьевна"
+          ..fatherName = "Аркадьевна"
+          ..birthDay = DateTime.now()
+          ..imageUrl = "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
+        student: Student.empty()
+          ..id = "s1"
+          ..name = "Виталий"
+          ..lastName = "Евпанько"
+          ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+        lessons: [
+          Lesson(
+            id: "l4",
+            name: "Урок №4",
+            description: "Какая-то инфа по уроку",
+            status: LessonStatus.planned,
+            dateTimeStart: DateTime.now(),
+            dateTimeEnd: DateTime.now(),
+          ),
+          Lesson(
+            id: "l5",
+            name: "Урок №5",
+            description: "Какая-то инфа по уроку",
+            status: LessonStatus.done,
+            dateTimeStart: DateTime.now().subtract(const Duration(hours: 4)),
+            dateTimeEnd: DateTime.now(),
+          ),
+        ],
+        rocketChatReference: [],
+        minutes: 45,
+        price: 1000,
+      )
     ];
     notifyListeners();
   }

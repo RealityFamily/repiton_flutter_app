@@ -46,33 +46,36 @@ class TeachersProvider with ChangeNotifier {
     _teacherStudents.addAll(
       [
         Discipline(
-            id: "d1",
-            name: "Информатика",
-            teacher: Teacher.empty(),
-            student: Student.empty()
-              ..id = "s1"
-              ..name = "Виталий"
-              ..lastName = "Евпанько"
-              ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
-            lessons: [
-              Lesson(
-                id: "l4",
-                name: "Урок №4",
-                description: "Какая-то инфа по уроку",
-                status: LessonStatus.planned,
-                dateTimeStart: DateTime.now(),
-                dateTimeEnd: DateTime.now(),
-              ),
-              Lesson(
-                id: "l5",
-                name: "Урок №5",
-                description: "Какая-то инфа по уроку",
-                status: LessonStatus.done,
-                dateTimeStart: DateTime.now().subtract(const Duration(hours: 4)),
-                dateTimeEnd: DateTime.now(),
-              ),
-            ],
-            rocketChatReference: ""),
+          id: "d1",
+          name: "Информатика",
+          teacher: Teacher.empty(),
+          student: Student.empty()
+            ..id = "s1"
+            ..name = "Виталий"
+            ..lastName = "Евпанько"
+            ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+          lessons: [
+            Lesson(
+              id: "l4",
+              name: "Урок №4",
+              description: "Какая-то инфа по уроку",
+              status: LessonStatus.planned,
+              dateTimeStart: DateTime.now(),
+              dateTimeEnd: DateTime.now(),
+            ),
+            Lesson(
+              id: "l5",
+              name: "Урок №5",
+              description: "Какая-то инфа по уроку",
+              status: LessonStatus.done,
+              dateTimeStart: DateTime.now().subtract(const Duration(hours: 4)),
+              dateTimeEnd: DateTime.now(),
+            ),
+          ],
+          rocketChatReference: [],
+          minutes: 45,
+          price: 1000,
+        ),
       ],
     );
   }

@@ -35,6 +35,16 @@ class HomeTask {
     }
     return false;
   }
+
+  static HomeTaskType stringToHomeTaskType(String type) {
+    if (type == "Test") {
+      return HomeTaskType.test;
+    } else if (type == "Task") {
+      return HomeTaskType.task;
+    } else {
+      throw Exception("Error in parsing HomeTaskType. Got $type, which not in HomeTaskType values");
+    }
+  }
 }
 
 enum HomeTaskType {

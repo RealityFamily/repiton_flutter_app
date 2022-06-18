@@ -82,8 +82,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   );
 
                   if (_pickedDate != null) {
-                    String formattedDate =
-                        DateFormat('dd.MM.yyyy').format(_pickedDate);
+                    String formattedDate = DateFormat('dd.MM.yyyy').format(_pickedDate);
                     _dateController.text = formattedDate;
 
                     setState(() {
@@ -151,8 +150,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   });
                 },
                 items: const [
-                  DropdownMenuItem<String>(
-                      child: Text("Дошкольник"), value: "Дошкольник"),
+                  DropdownMenuItem<String>(child: Text("Дошкольник"), value: "Дошкольник"),
                   DropdownMenuItem<String>(child: Text("1"), value: "1"),
                   DropdownMenuItem<String>(child: Text("2"), value: "2"),
                   DropdownMenuItem<String>(child: Text("3"), value: "3"),
@@ -164,65 +162,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   DropdownMenuItem<String>(child: Text("9"), value: "9"),
                   DropdownMenuItem<String>(child: Text("10"), value: "10"),
                   DropdownMenuItem<String>(child: Text("11"), value: "11"),
-                  DropdownMenuItem<String>(
-                      child: Text("Студент"), value: "Студент"),
-                ],
-              ),
-              const SizedBox(
-                height: 36,
-              ),
-              const Text(
-                "Информация о проведении занятий",
-                style: TextStyle(
-                  fontSize: 22,
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Ставка",
-                        suffixText: "₽ в час",
-                      ),
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            double.tryParse(value) == null) {
-                          return "Введите ставку";
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        widget.result.price = double.parse(newValue!);
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 23,
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: "Количество занятий",
-                        suffixText: "ч. в нед.",
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            int.tryParse(value) == null) {
-                          return "Введите количество занятий";
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) {
-                        widget.result.hours = int.parse(newValue!);
-                      },
-                    ),
-                  ),
+                  DropdownMenuItem<String>(child: Text("Студент"), value: "Студент"),
                 ],
               ),
             ],

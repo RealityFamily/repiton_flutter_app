@@ -10,25 +10,23 @@ class LessonsProvider with ChangeNotifier {
   void setDescription(String newDescription) {
     if (_lesson == null) return;
     _lesson!.description = newDescription;
-    updateDataOnServer();
+    // TODO: Call API method with new data of lesson https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=discipline-lesson-service#/Lessons/putLessonId
     notifyListeners();
   }
 
   void setHometask(HomeTask newHomeTask) {
     if (_lesson == null) return;
-    _lesson!.homeTask = newHomeTask;
-    updateDataOnServer();
+    // TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=discipline-lesson-service#/Lessons/postLessonIdHometask
+    _lesson!.addHomeTaskToLesson(newHomeTask);
     notifyListeners();
   }
 
-  Future<void> setJitsyLink() async {
+  Future<void> startLesson() async {
     if (_lesson == null) return;
-    _lesson!.jitsyLink = await Future<String>.delayed(const Duration(milliseconds: 500), () => "");
+    _lesson!.status = LessonStatus.started;
+    // TODO: Refactor to API call https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=discipline-lesson-service#/Lessons/getLessonIdStartLesson
+    await Future.delayed(const Duration(milliseconds: 500));
     notifyListeners();
-  }
-
-  void updateDataOnServer() {
-    // TODO: PUT lesson info to server
   }
 
   void openLesson(Lesson newLesson) {

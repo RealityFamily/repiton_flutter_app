@@ -8,6 +8,8 @@ class Discipline {
   late Teacher teacher;
   late Student student;
   late List<Lesson> lessons;
+  late double price;
+  late int minutes;
 
   late List<String> rocketChatReference;
 
@@ -17,6 +19,8 @@ class Discipline {
     required this.teacher,
     required this.student,
     required this.lessons,
+    required this.price,
+    required this.minutes,
     required this.rocketChatReference,
   });
 
@@ -26,6 +30,8 @@ class Discipline {
     teacher = Teacher.empty();
     student = Student.empty();
     lessons = [];
+    price = 0;
+    minutes = 0;
     rocketChatReference = [];
   }
 }

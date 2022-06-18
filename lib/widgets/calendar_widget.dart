@@ -206,13 +206,19 @@ class TeachersInfoCalendar extends Calendar {
             case LessonStatus.done:
               result ??= LessonStatus.done;
               break;
-            case LessonStatus.canceled:
-              result = LessonStatus.canceled;
+            case LessonStatus.canceledByStudent:
+              result = LessonStatus.canceledByStudent;
+              break OUTER;
+            case LessonStatus.canceledByTeacher:
+              result = LessonStatus.canceledByTeacher;
               break OUTER;
             case LessonStatus.moved:
               result = LessonStatus.moved;
               break;
             case LessonStatus.planned:
+              break;
+            case LessonStatus.started:
+              result = LessonStatus.done;
               break;
           }
         }
@@ -221,7 +227,8 @@ class TeachersInfoCalendar extends Calendar {
     switch (result) {
       case LessonStatus.done:
         return const Color(0xFF9DCBAA);
-      case LessonStatus.canceled:
+      case LessonStatus.canceledByStudent:
+      case LessonStatus.canceledByTeacher:
         return const Color(0xFFDE9898);
       case LessonStatus.moved:
         return const Color(0xFFFFEE97);
@@ -264,13 +271,19 @@ class StudentsInfoCalendar extends Calendar {
             case LessonStatus.done:
               result ??= LessonStatus.done;
               break;
-            case LessonStatus.canceled:
-              result = LessonStatus.canceled;
+            case LessonStatus.canceledByStudent:
+              result = LessonStatus.canceledByStudent;
+              break OUTER;
+            case LessonStatus.canceledByTeacher:
+              result = LessonStatus.canceledByTeacher;
               break OUTER;
             case LessonStatus.moved:
               result = LessonStatus.moved;
               break;
             case LessonStatus.planned:
+              break;
+            case LessonStatus.started:
+              result = LessonStatus.done;
               break;
           }
         }
@@ -279,7 +292,8 @@ class StudentsInfoCalendar extends Calendar {
     switch (result) {
       case LessonStatus.done:
         return const Color(0xFF9DCBAA);
-      case LessonStatus.canceled:
+      case LessonStatus.canceledByStudent:
+      case LessonStatus.canceledByTeacher:
         return const Color(0xFFDE9898);
       case LessonStatus.moved:
         return const Color(0xFFFFEE97);
@@ -322,14 +336,19 @@ class TimeTableCalendar extends Calendar {
             case LessonStatus.done:
               result ??= LessonStatus.done;
               break;
-            case LessonStatus.canceled:
-              result = LessonStatus.canceled;
+            case LessonStatus.canceledByStudent:
+              result = LessonStatus.canceledByStudent;
+              break OUTER;
+            case LessonStatus.canceledByTeacher:
+              result = LessonStatus.canceledByTeacher;
               break OUTER;
             case LessonStatus.moved:
               result = LessonStatus.moved;
               break;
             case LessonStatus.planned:
-              result = LessonStatus.planned;
+              break;
+            case LessonStatus.started:
+              result = LessonStatus.done;
               break;
           }
         }
@@ -338,12 +357,11 @@ class TimeTableCalendar extends Calendar {
     switch (result) {
       case LessonStatus.done:
         return const Color(0xFF9DCBAA);
-      case LessonStatus.canceled:
+      case LessonStatus.canceledByStudent:
+      case LessonStatus.canceledByTeacher:
         return const Color(0xFFDE9898);
       case LessonStatus.moved:
         return const Color(0xFFFFEE97);
-      case LessonStatus.planned:
-        return const Color.fromARGB(255, 151, 187, 255);
       default:
         return null;
     }

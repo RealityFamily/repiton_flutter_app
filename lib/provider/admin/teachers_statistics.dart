@@ -12,6 +12,7 @@ class TearchersStatiscticsProvider with ChangeNotifier {
 
   Future<Teacher> getCachedTeacher(String id) async {
     if (_teacher == null || _teacher!.id != id) {
+      //TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=user-service#/Teacher/teacherIdGet
       _teacher = Teacher(
         id: "t1",
         name: "Зинаида",
@@ -77,7 +78,7 @@ class TearchersStatiscticsProvider with ChangeNotifier {
 
     await Future.delayed(const Duration(milliseconds: 500));
 
-    //TODO: Send request to server
+    //TODO: Call API method
 
     _statistics = FinancialStatistics(
       allLessons: 10,
@@ -108,7 +109,7 @@ class TearchersStatiscticsProvider with ChangeNotifier {
               id: "l2",
               name: "Урок №2",
               description: "Какая-то инфа по уроку",
-              status: LessonStatus.canceled,
+              status: LessonStatus.canceledByStudent,
               dateTimeStart: DateTime.now().subtract(
                 const Duration(days: 8),
               ),

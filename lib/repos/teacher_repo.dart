@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:repiton/core/network/repiton_api/repiton_api_container.dart';
 import 'package:repiton/model/discipline.dart';
@@ -43,6 +42,8 @@ extension on DisciplineDTO {
         student: student.toStudent,
         lessons: lessons.map((dto) => dto.toLesson).toList(),
         rocketChatReference: rocketChats.map((dto) => dto.channelName).toList(),
+        minutes: minutes,
+        price: price,
       );
 }
 
@@ -89,7 +90,7 @@ extension on LessonDTO {
       id: id,
       name: name,
       description: description,
-      status: status,
+      status: Lesson.stringToLessonStatus(status),
       dateTimeStart: dateTimeStart,
       dateTimeEnd: dateTimeEnd,
       homeTask: homeTask.map((dto) => dto.toHomeTask).toList());
@@ -99,7 +100,7 @@ extension on HomeTaskDTO {
   HomeTask get toHomeTask => HomeTask(
         id: id,
         description: description,
-        type: type,
+        type: HomeTask.stringToHomeTaskType(type),
         test: test.toTest,
         files: files.map((dto) => RemoteFile(name: dto)).toList(),
       );

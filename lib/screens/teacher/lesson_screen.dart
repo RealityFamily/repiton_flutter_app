@@ -14,7 +14,7 @@ import '../../widgets/test_info_widget.dart';
 class LessonScreen extends StatefulWidget {
   final String disciplineName;
   final String studentName;
-  final String rocketChatRef;
+  final List<String> rocketChatRef;
   final String studentImageUrl;
   final String teacherImageUrl;
 

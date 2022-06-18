@@ -126,12 +126,17 @@ class ControllTeacherStudentInfo extends StatelessWidget {
 
                           switch (lessons[index].status) {
                             case LessonStatus.done:
+                            case LessonStatus.started:
                               background = const Color(0xFF9DCBAA);
                               trailing = "Проведено";
                               break;
-                            case LessonStatus.canceled:
+                            case LessonStatus.canceledByStudent:
                               background = const Color(0xFFDE9898);
-                              trailing = "Отменено";
+                              trailing = "Отменено учеником";
+                              break;
+                            case LessonStatus.canceledByTeacher:
+                              background = const Color(0xFFDE9898);
+                              trailing = "Отменено преподавателем";
                               break;
                             case LessonStatus.moved:
                               background = const Color(0xFFFFEE97);

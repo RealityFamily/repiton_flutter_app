@@ -12,8 +12,10 @@ class UsersProvider with ChangeNotifier {
   List<Student> get studentsList => [..._studentsList];
 
   Future<void> fetchTeachers() async {
-    await Future.delayed(const Duration(milliseconds: 500));
     _teachersList.clear();
+    // TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=user-service#/Teacher/getTeachers
+
+    await Future.delayed(const Duration(milliseconds: 500));
     _teachersList.addAll(
       [
         Teacher(
@@ -38,8 +40,10 @@ class UsersProvider with ChangeNotifier {
   }
 
   Future<void> fetchStudents() async {
-    await Future.delayed(const Duration(milliseconds: 500));
     _studentsList.clear();
+    // TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=user-service#/Student/getStudents
+
+    await Future.delayed(const Duration(milliseconds: 500));
     _studentsList.addAll(
       [
         Student(
@@ -52,8 +56,6 @@ class UsersProvider with ChangeNotifier {
           imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
           education: "",
           parents: [],
-          price: 0,
-          hours: 0,
         ),
       ],
     );

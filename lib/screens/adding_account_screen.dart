@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/widgets/add_discipline_info.dart';
 import 'package:repiton/widgets/add_student_info.dart';
 import 'package:repiton/widgets/add_student_parent_info.dart';
 import 'package:repiton/widgets/add_teacher_info.dart';
@@ -9,6 +11,7 @@ import 'package:repiton/widgets/add_teacher_info.dart';
 class AddingAccountScreen extends StatefulWidget {
   final Teacher teacher = Teacher.empty();
   final Student student = Student.empty();
+  final Discipline discipline = Discipline.empty();
   final String? teacherFrom;
   final AddingState state;
 
@@ -97,13 +100,10 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
                   child: widget.state == AddingState.student
                       ? Column(
                           children: [
-                            AddStudentInfo(
-                              formKey: studentFormKey,
-                              result: widget.student,
-                            ),
-                            const SizedBox(
-                              height: 23,
-                            ),
+                            AddStudentInfo(formKey: studentFormKey, result: widget.student),
+                            const SizedBox(height: 36),
+                            AddDisciplineInfo(result: widget.discipline, formKey: studentFormKey),
+                            const SizedBox(height: 23),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -154,9 +154,7 @@ class _AddingAccountScreenState extends State<AddingAccountScreen> {
                                   },
                                 );
                               },
-                              separatorBuilder: (context, index) => const SizedBox(
-                                height: 36,
-                              ),
+                              separatorBuilder: (context, index) => const SizedBox(height: 36),
                               itemCount: parentList.length,
                             ),
                           ],

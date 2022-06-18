@@ -17,8 +17,6 @@ class StudentsProvider with ChangeNotifier {
       imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
       education: "",
       parents: [],
-      price: 0,
-      hours: 0,
     );
     return _student!;
   }
