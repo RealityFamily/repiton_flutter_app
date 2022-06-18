@@ -33,138 +33,141 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    return TableCalendar(
-      focusedDay: _showDate,
-      firstDay: DateTime(2000),
-      lastDay: widget.lastDay,
-      calendarFormat: widget.format,
-      startingDayOfWeek: StartingDayOfWeek.monday,
-      headerStyle: HeaderStyle(
-          formatButtonVisible: false,
-          titleCentered: true,
-          titleTextStyle: const TextStyle(
-            fontSize: 24,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 500),
+      child: TableCalendar(
+        focusedDay: _showDate,
+        firstDay: DateTime(2000),
+        lastDay: widget.lastDay,
+        calendarFormat: widget.format,
+        startingDayOfWeek: StartingDayOfWeek.monday,
+        headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+            titleTextStyle: const TextStyle(
+              fontSize: 24,
+            ),
+            titleTextFormatter: (date, locale) {
+              String result = "";
+
+              switch (date.month) {
+                case 1:
+                  result = "Январь";
+                  break;
+                case 2:
+                  result = "Февраль";
+                  break;
+                case 3:
+                  result = "Март";
+                  break;
+                case 4:
+                  result = "Апрель";
+                  break;
+                case 5:
+                  result = "Май";
+                  break;
+                case 6:
+                  result = "Июнь";
+                  break;
+                case 7:
+                  result = "Июль";
+                  break;
+                case 8:
+                  result = "Август";
+                  break;
+                case 9:
+                  result = "Сентябрь";
+                  break;
+                case 10:
+                  result = "Октябрь";
+                  break;
+                case 11:
+                  result = "Ноябрь";
+                  break;
+                case 12:
+                  result = "Декабрь";
+                  break;
+              }
+
+              return result + " " + date.year.toString();
+            }),
+        daysOfWeekStyle: DaysOfWeekStyle(
+            dowTextFormatter: (date, locale) => DateFormat("EE", "ru").format(
+                  date,
+                )),
+        calendarStyle: CalendarStyle(
+          selectedDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            shape: BoxShape.circle,
           ),
-          titleTextFormatter: (date, locale) {
-            String result = "";
-
-            switch (date.month) {
-              case 1:
-                result = "Январь";
-                break;
-              case 2:
-                result = "Февраль";
-                break;
-              case 3:
-                result = "Март";
-                break;
-              case 4:
-                result = "Апрель";
-                break;
-              case 5:
-                result = "Май";
-                break;
-              case 6:
-                result = "Июнь";
-                break;
-              case 7:
-                result = "Июль";
-                break;
-              case 8:
-                result = "Август";
-                break;
-              case 9:
-                result = "Сентябрь";
-                break;
-              case 10:
-                result = "Октябрь";
-                break;
-              case 11:
-                result = "Ноябрь";
-                break;
-              case 12:
-                result = "Декабрь";
-                break;
-            }
-
-            return result + " " + date.year.toString();
-          }),
-      daysOfWeekStyle: DaysOfWeekStyle(
-          dowTextFormatter: (date, locale) => DateFormat("EE", "ru").format(
-                date,
-              )),
-      calendarStyle: CalendarStyle(
-        selectedDecoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          shape: BoxShape.circle,
-        ),
-        todayTextStyle: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        todayDecoration: BoxDecoration(
-          border: Border.all(
-            width: 1,
+          todayTextStyle: TextStyle(
             color: Theme.of(context).colorScheme.primary,
           ),
-          shape: BoxShape.circle,
-        ),
-      ),
-      selectedDayPredicate: (day) {
-        return isSameDay(_selectDate, day);
-      },
-      onDaySelected: (selectedDay, focusedDay) {
-        setState(() {
-          _selectDate = selectedDay;
-          _showDate = focusedDay;
-        });
-        widget.selectAction(_selectDate);
-      },
-      onPageChanged: (focusedDay) {
-        setState(() {
-          _showDate = focusedDay;
-        });
-        widget.pageChangeAction(_showDate);
-      },
-      calendarBuilders: CalendarBuilders(
-        defaultBuilder: (context, date, events) => Container(
-          margin: const EdgeInsets.all(5.0),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: widget.getColor(date) ?? Colors.transparent,
-          ),
-          child: Text(
-            date.day.toString(),
-            style: TextStyle(
+          todayDecoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
               color: Theme.of(context).colorScheme.primary,
-              fontSize: 16,
+            ),
+            shape: BoxShape.circle,
+          ),
+        ),
+        selectedDayPredicate: (day) {
+          return isSameDay(_selectDate, day);
+        },
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            _selectDate = selectedDay;
+            _showDate = focusedDay;
+          });
+          widget.selectAction(_selectDate);
+        },
+        onPageChanged: (focusedDay) {
+          setState(() {
+            _showDate = focusedDay;
+          });
+          widget.pageChangeAction(_showDate);
+        },
+        calendarBuilders: CalendarBuilders(
+          defaultBuilder: (context, date, events) => Container(
+            margin: const EdgeInsets.all(5.0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: widget.getColor(date) ?? Colors.transparent,
+            ),
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 16,
+              ),
             ),
           ),
-        ),
-        selectedBuilder: (context, date, events) => Container(
-          margin: const EdgeInsets.all(5.0),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          child: Text(
-            date.day.toString(),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
+          selectedBuilder: (context, date, events) => Container(
+            margin: const EdgeInsets.all(5.0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: Text(
+              date.day.toString(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
             ),
           ),
-        ),
-        todayBuilder: (context, date, events) => Container(
-          margin: const EdgeInsets.all(5.0),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: widget.getColor(date) ?? Colors.black26,
-          ),
-          child: Text(
-            date.day.toString(),
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 16,
+          todayBuilder: (context, date, events) => Container(
+            margin: const EdgeInsets.all(5.0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: widget.getColor(date) ?? Colors.black26,
+            ),
+            child: Text(
+              date.day.toString(),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 16,
+              ),
             ),
           ),
         ),
