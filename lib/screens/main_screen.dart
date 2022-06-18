@@ -69,8 +69,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            Container(
               width: sideBarWidth,
+              constraints: const BoxConstraints(minWidth: 200, maxWidth: 300),
               child: SideBarMenu(
                 pageIndex: pageIndex,
                 buttons: _getBottomNavigationControllerButtons(auth.userRole),
