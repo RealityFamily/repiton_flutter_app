@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
-import 'package:repiton/model/student.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/controll_learn_statistics_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
@@ -16,6 +15,8 @@ class ControllStudentInfo extends StatefulWidget {
 class _ControllTeacherInfoState extends State<ControllStudentInfo> {
   final List<String> _states = ["Неделя", "Месяц", "Выбрать..."];
   late String _state = _states[0];
+  bool isLoading = false;
+  String? studentFullName;
 
   Widget _getContent() {
     if (_states.indexOf(_state) == 0) {
@@ -25,6 +26,43 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
     } else {
       return ControllLearnStatisticsWidget(state: InfoVisualisationState.custom, key: ValueKey(_state));
     }
+  }
+
+  void _getStudentFullName() async {
+    setState(() => isLoading = true);
+    final fullName = (await RootProvider.getStudentsStatistics().getCachedStudent(widget.id)).fullName;
+    setState(() {
+      isLoading = false;
+      studentFullName = fullName;
+    });
+  }
+
+  Widget get _controllHeader {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Ведение", textAlign: TextAlign.center, style: TextStyle(fontSize: 34)),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(
+              children: [
+                const TextSpan(text: "Ученик ", style: TextStyle(fontSize: 18, color: Colors.grey)),
+                TextSpan(text: studentFullName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    _getStudentFullName();
+    super.initState();
   }
 
   @override
@@ -39,81 +77,21 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
               SizedBox(
                 width: double.infinity,
                 child: Stack(
+                  alignment: Alignment.centerLeft,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Ведение",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 34,
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
+                    Container(width: double.infinity, alignment: Alignment.center, child: _controllHeader),
+                    IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(Icons.arrow_back)),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 8,
               ),
               Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [StateChooser(items: _states, onStateChange: (state) => setState(() => _state = state)), _getContent()],
+                  ),
                 ),
-                child: Column(
-                  children: [
-                    FutureBuilder<Student>(
-                      future: RootProvider.getStudentsStatistics().getCachedStudent(widget.id),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                          return RichText(
-                            text: TextSpan(
-                              children: [
-                                const TextSpan(
-                                  text: "Ученик ",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: snapshot.data!.name + " " + snapshot.data!.lastName,
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    ),
-                    StateChooser(
-                      items: _states,
-                      onStateChange: (state) {
-                        setState(() {
-                          _state = state;
-                        });
-                      },
-                    ),
-                    _getContent()
-                  ],
-                ),
-              )),
+              ),
             ],
           ),
         ),

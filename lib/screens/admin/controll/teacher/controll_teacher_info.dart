@@ -16,6 +16,8 @@ class ControllTeacherInfo extends StatefulWidget {
 class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
   final List<String> _states = ["Неделя", "Месяц", "Выбрать..."];
   late String _state = _states[0];
+  bool isLoading = false;
+  String? teacherFullName;
 
   Widget _getContent() {
     if (_states.indexOf(_state) == 0) {
@@ -25,6 +27,36 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
     } else {
       return ControllFinancinalStatisticsWidget(state: InfoVisualisationState.custom, key: ValueKey(_state));
     }
+  }
+
+  void _getTeacherFullName() async {
+    setState(() => isLoading = true);
+    final fullName = (await RootProvider.getTearchersStatisctics().getCachedTeacher(widget.id)).fullName;
+    setState(() {
+      isLoading = false;
+      teacherFullName = fullName;
+    });
+  }
+
+  Widget get _controllHeader {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Ведение", textAlign: TextAlign.center, style: TextStyle(fontSize: 34)),
+          const SizedBox(height: 8),
+          Text(teacherFullName ?? '', style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+        ],
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    _getTeacherFullName();
+    super.initState();
   }
 
   @override
@@ -39,51 +71,18 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
               SizedBox(
                 width: double.infinity,
                 child: Stack(
+                  alignment: Alignment.centerLeft,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Ведение",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 34,
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
+                    Container(width: double.infinity, alignment: Alignment.center, child: _controllHeader),
+                    IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(Icons.arrow_back)),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 8,
               ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      FutureBuilder<Teacher>(
-                        future: RootProvider.getTearchersStatisctics().getCachedTeacher(widget.id),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                            return Text(
-                              snapshot.data!.lastName + " " + snapshot.data!.name + " " + snapshot.data!.fatherName,
-                              style: const TextStyle(fontSize: 22),
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                      ),
                       StateChooser(
                         items: _states,
                         onStateChange: (state) {

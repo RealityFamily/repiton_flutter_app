@@ -23,99 +23,51 @@ class ControllTeacherStudentInfo extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Stack(
+                  alignment: Alignment.centerLeft,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Ведение",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 34,
+                    SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          const Text("Ведение", textAlign: TextAlign.center, style: TextStyle(fontSize: 34)),
+                          const SizedBox(height: 8),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(text: "Ученик ", style: TextStyle(fontSize: 18, color: Colors.grey)),
+                                TextSpan(text: studentStatistics.student.fullName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
+                    IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(Icons.arrow_back)),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: "Ученик ",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " " + studentStatistics.student.name + " " + studentStatistics.student.lastName,
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
+              const SizedBox(height: 32),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Проведенных занятий",
-                            style: TextStyle(fontSize: 22),
-                          ),
-                          Text(
-                            studentStatistics.presents.toString(),
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          const Text("Проведенных занятий", style: TextStyle(fontSize: 22)),
+                          Text(studentStatistics.presents.toString(), style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Итого к оплате",
-                            style: TextStyle(fontSize: 22),
-                          ),
-                          Text(
-                            studentStatistics.price.toStringAsFixed(0) + " ₽",
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          const Text("Итого к оплате", style: TextStyle(fontSize: 22)),
+                          Text(studentStatistics.price.toStringAsFixed(0) + " ₽", style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
                         ],
                       ),
-                      const SizedBox(
-                        height: 42,
-                      ),
+                      const SizedBox(height: 42),
                       ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -147,24 +99,12 @@ class ControllTeacherStudentInfo extends StatelessWidget {
                           }
 
                           return ListTile(
-                            title: Text(
-                              DateFormat("dd.MM.yyyy").format(
-                                lessons[index].dateTimeStart,
-                              ),
-                              style: const TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
+                            title: Text(DateFormat("dd.MM.yyyy").format(lessons[index].dateTimeStart), style: const TextStyle(fontSize: 18)),
                             trailing: Container(
-                              constraints: const BoxConstraints(
-                                minWidth: 110,
-                              ),
+                              constraints: const BoxConstraints(minWidth: 110),
                               padding: const EdgeInsets.all(10),
                               color: background,
-                              child: Text(
-                                trailing,
-                                textAlign: TextAlign.center,
-                              ),
+                              child: Text(trailing, textAlign: TextAlign.center),
                             ),
                           );
                         },

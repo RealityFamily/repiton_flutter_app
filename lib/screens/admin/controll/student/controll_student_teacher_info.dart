@@ -11,6 +11,24 @@ class ControllStudentTeacherInfo extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  Widget _statisticsCount(int countingValue, int countAllLessons) => RichText(
+        text: TextSpan(
+          children: [
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Text(
+                "${countingValue.toString()}/${countAllLessons.toString()}",
+                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.black),
+              ),
+            ),
+            TextSpan(
+              text: " (${(countingValue * 100 / countAllLessons).toStringAsFixed(0)}%)",
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black45),
+            ),
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,153 +41,56 @@ class ControllStudentTeacherInfo extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Stack(
+                  alignment: Alignment.centerLeft,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Ведение",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 34,
+                    SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          const Text("Ведение", textAlign: TextAlign.center, style: TextStyle(fontSize: 34)),
+                          const SizedBox(height: 8),
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: studentStatistics.discipline.name + "\n",
+                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
+                                ),
+                                TextSpan(
+                                    text: studentStatistics.discipline.teacher.fullName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
+                    IconButton(padding: EdgeInsets.zero, onPressed: () => Navigator.of(context).pop(), icon: const Icon(Icons.arrow_back)),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: studentStatistics.discipline.name + "\n",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " " +
-                          studentStatistics.discipline.teacher.lastName +
-                          " " +
-                          studentStatistics.discipline.teacher.name +
-                          " " +
-                          studentStatistics.discipline.teacher.fatherName,
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
+              const SizedBox(height: 32),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Посещений",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                WidgetSpan(
-                                  alignment: PlaceholderAlignment.middle,
-                                  child: Text(
-                                    studentStatistics.presents.toString() +
-                                        "/" +
-                                        studentStatistics.discipline.lessons.length.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " (" +
-                                      (studentStatistics.presents * 100 / studentStatistics.discipline.lessons.length)
-                                          .toStringAsFixed(0) +
-                                      "%)",
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black45,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          const Text("Посещений", style: TextStyle(fontSize: 20)),
+                          _statisticsCount(studentStatistics.presents, studentStatistics.discipline.lessons.length),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Выполненных д/з",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                WidgetSpan(
-                                  alignment: PlaceholderAlignment.middle,
-                                  child: Text(
-                                    studentStatistics.homeTasks.toString() +
-                                        "/" +
-                                        studentStatistics.discipline.lessons.length.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " (" +
-                                      (studentStatistics.homeTasks * 100 / studentStatistics.discipline.lessons.length)
-                                          .toStringAsFixed(0) +
-                                      "%)",
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black45,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          const Text("Выполненных д/з", style: TextStyle(fontSize: 20)),
+                          _statisticsCount(studentStatistics.homeTasks, studentStatistics.discipline.lessons.length),
                         ],
                       ),
-                      const SizedBox(
-                        height: 42,
-                      ),
+                      const SizedBox(height: 42),
                       ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
