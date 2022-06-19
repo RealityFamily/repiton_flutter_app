@@ -47,18 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
               hasScrollBody: false,
               child: Column(
                 children: [
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        "Repiton",
-                        style: TextStyle(
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ),
+                  const Expanded(child: Center(child: Text("Repiton", style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)))),
                   Expanded(
                     child: Form(
                       key: _formKey,
@@ -71,9 +60,9 @@ class _AuthScreenState extends State<AuthScreen> {
                               decoration: const InputDecoration(
                                 constraints: BoxConstraints(maxWidth: 500),
                                 labelText: "Логин",
+                                contentPadding: EdgeInsets.symmetric(vertical: 5),
                               ),
-                              validator: (value) =>
-                                  value == null || value.isEmpty ? "Введите корректный логин или почту" : null,
+                              validator: (value) => value == null || value.isEmpty ? "Введите корректный логин или почту" : null,
                               onSaved: (value) => login = value ?? "",
                               textInputAction: TextInputAction.next,
                             ),
@@ -84,20 +73,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               decoration: InputDecoration(
                                 constraints: const BoxConstraints(maxWidth: 500),
                                 labelText: "Пароль",
+                                contentPadding: const EdgeInsets.symmetric(vertical: 5),
                                 suffix: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      isObscure = !isObscure;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    isObscure ? CupertinoIcons.eye_fill : CupertinoIcons.eye_slash_fill,
-                                    color: Colors.black,
-                                  ),
+                                  onPressed: () => setState(() => isObscure = !isObscure),
+                                  icon: Icon(isObscure ? CupertinoIcons.eye_fill : CupertinoIcons.eye_slash_fill, color: Colors.black),
                                 ),
                               ),
-                              validator: (value) =>
-                                  value == null || value.length <= 5 ? "Введите корректный пароль" : null,
+                              validator: (value) => value == null || value.length <= 5 ? "Введите корректный пароль" : null,
                               onSaved: (value) => password = value ?? "",
                             ),
                             const SizedBox(height: 20),
@@ -107,9 +89,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 textStyle: const TextStyle(fontSize: 18),
                                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                               ),
-                              child: const Text(
-                                "Войти",
-                              ),
+                              child: const Text("Войти"),
                             )
                           ],
                         ),

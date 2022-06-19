@@ -38,7 +38,7 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
               child: Column(
                 children: [
                   TextFormField(
-                    decoration: const InputDecoration(labelText: "Фамилия"),
+                    decoration: const InputDecoration(labelText: "Фамилия", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                     keyboardType: TextInputType.name,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -49,7 +49,7 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
                     onSaved: (newValue) => teacher.lastName = newValue!,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: "Имя"),
+                    decoration: const InputDecoration(labelText: "Имя", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                     keyboardType: TextInputType.name,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -60,7 +60,7 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
                     onSaved: (newValue) => teacher.name = newValue!,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: "Отчество"),
+                    decoration: const InputDecoration(labelText: "Отчество", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                     keyboardType: TextInputType.name,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -71,7 +71,7 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
                     onSaved: (newValue) => teacher.fatherName = newValue!,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: "Дата рождения"),
+                    decoration: const InputDecoration(labelText: "Дата рождения", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                     controller: _dateController,
                     keyboardType: TextInputType.datetime,
                     readOnly: true,
@@ -103,7 +103,7 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
                     onSaved: (newValue) => teacher.birthDay = pickedDate!,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: "Почта"),
+                    decoration: const InputDecoration(labelText: "Почта", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty || !value.contains("@")) {
@@ -114,7 +114,7 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
                     onSaved: (newValue) => teacher.email = newValue!,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: "Телефон"),
+                    decoration: const InputDecoration(labelText: "Телефон", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                     keyboardType: TextInputType.phone,
                     validator: (value) {
                       if (value == null || value.isEmpty) {

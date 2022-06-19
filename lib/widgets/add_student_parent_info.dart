@@ -31,7 +31,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
           child: Column(
             children: [
               TextFormField(
-                decoration: const InputDecoration(labelText: "Фамилия"),
+                decoration: const InputDecoration(labelText: "Фамилия", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -42,7 +42,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
                 onSaved: (newValue) => widget.result.lastName = newValue!,
               ),
               TextFormField(
-                decoration: const InputDecoration(labelText: "Имя"),
+                decoration: const InputDecoration(labelText: "Имя", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -53,7 +53,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
                 onSaved: (newValue) => widget.result.name = newValue!,
               ),
               TextFormField(
-                decoration: const InputDecoration(labelText: "Отчество"),
+                decoration: const InputDecoration(labelText: "Отчество", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -64,7 +64,7 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
                 onSaved: (newValue) => widget.result.fatherName = newValue!,
               ),
               TextFormField(
-                decoration: const InputDecoration(labelText: "Телефон"),
+                decoration: const InputDecoration(labelText: "Телефон", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {

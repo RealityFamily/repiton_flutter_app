@@ -26,20 +26,13 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          "Введите данные ученика",
-          style: TextStyle(
-            fontSize: 22,
-          ),
-        ),
+        const Text("Введите данные ученика", style: TextStyle(fontSize: 22)),
         Form(
           key: widget.formKey,
           child: Column(
             children: [
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Фамилия",
-                ),
+                decoration: const InputDecoration(labelText: "Фамилия", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -47,14 +40,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   }
                   return null;
                 },
-                onSaved: (newValue) {
-                  widget.result.lastName = newValue!;
-                },
+                onSaved: (newValue) => widget.result.lastName = newValue!,
               ),
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Имя",
-                ),
+                decoration: const InputDecoration(labelText: "Имя", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -62,14 +51,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   }
                   return null;
                 },
-                onSaved: (newValue) {
-                  widget.result.name = newValue!;
-                },
+                onSaved: (newValue) => widget.result.name = newValue!,
               ),
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Дата рождения",
-                ),
+                decoration: const InputDecoration(labelText: "Дата рождения", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 controller: _dateController,
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
@@ -85,9 +70,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     String formattedDate = DateFormat('dd.MM.yyyy').format(_pickedDate);
                     _dateController.text = formattedDate;
 
-                    setState(() {
-                      pickedDate = _pickedDate;
-                    });
+                    setState(() => pickedDate = _pickedDate);
                   } else {
                     debugPrint("Date is not selected");
                   }
@@ -98,14 +81,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   }
                   return null;
                 },
-                onSaved: (newValue) {
-                  widget.result.birthDay = pickedDate!;
-                },
+                onSaved: (newValue) => widget.result.birthDay = pickedDate!,
               ),
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Почта",
-                ),
+                decoration: const InputDecoration(labelText: "Почта", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty || !value.contains("@")) {
@@ -113,14 +92,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   }
                   return null;
                 },
-                onSaved: (newValue) {
-                  widget.result.email = newValue!;
-                },
+                onSaved: (newValue) => widget.result.email = newValue!,
               ),
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Телефон",
-                ),
+                decoration: const InputDecoration(labelText: "Телефон", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -128,9 +103,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   }
                   return null;
                 },
-                onSaved: (newValue) {
-                  widget.result.phone = newValue!;
-                },
+                onSaved: (newValue) => widget.result.phone = newValue!,
               ),
               DropdownButtonFormField<String>(
                 hint: const Text("В каком вы классе?"),
@@ -141,14 +114,8 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   }
                   return null;
                 },
-                onSaved: (newValue) {
-                  widget.result.education = newValue!;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue = value!;
-                  });
-                },
+                onSaved: (newValue) => widget.result.education = newValue!,
+                onChanged: (value) => setState(() => selectedValue = value!),
                 items: const [
                   DropdownMenuItem<String>(child: Text("Дошкольник"), value: "Дошкольник"),
                   DropdownMenuItem<String>(child: Text("1"), value: "1"),
