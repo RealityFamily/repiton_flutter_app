@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:repiton_api/auth/entities/test_dto.dart';
+import 'package:repiton_api/entities/test_dto.dart';
 
 part 'hometask_dto.g.dart';
 

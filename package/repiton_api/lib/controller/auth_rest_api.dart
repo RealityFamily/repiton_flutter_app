@@ -1,5 +1,5 @@
-import 'package:repiton_api/auth/entities/user_auth_request.dart';
-import 'package:repiton_api/auth/entities/user_auth_response.dart';
+import 'package:repiton_api/entities/user_auth_request.dart';
+import 'package:repiton_api/entities/user_auth_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:repiton_api/auth/entities/hometask_dto.dart';
+import 'package:repiton_api/entities/hometask_dto.dart';
 
 part 'lesson_dto.g.dart';
 

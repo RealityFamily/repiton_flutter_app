@@ -9,13 +9,13 @@ import 'package:repiton/model/remote_file.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/model/test.dart';
-import 'package:repiton_api/auth/entities/discipline_dto.dart';
-import 'package:repiton_api/auth/entities/hometask_dto.dart';
-import 'package:repiton_api/auth/entities/lesson_dto.dart';
-import 'package:repiton_api/auth/entities/parent_dto.dart';
-import 'package:repiton_api/auth/entities/student_dto.dart';
-import 'package:repiton_api/auth/entities/teacher_dto.dart';
-import 'package:repiton_api/auth/entities/test_dto.dart';
+import 'package:repiton_api/entities/discipline_dto.dart';
+import 'package:repiton_api/entities/hometask_dto.dart';
+import 'package:repiton_api/entities/lesson_dto.dart';
+import 'package:repiton_api/entities/parent_dto.dart';
+import 'package:repiton_api/entities/student_dto.dart';
+import 'package:repiton_api/entities/teacher_dto.dart';
+import 'package:repiton_api/entities/test_dto.dart';
 
 abstract class ITeacherRepo {
   Future<List<Discipline>> getTimetable(String teacherId, DateTime dateTimeFrom, DateTime dateTimeTo);

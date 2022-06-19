@@ -1,7 +1,7 @@
-import 'package:repiton_api/auth/controller/auth_rest_api.dart';
 import 'package:dio/dio.dart';
-import 'package:repiton_api/auth/controller/discipline_lesson_rest_api.dart';
-import 'package:repiton_api/auth/controller/user_rest_api.dart';
+import 'package:repiton_api/controller/auth_rest_api.dart';
+import 'package:repiton_api/controller/discipline_lesson_rest_api.dart';
+import 'package:repiton_api/controller/user_rest_api.dart';
 
 class RepitonRestApi {
   final Dio _dio;

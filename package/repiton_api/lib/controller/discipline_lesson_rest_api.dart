@@ -1,4 +1,4 @@
-import 'package:repiton_api/auth/entities/discipline_dto.dart';
+import 'package:repiton_api/entities/discipline_dto.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 

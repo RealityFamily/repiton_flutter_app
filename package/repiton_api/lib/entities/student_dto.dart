@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:repiton_api/auth/entities/parent_dto.dart';
+import 'package:repiton_api/entities/parent_dto.dart';
 
 part 'student_dto.g.dart';
 

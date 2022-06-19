@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:repiton_api/auth/entities/lesson_dto.dart';
-import 'package:repiton_api/auth/entities/rocket_chat_dto.dart';
-import 'package:repiton_api/auth/entities/student_dto.dart';
-import 'package:repiton_api/auth/entities/teacher_dto.dart';
+import 'package:repiton_api/entities/lesson_dto.dart';
+import 'package:repiton_api/entities/rocket_chat_dto.dart';
+import 'package:repiton_api/entities/student_dto.dart';
+import 'package:repiton_api/entities/teacher_dto.dart';
 
 part 'discipline_dto.g.dart';
 
