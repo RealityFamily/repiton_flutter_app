@@ -28,21 +28,54 @@ class LessonInfoWidget extends StatefulWidget {
 class _LessonInfoWidgetState extends State<LessonInfoWidget> {
   bool _isLoading = false;
 
-  void _onLessonButtonTap(LessonsProvider lessons) async {
-    if (lessons.lesson!.status == LessonStatus.started) {
-      if (kIsWeb) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WebJitsiCallScreen()));
-      } else {
-        JitsyLogic.joinMeeting("Leonis", "Leonis13579", lessons.lesson!.id);
-      }
+  void _startLesson(LessonsProvider lessons) async {
+    setState(() {
+      _isLoading = true;
+    });
+    await lessons.startLesson();
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _connectToLessonRoom(String lessonId) {
+    if (kIsWeb) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebJitsiCallScreen(roomId: lessonId)));
     } else {
-      setState(() {
-        _isLoading = true;
-      });
-      await lessons.startLesson();
-      setState(() {
-        _isLoading = false;
-      });
+      JitsyLogic.joinMeeting("Leonis", "Leonis13579", lessonId, context);
+    }
+  }
+
+  Function()? _lessonButtonOnPressed(LessonsProvider provider) {
+    switch (provider.lesson!.status) {
+      case LessonStatus.planned:
+        return () => _startLesson(provider);
+      case LessonStatus.started:
+        return () => _connectToLessonRoom(provider.lesson!.id);
+      case LessonStatus.moved:
+        // TODO: Need to open a moved lesson page
+        return null;
+      case LessonStatus.done:
+      case LessonStatus.canceledByTeacher:
+      case LessonStatus.canceledByStudent:
+      default:
+        return null;
+    }
+  }
+
+  String _lessonsButtonTextContent(LessonStatus status) {
+    switch (status) {
+      case LessonStatus.planned:
+        return "Начать занятие";
+      case LessonStatus.started:
+        return "Подключиться к занятию";
+      case LessonStatus.done:
+        return "Занятие проведено";
+      case LessonStatus.moved:
+        return "Занятие перенесено. Перейти к перенесенному занятию";
+      case LessonStatus.canceledByTeacher:
+      case LessonStatus.canceledByStudent:
+        return "Занятие отменено";
     }
   }
 
@@ -59,11 +92,8 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     padding: kIsWeb ? const EdgeInsets.symmetric(vertical: 16, horizontal: 24) : const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
-                  onPressed: () => _onLessonButtonTap(lessons),
-                  child: Text(
-                    lessons.lesson!.status == LessonStatus.started ? "Подключиться к занятию" : "Начать занятие",
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                  onPressed: _lessonButtonOnPressed(lessons),
+                  child: Text(_lessonsButtonTextContent(lessons.lesson!.status), style: const TextStyle(fontSize: 18)),
                 );
         },
       );
