@@ -38,7 +38,7 @@ class Student {
     required this.parents,
   });
 
-  String get fullName => lastName + " " + name;
+  String get fullName => "$lastName $name";
 
   @override
   String toString() {
