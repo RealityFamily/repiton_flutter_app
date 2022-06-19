@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/screens/adding_account_screen.dart';
+import 'package:repiton/screens/adding_student_account_screen.dart';
+import 'package:repiton/screens/adding_teacher_account_screen.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
@@ -27,12 +28,7 @@ class _UsersScreenState extends State<UsersScreen> {
             Stack(
               alignment: Alignment.center,
               children: [
-                const Text(
-                  "Пользователи",
-                  style: TextStyle(
-                    fontSize: 34,
-                  ),
-                ),
+                const Text("Пользователи", style: TextStyle(fontSize: 34)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.max,
@@ -41,10 +37,13 @@ class _UsersScreenState extends State<UsersScreen> {
                       padding: const EdgeInsets.all(16),
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => AddingAccountScreen(
-                                state: _states.indexOf(_state) == 0 ? AddingState.teacher : AddingState.student),
-                          ),
+                          MaterialPageRoute(builder: (context) {
+                            if (_state == _states[1]) {
+                              return const AddingStudentAccountScreen();
+                            } else {
+                              return const AddingTeacherAccountScreen();
+                            }
+                          }),
                         );
                       },
                       icon: const Icon(Icons.add),
@@ -53,46 +52,26 @@ class _UsersScreenState extends State<UsersScreen> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             TextField(
               decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 3,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderSide: BorderSide(width: 3, color: Theme.of(context).colorScheme.primary)),
                   labelText: "Поиск",
                   prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: const Icon(
-                      Icons.cancel_outlined,
-                    ),
-                    onPressed: () {
-                      debugPrint("Cancel search");
-                    },
-                  )),
+                  suffixIcon: IconButton(icon: const Icon(Icons.cancel_outlined), onPressed: () => debugPrint("Cancel search"))),
             ),
             StateChooser(
               items: _states,
               onStateChange: (newValue) {
-                setState(() {
-                  _state = newValue;
-                });
+                setState(() => _state = newValue);
               },
             ),
             Expanded(
               child: FutureBuilder(
-                future: _states.indexOf(_state) == 1
-                    ? RootProvider.getUsers().fetchStudents()
-                    : RootProvider.getUsers().fetchTeachers(),
+                future: _states.indexOf(_state) == 1 ? RootProvider.getUsers().fetchStudents() : RootProvider.getUsers().fetchTeachers(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   } else {
                     return Consumer(
                       builder: (context, ref, _) {
@@ -112,11 +91,7 @@ class _UsersScreenState extends State<UsersScreen> {
                               )
                             : ListView.separated(
                                 itemBuilder: (context, index) => ControllListWidget(
-                                  name: users.teachersList[index].lastName +
-                                      " " +
-                                      users.teachersList[index].name +
-                                      " " +
-                                      users.teachersList[index].fatherName,
+                                  name: users.teachersList[index].lastName + " " + users.teachersList[index].name + " " + users.teachersList[index].fatherName,
                                   imageUrl: users.teachersList[index].imageUrl,
                                   id: users.teachersList[index].id,
                                   // TODO: Change to Teacher info screen
