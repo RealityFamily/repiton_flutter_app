@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureTokenStorage {
@@ -21,7 +22,7 @@ class SecureTokenStorage {
     try {
       return await _storage.read(key: key);
     } catch (e, stackTrace) {
-      print("$e\n$stackTrace");
+      debugPrint("$e\n$stackTrace");
       return null;
     }
   }
