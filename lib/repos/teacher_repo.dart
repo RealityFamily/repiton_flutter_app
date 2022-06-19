@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:repiton/core/network/repiton_api/repiton_api_container.dart';
 import 'package:repiton/model/discipline.dart';
@@ -18,6 +19,7 @@ import 'package:repiton_api/auth/entities/test_dto.dart';
 
 abstract class ITeacherRepo {
   Future<List<Discipline>> getTimetable(String teacherId, DateTime dateTimeFrom, DateTime dateTimeTo);
+  Future<List<Teacher>> getTeachersForSelecting({String? certainTeacherId});
 }
 
 class TeacherRepo implements ITeacherRepo {
@@ -31,6 +33,21 @@ class TeacherRepo implements ITeacherRepo {
       dateTo: dateTimeTo.toIso8601String(),
     );
     return result.map((dto) => dto.toDiscipline).toList();
+  }
+
+  @override
+  Future<List<Teacher>> getTeachersForSelecting({String? certainTeacherId}) async {
+    try {
+      if (certainTeacherId != null) {
+        Teacher foundTeacher = (await _api.user.getTeacherById(teacherId: certainTeacherId)).toTeacher;
+        return [foundTeacher];
+      } else {
+        return (await _api.user.getAllTeachers()).map((dto) => dto.toTeacher).toList();
+      }
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      return [];
+    }
   }
 }
 
