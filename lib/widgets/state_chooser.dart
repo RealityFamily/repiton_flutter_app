@@ -29,6 +29,7 @@ class _StateChooserState extends State<StateChooser> {
       margin: const EdgeInsets.symmetric(
         vertical: 21,
       ),
+      constraints: const BoxConstraints(maxWidth: 700),
       decoration: BoxDecoration(
         border: Border.all(
           width: 3,
@@ -46,25 +47,13 @@ class _StateChooserState extends State<StateChooser> {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     elevation: 0,
                     shadowColor: Colors.transparent,
-                    primary: state == value
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.transparent,
+                    primary: state == value ? Theme.of(context).colorScheme.primary : Colors.transparent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
-                        topLeft: widget.items.indexOf(value) == 0
-                            ? const Radius.circular(8)
-                            : Radius.zero,
-                        topRight: widget.items.indexOf(value) ==
-                                (widget.items.length - 1)
-                            ? const Radius.circular(8)
-                            : Radius.zero,
-                        bottomRight: widget.items.indexOf(value) ==
-                                (widget.items.length - 1)
-                            ? const Radius.circular(8)
-                            : Radius.zero,
-                        bottomLeft: widget.items.indexOf(value) == 0
-                            ? const Radius.circular(8)
-                            : Radius.zero,
+                        topLeft: widget.items.indexOf(value) == 0 ? const Radius.circular(8) : Radius.zero,
+                        topRight: widget.items.indexOf(value) == (widget.items.length - 1) ? const Radius.circular(8) : Radius.zero,
+                        bottomRight: widget.items.indexOf(value) == (widget.items.length - 1) ? const Radius.circular(8) : Radius.zero,
+                        bottomLeft: widget.items.indexOf(value) == 0 ? const Radius.circular(8) : Radius.zero,
                       ),
                     ),
                   ),
@@ -77,9 +66,7 @@ class _StateChooserState extends State<StateChooser> {
                   child: Text(
                     value,
                     style: TextStyle(
-                      color: state != value
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.white,
+                      color: state != value ? Theme.of(context).colorScheme.primary : Colors.white,
                     ),
                   ),
                 ),
