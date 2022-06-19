@@ -43,7 +43,7 @@ class TeachersLessonsProvider with ChangeNotifier {
           ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
         lessons: [
           Lesson(
-            id: "l4",
+            id: "lesson4",
             name: "Урок №4",
             description: "Какая-то инфа по уроку",
             status: LessonStatus.planned,
@@ -51,7 +51,7 @@ class TeachersLessonsProvider with ChangeNotifier {
             dateTimeEnd: DateTime.now(),
           ),
           Lesson(
-            id: "l5",
+            id: "lesson5",
             name: "Урок №5",
             description: "Какая-то инфа по уроку",
             status: LessonStatus.done,
@@ -76,8 +76,7 @@ class TeachersLessonsProvider with ChangeNotifier {
     for (var discipline in _disciplines) {
       for (var lesson in discipline.lessons) {
         if (lesson.dateTimeStart.isSameDate(day)) {
-          var tempDiscipline = discipline
-            ..lessons = discipline.lessons.where((lesson) => lesson.dateTimeStart.isSameDate(day)).toList();
+          var tempDiscipline = discipline..lessons = discipline.lessons.where((lesson) => lesson.dateTimeStart.isSameDate(day)).toList();
           _todayLessons.add(tempDiscipline);
           break;
         }

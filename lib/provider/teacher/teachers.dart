@@ -32,9 +32,7 @@ class TeachersProvider with ChangeNotifier {
   DateTime? getDisciplineNearestLesson(Discipline discipline) {
     DateTime? result;
     for (Lesson lesson in discipline.lessons) {
-      if (result == null ||
-          (lesson.dateTimeStart.isAfter(DateTime.now()) &&
-              result.difference(DateTime.now()) > lesson.dateTimeStart.difference(DateTime.now()))) {
+      if (result == null || (lesson.dateTimeStart.isAfter(DateTime.now()) && result.difference(DateTime.now()) > lesson.dateTimeStart.difference(DateTime.now()))) {
         result = lesson.dateTimeStart;
       }
     }
@@ -56,7 +54,7 @@ class TeachersProvider with ChangeNotifier {
             ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
           lessons: [
             Lesson(
-              id: "l4",
+              id: "lesson4",
               name: "Урок №4",
               description: "Какая-то инфа по уроку",
               status: LessonStatus.planned,
@@ -64,7 +62,7 @@ class TeachersProvider with ChangeNotifier {
               dateTimeEnd: DateTime.now(),
             ),
             Lesson(
-              id: "l5",
+              id: "lesson5",
               name: "Урок №5",
               description: "Какая-то инфа по уроку",
               status: LessonStatus.done,
