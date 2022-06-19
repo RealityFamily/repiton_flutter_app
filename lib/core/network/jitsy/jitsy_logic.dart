@@ -2,13 +2,13 @@ import 'package:flutter/widgets.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 class JitsyLogic {
-  static void joinMeeting(String userName, String login, String room) async {
+  static void joinMeeting(String userName, String login, String room, BuildContext context) async {
     try {
       Map<FeatureFlagEnum, bool> featureFlag = {};
       featureFlag[FeatureFlagEnum.WELCOME_PAGE_ENABLED] = false;
 
       var options = JitsiMeetingOptions(room: room) // room is Required, spaces will be trimmed
-        ..serverURL = "https://jitsi.repiton.dev.realityfamily.ru"
+        //..serverURL = "https://jitsi.repiton.dev.realityfamily.ru"
         ..userDisplayName = userName
         ..userEmail = login
         ..userAvatarURL = "https://someimageurl.com/image.jpg" // or .png
@@ -19,10 +19,17 @@ class JitsyLogic {
           "height": "100%",
           "enableWelcomePage": false,
           "chromeExtensionBanner": null,
-          "userInfo": {"displayName": "My Name"}
+          "userInfo": {"displayName": "My Name"},
         };
 
-      await JitsiMeet.joinMeeting(options);
+      await JitsiMeet.joinMeeting(
+        options,
+        listener: JitsiMeetingListener(
+          onConferenceTerminated: (_) {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
     } catch (error, stackTrace) {
       debugPrint("error: $error \n $stackTrace");
     }

@@ -3,15 +3,18 @@ import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:repiton/core/network/jitsy/jitsy_logic.dart';
 
 class WebJitsiCallScreen extends StatelessWidget {
-  const WebJitsiCallScreen({Key? key}) : super(key: key);
+  final String roomId;
 
-  void _connectToCall(_) {
-    JitsyLogic.joinMeeting("Leonis", "Leonis13579", "123-456-789");
+  const WebJitsiCallScreen({required this.roomId, Key? key}) : super(key: key);
+
+  void _connectToCall(BuildContext context) {
+    print("Room id is $roomId");
+    JitsyLogic.joinMeeting("Leonis", "Leonis13579", roomId, context);
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(_connectToCall);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _connectToCall(context));
 
     return JitsiMeetConferencing(
       extraJS: const [
