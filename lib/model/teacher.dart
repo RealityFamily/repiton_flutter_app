@@ -11,6 +11,8 @@ class Teacher {
   late String imageUrl;
   late String education;
 
+  String get fullName => "$lastName $name $fatherName";
+
   Teacher.empty() {
     id = "";
     name = "";
@@ -56,4 +58,17 @@ class Teacher {
         "\neducation: " +
         education;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is Teacher) {
+      return id == other.id;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  int get hashCode => super.hashCode;
 }
