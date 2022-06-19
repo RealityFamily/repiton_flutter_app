@@ -57,7 +57,7 @@ class _AddingStudentAccountScreenState extends State<AddingStudentAccountScreen>
           children: [
             AddStudentInfo(formKey: studentFormKey, result: student),
             const SizedBox(height: 36),
-            AddDisciplineInfo(result: discipline, formKey: studentFormKey),
+            AddDisciplineInfo(result: discipline, formKey: studentFormKey, initTeacherId: widget.initTeacherId),
             const SizedBox(height: 23),
             _parentInputForm,
           ],
@@ -75,7 +75,10 @@ class _AddingStudentAccountScreenState extends State<AddingStudentAccountScreen>
                 ),
                 const Divider(),
                 Expanded(
-                  child: Padding(padding: const EdgeInsets.all(16), child: SingleChildScrollView(child: AddDisciplineInfo(result: discipline, formKey: studentFormKey))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: SingleChildScrollView(child: AddDisciplineInfo(result: discipline, formKey: studentFormKey, initTeacherId: widget.initTeacherId)),
+                  ),
                 ),
               ],
             ),
