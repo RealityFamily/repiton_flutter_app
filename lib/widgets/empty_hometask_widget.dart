@@ -14,27 +14,16 @@ class EmptyHometaskWidget extends StatelessWidget {
 
           return ElevatedButton(
             style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              padding: kIsWeb ? const EdgeInsets.symmetric(vertical: 16, horizontal: 24) : const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             ),
             onPressed: () async {
-              HomeTask? _newHometask = await Navigator.of(context).push<HomeTask>(
-                MaterialPageRoute(
-                  builder: (context) => const CreateHometaskScreen(),
-                ),
-              );
+              HomeTask? _newHometask = await Navigator.of(context).push<HomeTask>(MaterialPageRoute(builder: (context) => const CreateHometaskScreen()));
 
               if (_newHometask == null) return;
               lessons.setHometask(_newHometask);
             },
-            child: const Text(
-              "Создать домашнее задание",
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
+            child: const Text("Создать домашнее задание", style: TextStyle(fontSize: 18)),
           );
         },
       );
@@ -75,10 +64,7 @@ class EmptyHometaskWidget extends StatelessWidget {
         child: Container(
           width: double.infinity,
           alignment: Alignment.center,
-          child: const Text(
-            "Домашнее задание пока не задано",
-            style: TextStyle(fontSize: 18),
-          ),
+          child: const Text("Домашнее задание пока не задано", style: TextStyle(fontSize: 18)),
         ),
       );
 

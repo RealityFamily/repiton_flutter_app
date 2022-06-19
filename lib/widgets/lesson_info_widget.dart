@@ -57,7 +57,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
               : ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: kIsWeb ? const EdgeInsets.symmetric(vertical: 16, horizontal: 24) : const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () => _onLessonButtonTap(lessons),
                   child: Text(
