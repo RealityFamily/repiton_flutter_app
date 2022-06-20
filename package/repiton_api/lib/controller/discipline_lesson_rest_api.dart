@@ -1,4 +1,5 @@
 import 'package:repiton_api/entities/discipline_dto.dart';
+import 'package:repiton_api/entities/lesson_dto.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 
@@ -10,10 +11,14 @@ abstract class DisciplineLessonRestApi {
 
   factory DisciplineLessonRestApi(Dio dio, {String baseUrl}) = _DisciplineLessonRestApi;
 
-  @POST("timetable/teacher/{id}")
-  Future<List<DisciplineDTO>> teacherTimetable({
-    @Path("id") required String teacherId,
-    @Query("dateFrom") required String dateFrom,
-    @Query("dateTo") required String dateTo,
-  });
+  @GET("timetable/teacher/{id}")
+  Future<List<DisciplineDTO>> teacherTimetable(
+      {@Path("id") required String teacherId, @Query("dateFrom") required String dateFrom, @Query("dateTo") required String dateTo});
+
+  @GET("timetable/student/{id}")
+  Future<List<DisciplineDTO>> studentTimetable(
+      {@Path("id") required String studentId, @Query("dateFrom") required String dateFrom, @Query("dateTo") required String dateTo});
+
+  @PUT("lesson/{id}")
+  Future<LessonDTO> updateLessonInfo({@Path("id") required String lessonId, @Body() required LessonDTO newLesson});
 }

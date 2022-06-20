@@ -6,8 +6,9 @@ import 'package:repiton/widgets/controll_financinal_statistics_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
 class ControllTeacherInfo extends StatefulWidget {
-  final String id;
-  const ControllTeacherInfo({required this.id, Key? key}) : super(key: key);
+  ControllTeacherInfo({required Teacher teacher, Key? key}) : super(key: key) {
+    RootProvider.getTearchersStatisctics().teacher = teacher;
+  }
 
   @override
   State<ControllTeacherInfo> createState() => _ControllTeacherInfoState();
@@ -16,8 +17,6 @@ class ControllTeacherInfo extends StatefulWidget {
 class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
   final List<String> _states = ["Неделя", "Месяц", "Выбрать..."];
   late String _state = _states[0];
-  bool isLoading = false;
-  String? teacherFullName;
 
   Widget _getContent() {
     if (_states.indexOf(_state) == 0) {
@@ -29,35 +28,14 @@ class _ControllTeacherInfoState extends State<ControllTeacherInfo> {
     }
   }
 
-  void _getTeacherFullName() async {
-    setState(() => isLoading = true);
-    final fullName = (await RootProvider.getTearchersStatisctics().getCachedTeacher(widget.id)).fullName;
-    setState(() {
-      isLoading = false;
-      teacherFullName = fullName;
-    });
-  }
-
-  Widget get _controllHeader {
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    } else {
-      return Column(
+  Widget get _controllHeader => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text("Ведение", textAlign: TextAlign.center, style: TextStyle(fontSize: 34)),
           const SizedBox(height: 8),
-          Text(teacherFullName ?? '', style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+          Text(RootProvider.getTearchersStatisctics().teacher.fullName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
         ],
       );
-    }
-  }
-
-  @override
-  void initState() {
-    _getTeacherFullName();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

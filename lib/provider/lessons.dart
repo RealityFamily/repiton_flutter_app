@@ -1,16 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:repiton/model/home_task.dart';
 import 'package:repiton/model/lesson.dart';
+import 'package:repiton/repos/lesson_repo.dart';
 
 class LessonsProvider with ChangeNotifier {
   Lesson? _lesson;
+  final ILessonRepo _repo;
+
+  LessonsProvider(this._repo);
 
   Lesson? get lesson => _lesson;
 
-  void setDescription(String newDescription) {
+  void setDescription(String newDescription) async {
     if (_lesson == null) return;
-    _lesson!.description = newDescription;
-    // TODO: Call API method with new data of lesson https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=discipline-lesson-service#/Lessons/putLessonId
+    _lesson = await _repo.updateLesson(_lesson!..description = newDescription);
     notifyListeners();
   }
 

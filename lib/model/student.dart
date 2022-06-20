@@ -3,38 +3,41 @@ import 'package:repiton/model/parent.dart';
 
 class Student {
   late String id;
+  String? userName;
   late String name;
   late String lastName;
-  late DateTime birthDay;
+  DateTime? birthDay;
   late String email;
-  late String phone;
-  late String imageUrl;
-  late String education;
+  String? phone;
+  String? imageUrl;
+  String? education;
 
   late List<Parent> parents;
 
   Student.empty() {
     id = "";
+    userName = null;
     name = "";
     lastName = "";
-    birthDay = DateTime.now();
+    birthDay = null;
     email = "";
-    phone = "";
-    imageUrl = "";
-    education = "";
+    phone = null;
+    imageUrl = null;
+    education = null;
 
     parents = [];
   }
 
   Student({
     required this.id,
+    this.userName,
     required this.name,
     required this.lastName,
-    required this.birthDay,
+    this.birthDay,
     required this.email,
-    required this.phone,
-    required this.imageUrl,
-    required this.education,
+    this.phone,
+    this.imageUrl,
+    this.education,
     required this.parents,
   });
 
@@ -44,20 +47,22 @@ class Student {
   String toString() {
     return "id: " +
         id +
+        "\nuserName: " +
+        (userName ?? "null") +
         "\nname: " +
         name +
         "\nlastName: " +
         lastName +
         "\nbirthDay: " +
-        DateFormat("dd.MM.yyyy").format(birthDay) +
+        (birthDay != null ? DateFormat("dd.MM.yyyy").format(birthDay!) : "null") +
         "\nemail: " +
         email +
         "\nphone: " +
-        phone +
+        (phone ?? "null") +
         "\nimageUrl: " +
-        imageUrl +
+        (imageUrl ?? "null") +
         "\neducation: " +
-        education +
+        (education ?? "null") +
         "\nparents: " +
         parents.toString();
   }

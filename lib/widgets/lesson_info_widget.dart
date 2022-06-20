@@ -8,18 +8,7 @@ import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/web_jitsi_call_screen.dart';
 
 class LessonInfoWidget extends StatefulWidget {
-  final String disciplineName;
-  final String studentName;
-  final String studentImageUrl;
-  final String teacherImageUrl;
-
-  const LessonInfoWidget({
-    required this.disciplineName,
-    required this.studentName,
-    required this.studentImageUrl,
-    required this.teacherImageUrl,
-    Key? key,
-  }) : super(key: key);
+  const LessonInfoWidget({Key? key}) : super(key: key);
 
   @override
   State<LessonInfoWidget> createState() => _LessonInfoWidgetState();
@@ -137,7 +126,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
 
           if (_newDescription == null) return;
           setState(() {
-            RootProvider.getLessons().lesson!.description = _newDescription;
+            RootProvider.getLessons().setDescription(_newDescription);
           });
         },
       );

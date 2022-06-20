@@ -5,15 +5,15 @@ part 'teacher_dto.g.dart';
 @JsonSerializable()
 class TeacherDTO {
   String id;
-  String userName;
+  String? userName;
   String firstName;
   String lastName;
   String fatherName;
-  String birthday;
+  String? birthday;
   String email;
-  String telephone;
-  String imageUrl;
-  String education;
+  String? telephone;
+  String? imageUrl;
+  String? education;
 
   TeacherDTO({
     required this.id,

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
+import 'package:repiton/model/student.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/controll_learn_statistics_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
 class ControllStudentInfo extends StatefulWidget {
-  final String id;
-  const ControllStudentInfo({required this.id, Key? key}) : super(key: key);
+  ControllStudentInfo({required Student student, Key? key}) : super(key: key) {
+    RootProvider.getStudentsStatistics().student = student;
+  }
 
   @override
   State<ControllStudentInfo> createState() => _ControllTeacherInfoState();
@@ -15,8 +17,6 @@ class ControllStudentInfo extends StatefulWidget {
 class _ControllTeacherInfoState extends State<ControllStudentInfo> {
   final List<String> _states = ["Неделя", "Месяц", "Выбрать..."];
   late String _state = _states[0];
-  bool isLoading = false;
-  String? studentFullName;
 
   Widget _getContent() {
     if (_states.indexOf(_state) == 0) {
@@ -28,20 +28,7 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
     }
   }
 
-  void _getStudentFullName() async {
-    setState(() => isLoading = true);
-    final fullName = (await RootProvider.getStudentsStatistics().getCachedStudent(widget.id)).fullName;
-    setState(() {
-      isLoading = false;
-      studentFullName = fullName;
-    });
-  }
-
-  Widget get _controllHeader {
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    } else {
-      return Column(
+  Widget get _controllHeader => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text("Ведение", textAlign: TextAlign.center, style: TextStyle(fontSize: 34)),
@@ -50,20 +37,12 @@ class _ControllTeacherInfoState extends State<ControllStudentInfo> {
             text: TextSpan(
               children: [
                 const TextSpan(text: "Ученик ", style: TextStyle(fontSize: 18, color: Colors.grey)),
-                TextSpan(text: studentFullName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+                TextSpan(text: RootProvider.getStudentsStatistics().student.fullName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
               ],
             ),
           ),
         ],
       );
-    }
-  }
-
-  @override
-  void initState() {
-    _getStudentFullName();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

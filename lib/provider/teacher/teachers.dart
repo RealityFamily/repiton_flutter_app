@@ -3,28 +3,26 @@ import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
+import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/repos/teacher_repo.dart';
 
 class TeachersProvider with ChangeNotifier {
   Teacher? _teacher;
   final List<Discipline> _teacherStudents = [];
+  final ITeacherRepo _repo;
 
-  TeachersProvider();
+  TeachersProvider(this._repo);
 
   List<Discipline> get teachersStudents => [..._teacherStudents];
 
-  Future<Teacher> getCachedTeacher() async {
-    _teacher ??= Teacher(
-      id: "t1",
-      name: "Зинаида",
-      lastName: "Юрьевна",
-      fatherName: "Аркадьевна",
-      birthDay: DateTime.now(),
-      email: "",
-      phone: "",
-      imageUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
-      education: "",
-    );
-    return _teacher!;
+  Future<Teacher> cachedTeacher() async {
+    _teacher ??= await _repo.getTeacherById(RootProvider.getAuth().id);
+    return _teacher ?? Teacher.empty();
+  }
+
+  Future<List<Teacher>> choosableTeacher() async {
+    _teacher ??= await _repo.getTeacherById(RootProvider.getAuth().id);
+    return [(_teacher ?? Teacher.empty())];
   }
 
   void registerStudent(Student student) {}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:repiton/model/student.dart';
+import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/admin/controll/student/controll_student_info.dart';
 import 'package:repiton/screens/admin/controll/teacher/controll_teacher_info.dart';
@@ -84,24 +86,22 @@ class _ControllScreenState extends State<ControllScreen> {
                       return _states.indexOf(_state) == 1
                           ? ListView.separated(
                               itemBuilder: (context, index) => ControllListWidget(
-                                name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
+                                name: users.studentsList[index].fullName,
                                 imageUrl: users.studentsList[index].imageUrl,
-                                id: users.studentsList[index].id,
-                                page: (id) => ControllStudentInfo(id: id),
+                                user: users.studentsList[index],
+                                page: (user) => ControllStudentInfo(
+                                  student: (user as Student),
+                                ),
                               ),
                               separatorBuilder: (context, index) => const Divider(),
                               itemCount: users.studentsList.length,
                             )
                           : ListView.separated(
                               itemBuilder: (context, index) => ControllListWidget(
-                                name: users.teachersList[index].lastName +
-                                    " " +
-                                    users.teachersList[index].name +
-                                    " " +
-                                    users.teachersList[index].fatherName,
+                                name: users.teachersList[index].fullName,
                                 imageUrl: users.teachersList[index].imageUrl,
-                                id: users.teachersList[index].id,
-                                page: (id) => ControllTeacherInfo(id: id),
+                                user: users.teachersList[index],
+                                page: (user) => ControllTeacherInfo(teacher: (user as Teacher)),
                               ),
                               separatorBuilder: (context, index) => const Divider(),
                               itemCount: users.teachersList.length,

@@ -13,16 +13,10 @@ import 'package:repiton/widgets/test_info_widget.dart';
 class LessonScreen extends StatefulWidget {
   final String disciplineName;
   final String studentName;
-  final List<String> rocketChatRef;
-  final String studentImageUrl;
-  final String teacherImageUrl;
 
   const LessonScreen({
     required this.disciplineName,
     required this.studentName,
-    required this.rocketChatRef,
-    required this.studentImageUrl,
-    required this.teacherImageUrl,
     Key? key,
   }) : super(key: key);
 
@@ -142,12 +136,7 @@ class _LessonScreenState extends State<LessonScreen> {
     if (_newState == _states[_states.length - 1]) {
       return const RocketChatScreen();
     } else if (_newState == _states[0]) {
-      return LessonInfoWidget(
-        disciplineName: widget.disciplineName,
-        studentName: widget.studentName,
-        teacherImageUrl: widget.teacherImageUrl,
-        studentImageUrl: widget.studentImageUrl,
-      );
+      return const LessonInfoWidget();
     } else {
       return Consumer(
         builder: (context, ref, _) {

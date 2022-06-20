@@ -82,9 +82,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                 itemBuilder: (context, index) => ControllListWidget(
                                   name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
                                   imageUrl: users.studentsList[index].imageUrl,
-                                  id: users.studentsList[index].id,
+                                  user: users.studentsList[index],
                                   // TODO: Change to Students info screen
-                                  page: (id) => Container(),
+                                  page: (user) => Container(),
                                 ),
                                 separatorBuilder: (context, index) => const Divider(),
                                 itemCount: users.studentsList.length,
@@ -93,9 +93,9 @@ class _UsersScreenState extends State<UsersScreen> {
                                 itemBuilder: (context, index) => ControllListWidget(
                                   name: users.teachersList[index].lastName + " " + users.teachersList[index].name + " " + users.teachersList[index].fatherName,
                                   imageUrl: users.teachersList[index].imageUrl,
-                                  id: users.teachersList[index].id,
+                                  user: users.teachersList[index],
                                   // TODO: Change to Teacher info screen
-                                  page: (id) => Container(),
+                                  page: (user) => Container(),
                                 ),
                                 separatorBuilder: (context, index) => const Divider(),
                                 itemCount: users.teachersList.length,

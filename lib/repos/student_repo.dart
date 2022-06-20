@@ -17,19 +17,19 @@ import 'package:repiton_api/entities/student_dto.dart';
 import 'package:repiton_api/entities/teacher_dto.dart';
 import 'package:repiton_api/entities/test_dto.dart';
 
-abstract class ITeacherRepo {
-  Future<List<Discipline>> getTimetable(String teacherId, DateTime dateTimeFrom, DateTime dateTimeTo);
-  Future<Teacher?> getTeacherById(String teacherId);
+abstract class IStudentRepo {
+  Future<List<Discipline>> getTimetable(String studentId, DateTime dateTimeFrom, DateTime dateTimeTo);
+  Future<Student?> getStudentById(String studentId);
 }
 
-class TeacherRepo implements ITeacherRepo {
+class StudentRepo implements IStudentRepo {
   RepitonApiContainer get _api => GetIt.I.get<RepitonApiContainer>();
 
   @override
-  Future<List<Discipline>> getTimetable(String teacherId, DateTime dateTimeFrom, DateTime dateTimeTo) async {
+  Future<List<Discipline>> getTimetable(String studentId, DateTime dateTimeFrom, DateTime dateTimeTo) async {
     try {
-      final result = await _api.disciplineLesson.teacherTimetable(
-        teacherId: teacherId,
+      final result = await _api.disciplineLesson.studentTimetable(
+        studentId: studentId,
         dateFrom: dateTimeFrom.toIso8601String(),
         dateTo: dateTimeTo.toIso8601String(),
       );
@@ -41,10 +41,10 @@ class TeacherRepo implements ITeacherRepo {
   }
 
   @override
-  Future<Teacher?> getTeacherById(String teacherId) async {
+  Future<Student?> getStudentById(String studentId) async {
     try {
-      final result = await _api.user.getTeacherById(teacherId: teacherId);
-      return result.toTeacher;
+      final result = await _api.user.getStudentById(studentId: studentId);
+      return result.toStudent;
     } catch (e, stackTrace) {
       debugPrint("$e\n$stackTrace");
       return null;

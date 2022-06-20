@@ -102,6 +102,14 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
     );
   }
 
+  ImageProvider _studentImage(String? imageUrl) {
+    if (imageUrl != null) {
+      return NetworkImage(imageUrl);
+    } else {
+      return const AssetImage("assets/images/user_black.png");
+    }
+  }
+
   Widget _studentsList(List<StudentFinancialStatistics> students) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -110,7 +118,7 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllFinancinalS
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) => ListTile(
-              leading: CircleAvatar(backgroundImage: NetworkImage(students[index].student.imageUrl)),
+              leading: CircleAvatar(backgroundImage: _studentImage(students[index].student.imageUrl)),
               title: Text(students[index].student.name + " " + students[index].student.lastName),
               trailing: Text(students[index].presents.toString()),
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => ControllTeacherStudentInfo(studentStatistics: students[index]))),

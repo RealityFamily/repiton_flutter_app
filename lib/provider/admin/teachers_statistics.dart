@@ -10,24 +10,8 @@ class TearchersStatiscticsProvider with ChangeNotifier {
   FinancialStatistics? _statistics;
   List<StudentFinancialStatistics> _students = [];
 
-  Future<Teacher> getCachedTeacher(String id) async {
-    if (_teacher == null || _teacher!.id != id) {
-      //TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=user-service#/Teacher/teacherIdGet
-      _teacher = Teacher(
-        id: "t1",
-        name: "Зинаида",
-        lastName: "Юрьевна",
-        fatherName: "Аркадьевна",
-        birthDay: DateTime.now(),
-        email: "",
-        phone: "",
-        imageUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
-        education: "",
-      );
-    }
-
-    return _teacher!;
-  }
+  Teacher get teacher => _teacher ?? Teacher.empty();
+  set teacher(Teacher value) => _teacher = value;
 
   FinancialStatistics? get statictics {
     return _statistics;

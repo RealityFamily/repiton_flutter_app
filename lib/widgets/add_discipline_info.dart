@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/teacher.dart';
+import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/repos/admin_repo.dart';
+import 'package:repiton/repos/auth_repo.dart';
 import 'package:repiton/repos/teacher_repo.dart';
 
 class AddDisciplineInfo extends StatefulWidget {
@@ -19,7 +22,13 @@ class _AddDisciplineInfoState extends State<AddDisciplineInfo> {
   List<Teacher> teachersForSelect = [];
   bool isLoading = false;
 
-  Future<List<Teacher>> get _getTeachersForSelecting => TeacherRepo().getTeachersForSelecting(certainTeacherId: widget.initTeacherId);
+  Future<List<Teacher>> get _getTeachersForSelecting {
+    if (widget.initTeacherId != null) {
+      return RootProvider.getTeachers().choosableTeacher();
+    } else {
+      return AdminRepo().getTeachers();
+    }
+  }
 
   Widget get _teacherChooser {
     if (isLoading) {

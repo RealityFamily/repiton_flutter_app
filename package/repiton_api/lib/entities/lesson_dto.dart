@@ -11,7 +11,7 @@ class LessonDTO {
   DateTime dateTimeStart;
   DateTime dateTimeEnd;
   String status;
-  List<HomeTaskDTO> homeTask;
+  List<HomeTaskDTO>? homeTask;
 
   LessonDTO({
     required this.id,
@@ -20,7 +20,7 @@ class LessonDTO {
     required this.dateTimeStart,
     required this.dateTimeEnd,
     required this.status,
-    required this.homeTask,
+    this.homeTask,
   });
 
   factory LessonDTO.fromJson(Map<String, dynamic> json) => _$LessonDTOFromJson(json);

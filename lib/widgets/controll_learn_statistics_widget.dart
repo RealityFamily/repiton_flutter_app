@@ -123,6 +123,14 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
     );
   }
 
+  ImageProvider _teacherImage(String? imageUrl) {
+    if (imageUrl != null) {
+      return NetworkImage(imageUrl);
+    } else {
+      return const AssetImage("assets/images/user_black.png");
+    }
+  }
+
   Widget _disciplinesList(List<DisciplineLearnStatistics> disciplines) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -132,7 +140,7 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return ListTile(
-                leading: CircleAvatar(backgroundImage: NetworkImage(disciplines[index].discipline.teacher.imageUrl)),
+                leading: CircleAvatar(backgroundImage: _teacherImage(disciplines[index].discipline.teacher.imageUrl)),
                 title: Text(disciplines[index].discipline.name),
                 subtitle: Text(disciplines[index].discipline.teacher.fullName),
                 onTap: () {

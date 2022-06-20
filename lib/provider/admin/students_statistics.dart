@@ -11,24 +11,8 @@ class StudentsStatisticsProvider with ChangeNotifier {
   LearnStatistics? _statistics;
   List<DisciplineLearnStatistics> _showingDisciplines = [];
 
-  Future<Student> getCachedStudent(String id) async {
-    if (_student == null || _student!.id != id) {
-      // TODO: Call API method https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=user-service#/Student/studentIdGet
-      _student = Student(
-        id: "s1",
-        name: "Виталий",
-        lastName: "Евпанько",
-        birthDay: DateTime.now(),
-        email: "",
-        phone: "",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
-        education: "",
-        parents: [],
-      );
-    }
-
-    return _student!;
-  }
+  Student get student => _student ?? Student.empty();
+  set student(Student value) => _student = value;
 
   LearnStatistics? get statictics {
     return _statistics;

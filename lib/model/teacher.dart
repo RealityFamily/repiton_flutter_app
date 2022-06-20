@@ -2,45 +2,50 @@ import 'package:intl/intl.dart';
 
 class Teacher {
   late String id;
+  String? userName;
   late String name;
   late String lastName;
   late String fatherName;
-  late DateTime birthDay;
+  DateTime? birthDay;
   late String email;
-  late String phone;
-  late String imageUrl;
-  late String education;
+  String? phone;
+  String? imageUrl;
+  String? education;
 
   String get fullName => "$lastName $name $fatherName";
 
   Teacher.empty() {
     id = "";
+    userName = null;
     name = "";
     lastName = "";
     fatherName = "";
     birthDay = DateTime.now();
     email = "";
-    phone = "";
-    imageUrl = "";
-    education = "";
+    phone = null;
+    imageUrl = null;
+    education = null;
   }
 
   Teacher({
     required this.id,
+    this.userName,
     required this.name,
     required this.lastName,
     required this.fatherName,
-    required this.birthDay,
+    this.birthDay,
     required this.email,
-    required this.phone,
-    required this.imageUrl,
-    required this.education,
+    this.phone,
+    this.imageUrl,
+    this.education,
   });
 
   @override
   String toString() {
     return "id: " +
         id +
+        "\nuserName: " +
+        (userName ?? "null") +
         "\nname: " +
         name +
         "\nlastName: " +
@@ -48,15 +53,15 @@ class Teacher {
         "\nfatherName: " +
         fatherName +
         "\nbirthDay: " +
-        DateFormat("dd.MM.yyyy").format(birthDay) +
+        (birthDay != null ? DateFormat("dd.MM.yyyy").format(birthDay!) : "null") +
         "\nemail: " +
         email +
         "\nphone: " +
-        phone +
+        (phone ?? "null") +
         "\nimageUrl: " +
-        imageUrl +
+        (imageUrl ?? "null") +
         "\neducation: " +
-        education;
+        (education ?? "null");
   }
 
   @override

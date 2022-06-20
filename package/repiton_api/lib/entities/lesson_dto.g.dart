@@ -13,8 +13,8 @@ LessonDTO _$LessonDTOFromJson(Map<String, dynamic> json) => LessonDTO(
       dateTimeStart: DateTime.parse(json['dateTimeStart'] as String),
       dateTimeEnd: DateTime.parse(json['dateTimeEnd'] as String),
       status: json['status'] as String,
-      homeTask: (json['homeTask'] as List<dynamic>)
-          .map((e) => HomeTaskDTO.fromJson(e as Map<String, dynamic>))
+      homeTask: (json['homeTask'] as List<dynamic>?)
+          ?.map((e) => HomeTaskDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

@@ -52,6 +52,23 @@ class Lesson {
     }
   }
 
+  static String lessonStatusToString(LessonStatus status) {
+    switch (status) {
+      case LessonStatus.planned:
+        return "PLANNED";
+      case LessonStatus.started:
+        return "STARTED";
+      case LessonStatus.done:
+        return "DONE";
+      case LessonStatus.moved:
+        return "MOVED";
+      case LessonStatus.canceledByTeacher:
+        return "CANCELED_BY_TEACHER";
+      case LessonStatus.canceledByStudent:
+        return "CANCELED_BY_STUDENT";
+    }
+  }
+
   HomeTask? get homeTask => _homeTask?.last;
 }
 

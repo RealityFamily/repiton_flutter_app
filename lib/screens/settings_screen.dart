@@ -4,6 +4,7 @@ import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/screens/auth_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget _getUserNameAndRoleFromRole(String userRole) {
     if (userRole == AuthProvider.teacherRole) {
       return _getUserNameAndRole<Teacher>(
-        RootProvider.getTeachers().getCachedTeacher(),
+        RootProvider.getTeachers().cachedTeacher(),
         (teacher) {
           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
         },
@@ -55,7 +56,7 @@ class SettingsScreen extends ConsumerWidget {
     } else if (userRole == AuthProvider.adminRole) {
       // TODO: Change to admin provider
       return _getUserNameAndRole<Teacher>(
-        RootProvider.getTeachers().getCachedTeacher(),
+        RootProvider.getTeachers().cachedTeacher(),
         (teacher) {
           return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
         },
@@ -75,7 +76,8 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
-  void _logout() {
+  void _logout(BuildContext context) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AuthScreen()));
     RootProvider.getAuth().logout();
   }
 
@@ -123,7 +125,7 @@ class SettingsScreen extends ConsumerWidget {
                   _getUserNameAndRoleFromRole(_auth.userRole),
                   Expanded(child: Container()),
                   TextButton(
-                    onPressed: _logout,
+                    onPressed: () => _logout(context),
                     child: Text("Выход"),
                   ),
                 ],

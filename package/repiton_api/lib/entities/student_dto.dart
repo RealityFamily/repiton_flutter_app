@@ -6,15 +6,14 @@ part 'student_dto.g.dart';
 @JsonSerializable()
 class StudentDTO {
   String id;
-  String userName;
+  String? userName;
   String firstName;
   String lastName;
-  String fatherName;
-  String birthday;
+  String? birthday;
   String email;
-  String telephone;
-  String imageUrl;
-  String education;
+  String? telephone;
+  String? imageUrl;
+  String? education;
   List<ParentDTO> parents;
 
   StudentDTO({
@@ -22,7 +21,6 @@ class StudentDTO {
     required this.userName,
     required this.firstName,
     required this.lastName,
-    required this.fatherName,
     required this.birthday,
     required this.email,
     required this.telephone,

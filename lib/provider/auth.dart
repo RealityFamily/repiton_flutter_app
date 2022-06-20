@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:repiton/core/network/repiton_api/repiton_api_container.dart';
 import 'package:repiton/core/tokenStorage/secure_token_storage.dart';
+import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/repos/auth_repo.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -71,6 +72,8 @@ class AuthProvider with ChangeNotifier {
     _token = null;
     _refresh = null;
     _userRole = [];
+
+    RootProvider.refreshRootProvider();
 
     GetIt.I.get<SecureTokenStorage>().deleteToken();
     GetIt.I.get<RepitonApiContainer>().invalidateToken();

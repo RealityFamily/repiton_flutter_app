@@ -349,6 +349,7 @@ class TimeTableCalendar extends Calendar {
               result = LessonStatus.moved;
               break;
             case LessonStatus.planned:
+              result = LessonStatus.planned;
               break;
             case LessonStatus.started:
               result = LessonStatus.done;
@@ -365,6 +366,8 @@ class TimeTableCalendar extends Calendar {
         return const Color(0xFFDE9898);
       case LessonStatus.moved:
         return const Color(0xFFFFEE97);
+      case LessonStatus.planned:
+        return const Color.fromARGB(255, 128, 186, 205);
       default:
         return null;
     }

@@ -40,9 +40,6 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
         builder: (context) => LessonScreen(
           disciplineName: discipline.name,
           studentName: discipline.student.fullName,
-          rocketChatRef: discipline.rocketChatReference,
-          teacherImageUrl: discipline.teacher.imageUrl,
-          studentImageUrl: discipline.student.imageUrl,
         ),
       ),
     );
@@ -133,12 +130,12 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
         children: [calendar, Expanded(child: students)],
       );
 
-  Widget _tinyScreen(Widget calendar, Widget students) => Column(
+  Widget _tinyScreen(Widget calendar, Widget students, bool areAnyLessons) => Column(
         children: [
           calendar,
-          const Divider(),
+          if (areAnyLessons) const Divider(),
           students,
-          const Divider(),
+          if (areAnyLessons) const Divider(),
         ],
       );
 
@@ -156,7 +153,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     );
 
     if (MediaQuery.of(context).size.width < 1300) {
-      return _tinyScreen(calendar, students);
+      return _tinyScreen(calendar, students, teachersLessons.todayLessons.isNotEmpty);
     } else {
       return _wideScreen(calendar, students);
     }
@@ -172,28 +169,17 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Расписание",
-                style: TextStyle(
-                  fontSize: 34,
-                ),
-              ),
-              const SizedBox(
-                height: 23,
-              ),
+              const Text("Расписание", style: TextStyle(fontSize: 34)),
+              const SizedBox(height: 23),
               _searchField(),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               FutureBuilder(
                 future: _getLessons(DateTime.now()),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else {
-                    return Consumer(
-                      builder: _getConsumerBuilder,
-                    );
+                    return Consumer(builder: _getConsumerBuilder);
                   }
                 },
               ),

@@ -25,6 +25,7 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
     }
     teacherFormKey.currentState!.save();
     RootProvider.getUsers().addTeacher(teacher);
+    Navigator.of(context).pop();
   }
 
   Widget get _addingForm => ConstrainedBox(
