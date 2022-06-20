@@ -18,75 +18,50 @@ class StudentsScreen extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                const Text(
-                  "Ученики",
-                  style: TextStyle(
-                    fontSize: 34,
-                  ),
-                ),
+                const Text("Ученики", style: TextStyle(fontSize: 34)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     IconButton(
                       padding: const EdgeInsets.all(16),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => AddingStudentAccountScreen(initTeacherId: RootProvider.getAuth().id),
-                          ),
-                        );
-                      },
+                      onPressed: () =>
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddingStudentAccountScreen(initTeacherId: RootProvider.getAuth().id))),
                       icon: const Icon(Icons.add),
                     ),
                   ],
                 ),
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 3,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
+                  border: OutlineInputBorder(borderSide: BorderSide(width: 3, color: Theme.of(context).colorScheme.primary)),
                   labelText: "Поиск",
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: IconButton(
-                    icon: const Icon(
-                      Icons.cancel_outlined,
-                    ),
-                    onPressed: () {
-                      debugPrint("Cancel search");
-                    },
+                    icon: const Icon(Icons.cancel_outlined),
+                    onPressed: () => debugPrint("Cancel search"),
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Expanded(
               child: FutureBuilder(
                 future: RootProvider.getTeachers().fetchTeacherStudents(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   } else {
                     return Consumer(builder: (context, ref, _) {
                       final teacher = ref.watch(RootProvider.getTeachersProvider());
 
                       return ListView.separated(
                         itemBuilder: (context, index) => TeacherStudentsElementWidget(
-                          studentName: teacher.teachersStudents[index].student.lastName + " " + teacher.teachersStudents[index].student.name,
+                          studentName: teacher.teachersStudents[index].student.fullName,
                           studentId: teacher.teachersStudents[index].id,
                           disciplineName: teacher.teachersStudents[index].name,
                           nearestLessonDateTime: teacher.getDisciplineNearestLesson(teacher.teachersStudents[index]),
