@@ -1,11 +1,11 @@
 import 'package:intl/intl.dart';
 
 class Teacher {
-  late String id;
+  String? id;
   String? userName;
   late String name;
   late String lastName;
-  late String fatherName;
+  String? fatherName;
   DateTime? birthDay;
   late String email;
   String? phone;
@@ -15,11 +15,11 @@ class Teacher {
   String get fullName => "$lastName $name $fatherName";
 
   Teacher.empty() {
-    id = "";
+    id = null;
     userName = null;
     name = "";
     lastName = "";
-    fatherName = "";
+    fatherName = null;
     birthDay = DateTime.now();
     email = "";
     phone = null;
@@ -28,11 +28,11 @@ class Teacher {
   }
 
   Teacher({
-    required this.id,
+    this.id,
     this.userName,
     required this.name,
     required this.lastName,
-    required this.fatherName,
+    this.fatherName,
     this.birthDay,
     required this.email,
     this.phone,
@@ -43,7 +43,7 @@ class Teacher {
   @override
   String toString() {
     return "id: " +
-        id +
+        (id ?? "null") +
         "\nuserName: " +
         (userName ?? "null") +
         "\nname: " +
@@ -51,7 +51,7 @@ class Teacher {
         "\nlastName: " +
         lastName +
         "\nfatherName: " +
-        fatherName +
+        (fatherName ?? "null") +
         "\nbirthDay: " +
         (birthDay != null ? DateFormat("dd.MM.yyyy").format(birthDay!) : "null") +
         "\nemail: " +

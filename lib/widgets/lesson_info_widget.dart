@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/core/network/jitsy/jitsy_logic.dart';
 import 'package:repiton/model/lesson.dart';
+import 'package:repiton/model/student.dart';
+import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/web_jitsi_call_screen.dart';
@@ -27,11 +29,26 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
     });
   }
 
-  void _connectToLessonRoom(String lessonId) {
-    if (kIsWeb) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebJitsiCallScreen(roomId: lessonId)));
+  void _connectToLessonRoom(String lessonId) async {
+    final userInfo = await RootProvider.getAuth().cachedUserInfo;
+    late String userName;
+    late String login;
+
+    if (userInfo is Teacher) {
+      userName = userInfo.fullName;
+      login = userInfo.email;
+    } else if (userInfo is Student) {
+      userName = userInfo.fullName;
+      login = userInfo.email;
     } else {
-      JitsyLogic.joinMeeting("Leonis", "Leonis13579", lessonId, context);
+      userName = "";
+      login = "";
+    }
+
+    if (kIsWeb) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebJitsiCallScreen(roomId: lessonId, userName: userName, login: login)));
+    } else {
+      JitsyLogic.joinMeeting(userName, login, lessonId, context);
     }
   }
 

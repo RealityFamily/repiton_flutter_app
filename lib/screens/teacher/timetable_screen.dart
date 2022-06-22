@@ -57,15 +57,9 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    discipline.student.fullName,
-                    style: const TextStyle(fontSize: 24),
-                  ),
+                  Text(discipline.student.fullName, style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 8),
-                  Text(
-                    discipline.name,
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  Text(discipline.name, style: const TextStyle(fontSize: 16)),
                 ],
               ),
             ),
@@ -74,15 +68,9 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
               color: _lessonElementInListColor(lesson.status),
               child: Column(
                 children: [
-                  Text(
-                    DateFormat("HH:mm").format(lesson.dateTimeStart),
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                  Text(DateFormat("HH:mm").format(lesson.dateTimeStart), style: const TextStyle(fontSize: 18)),
                   const SizedBox(height: 5),
-                  Text(
-                    DateFormat("dd.MM").format(lesson.dateTimeStart),
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                  Text(DateFormat("dd.MM").format(lesson.dateTimeStart), style: const TextStyle(fontSize: 18)),
                 ],
               ),
             ),
@@ -115,7 +103,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     );
   }
 
-  List<Widget> _getListOfLessonsForToday(List<Discipline> disciplines) {
+  List<Widget> _getListOfLessonsWidgetsForToday(List<Discipline> disciplines) {
     List<Widget> result = [];
     for (var discipline in disciplines) {
       for (var lesson in discipline.lessons) {
@@ -148,7 +136,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
       pageChangeAction: teachersLessons.fetchAndSetLessons,
     );
     final students = SeparatedList(
-      children: _getListOfLessonsForToday(teachersLessons.todayLessons),
+      children: _getListOfLessonsWidgetsForToday(teachersLessons.todayLessons),
       separatorBuilder: (_, __) => const Divider(),
     );
 

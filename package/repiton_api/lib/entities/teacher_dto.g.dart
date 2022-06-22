@@ -7,11 +7,11 @@ part of 'teacher_dto.dart';
 // **************************************************************************
 
 TeacherDTO _$TeacherDTOFromJson(Map<String, dynamic> json) => TeacherDTO(
-      id: json['id'] as String,
+      id: json['id'] as String?,
       userName: json['userName'] as String?,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      fatherName: json['fatherName'] as String,
+      fatherName: json['fatherName'] as String?,
       birthday: json['birthday'] as String?,
       email: json['email'] as String,
       telephone: json['telephone'] as String?,

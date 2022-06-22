@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:repiton/provider/auth.dart';
+import 'package:repiton/provider/root_provider.dart';
 
 class JitsyLogic {
   static void joinMeeting(String userName, String login, String room, BuildContext context) async {
@@ -19,14 +21,23 @@ class JitsyLogic {
           "height": "100%",
           "enableWelcomePage": false,
           "chromeExtensionBanner": null,
-          "userInfo": {"displayName": "My Name"},
+          "userInfo": {
+            "displayName": userName,
+            "login": login,
+          },
         };
+
+      var isLessonOn = true;
 
       await JitsiMeet.joinMeeting(
         options,
         listener: JitsiMeetingListener(
           onConferenceTerminated: (_) {
-            Navigator.of(context).pop();
+            if (isLessonOn) {
+              isLessonOn = false;
+              if (RootProvider.getAuth().userRole == AuthProvider.teacherRole) RootProvider.getLessons().endLesson();
+              Navigator.of(context).pop();
+            }
           },
         ),
       );

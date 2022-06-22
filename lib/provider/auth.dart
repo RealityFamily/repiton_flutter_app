@@ -66,6 +66,19 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<Object?> get cachedUserInfo async {
+    if (userRole == AuthProvider.adminRole) {
+      // TODO: Change to admin provider
+      return await RootProvider.getTeachers().cachedTeacher();
+    } else if (userRole == AuthProvider.teacherRole) {
+      return await RootProvider.getTeachers().cachedTeacher();
+    } else if (userRole == AuthProvider.studentRole) {
+      return await RootProvider.getStudents().cachedStudent();
+    } else {
+      return null;
+    }
+  }
+
   void logout() {
     _id = null;
     _userName = null;

@@ -90,13 +90,20 @@ class _UsersScreenState extends State<UsersScreen> {
                                 itemCount: users.studentsList.length,
                               )
                             : ListView.separated(
-                                itemBuilder: (context, index) => ControllListWidget(
-                                  name: users.teachersList[index].lastName + " " + users.teachersList[index].name + " " + users.teachersList[index].fatherName,
-                                  imageUrl: users.teachersList[index].imageUrl,
-                                  user: users.teachersList[index],
-                                  // TODO: Change to Teacher info screen
-                                  page: (user) => Container(),
-                                ),
+                                itemBuilder: (context, index) {
+                                  String fullName = users.teachersList[index].lastName + " " + users.teachersList[index].name;
+                                  if (users.teachersList[index].fatherName != null) {
+                                    fullName = fullName + " " + users.teachersList[index].fatherName!;
+                                  }
+
+                                  return ControllListWidget(
+                                    name: fullName,
+                                    imageUrl: users.teachersList[index].imageUrl,
+                                    user: users.teachersList[index],
+                                    // TODO: Change to Teacher info screen
+                                    page: (user) => Container(),
+                                  );
+                                },
                                 separatorBuilder: (context, index) => const Divider(),
                                 itemCount: users.teachersList.length,
                               );

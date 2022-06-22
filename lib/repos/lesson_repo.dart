@@ -11,6 +11,8 @@ import 'package:repiton_api/entities/test_dto.dart';
 
 abstract class ILessonRepo {
   Future<Lesson?> updateLesson(Lesson newLesson);
+  Future startLesson(String lessonId);
+  Future endLesson(String lessonId);
 }
 
 class LessonRepo implements ILessonRepo {
@@ -24,6 +26,28 @@ class LessonRepo implements ILessonRepo {
     } catch (e, stackTrace) {
       debugPrint("$e\n$stackTrace");
       return null;
+    }
+  }
+
+  @override
+  Future endLesson(String lessonId) async {
+    try {
+      /*final result = */ await _api.disciplineLesson.endLesson(lessonId: lessonId);
+      // return result.toLesson;
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      // return null;
+    }
+  }
+
+  @override
+  Future startLesson(String lessonId) async {
+    try {
+      /*final result = */ await _api.disciplineLesson.startLesson(lessonId: lessonId);
+      // return result.toLesson;
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      // return null;
     }
   }
 }

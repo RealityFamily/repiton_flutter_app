@@ -4,11 +4,11 @@ part 'teacher_dto.g.dart';
 
 @JsonSerializable()
 class TeacherDTO {
-  String id;
+  String? id;
   String? userName;
   String firstName;
   String lastName;
-  String fatherName;
+  String? fatherName;
   String? birthday;
   String email;
   String? telephone;

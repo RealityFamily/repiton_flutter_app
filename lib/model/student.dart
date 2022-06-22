@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:repiton/model/parent.dart';
 
 class Student {
-  late String id;
+  String? id;
   String? userName;
   late String name;
   late String lastName;
@@ -15,7 +15,7 @@ class Student {
   late List<Parent> parents;
 
   Student.empty() {
-    id = "";
+    id = null;
     userName = null;
     name = "";
     lastName = "";
@@ -29,7 +29,7 @@ class Student {
   }
 
   Student({
-    required this.id,
+    this.id,
     this.userName,
     required this.name,
     required this.lastName,
@@ -46,7 +46,7 @@ class Student {
   @override
   String toString() {
     return "id: " +
-        id +
+        (id ?? "null") +
         "\nuserName: " +
         (userName ?? "null") +
         "\nname: " +

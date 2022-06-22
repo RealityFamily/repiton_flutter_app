@@ -61,16 +61,17 @@ class _AddingTeacherAccountScreenState extends State<AddingTeacherAccountScreen>
                     onSaved: (newValue) => teacher.name = newValue!,
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: "Отчество", contentPadding: EdgeInsets.symmetric(vertical: 5)),
-                    keyboardType: TextInputType.name,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Введите отчество";
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) => teacher.fatherName = newValue!,
-                  ),
+                      decoration: const InputDecoration(labelText: "Отчество", contentPadding: EdgeInsets.symmetric(vertical: 5)),
+                      keyboardType: TextInputType.name,
+                      onSaved: (newValue) {
+                        if (newValue != null) {
+                          if (newValue.isNotEmpty) {
+                            teacher.fatherName = newValue;
+                            return;
+                          }
+                        }
+                        teacher.fatherName = null;
+                      }),
                   TextFormField(
                     decoration: const InputDecoration(labelText: "Дата рождения", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                     controller: _dateController,

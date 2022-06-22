@@ -49,7 +49,11 @@ class SettingsScreen extends ConsumerWidget {
       return _getUserNameAndRole<Teacher>(
         RootProvider.getTeachers().cachedTeacher(),
         (teacher) {
-          return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
+          String fullName = teacher.lastName + " " + teacher.name;
+          if (teacher.fatherName != null) {
+            fullName = fullName + " " + teacher.fatherName!;
+          }
+          return fullName;
         },
         "Преподаватель",
       );
@@ -58,13 +62,17 @@ class SettingsScreen extends ConsumerWidget {
       return _getUserNameAndRole<Teacher>(
         RootProvider.getTeachers().cachedTeacher(),
         (teacher) {
-          return teacher.lastName + " " + teacher.name + " " + teacher.fatherName;
+          String fullName = teacher.lastName + " " + teacher.name;
+          if (teacher.fatherName != null) {
+            fullName = fullName + " " + teacher.fatherName!;
+          }
+          return fullName;
         },
         "Администратор",
       );
     } else if (userRole == AuthProvider.studentRole) {
       return _getUserNameAndRole<Student>(
-        RootProvider.getStudents().getCachedStudent(),
+        RootProvider.getStudents().cachedStudent(),
         (student) {
           return student.lastName + " " + student.name;
         },
@@ -76,7 +84,7 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
-  void _logout(BuildContext context) {
+  void _logout(BuildContext context) async {
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AuthScreen()));
     RootProvider.getAuth().logout();
   }

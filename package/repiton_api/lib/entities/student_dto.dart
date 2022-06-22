@@ -5,7 +5,7 @@ part 'student_dto.g.dart';
 
 @JsonSerializable()
 class StudentDTO {
-  String id;
+  String? id;
   String? userName;
   String firstName;
   String lastName;

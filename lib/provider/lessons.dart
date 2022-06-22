@@ -26,9 +26,15 @@ class LessonsProvider with ChangeNotifier {
 
   Future<void> startLesson() async {
     if (_lesson == null) return;
+    await _repo.startLesson(_lesson!.id);
     _lesson!.status = LessonStatus.started;
-    // TODO: Refactor to API call https://backend.repiton.dev.realityfamily.ru:9046/swagger-ui/?urls.primaryName=discipline-lesson-service#/Lessons/getLessonIdStartLesson
-    await Future.delayed(const Duration(milliseconds: 500));
+    notifyListeners();
+  }
+
+  Future<void> endLesson() async {
+    if (_lesson == null) return;
+    await _repo.endLesson(_lesson!.id);
+    _lesson!.status = LessonStatus.done;
     notifyListeners();
   }
 

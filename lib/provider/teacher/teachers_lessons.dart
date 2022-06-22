@@ -22,6 +22,7 @@ class TeachersLessonsProvider with ChangeNotifier {
   Future<void> fetchAndSetLessons(DateTime showDate) async {
     DateTime dateFrom = DateTime(showDate.year, showDate.month, 1);
     DateTime dateTo = DateTime(showDate.year, showDate.month + 1, 0);
+    _todayLessons = [];
 
     _disciplines = await _repo.getTimetable(RootProvider.getAuth().id, dateFrom, dateTo);
     notifyListeners();
@@ -29,9 +30,6 @@ class TeachersLessonsProvider with ChangeNotifier {
 
   void fecthAndSetLessonsForADay(DateTime day) {
     _todayLessons = [];
-    if (_disciplines.isEmpty) {
-      return;
-    }
 
     for (var discipline in _disciplines) {
       for (var lesson in discipline.lessons) {
