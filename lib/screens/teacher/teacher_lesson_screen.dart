@@ -10,21 +10,21 @@ import 'package:repiton/widgets/state_chooser.dart';
 import 'package:repiton/widgets/task_info_widget.dart';
 import 'package:repiton/widgets/test_info_widget.dart';
 
-class LessonScreen extends StatefulWidget {
+class TeacherLessonScreen extends StatefulWidget {
   final String disciplineName;
   final String studentName;
 
-  const LessonScreen({
+  const TeacherLessonScreen({
     required this.disciplineName,
     required this.studentName,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<LessonScreen> createState() => _LessonScreenState();
+  State<TeacherLessonScreen> createState() => _TeacherLessonScreenState();
 }
 
-class _LessonScreenState extends State<LessonScreen> {
+class _TeacherLessonScreenState extends State<TeacherLessonScreen> {
   final List<String> _states = ["Информация", "Д/З", "Чат"];
   late String _newState;
 
@@ -34,16 +34,21 @@ class _LessonScreenState extends State<LessonScreen> {
     _newState = _states[0];
   }
 
-  Widget get _lessonHeader => Column(children: [_lessonHeaderTitle, const SizedBox(height: 12), _lessonHeaderSubTitle]);
+  Widget get _lessonHeader => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 48.0),
+        child: Column(children: [_lessonHeaderTitle, const SizedBox(height: 10), _lessonHeaderSubTitle]),
+      );
 
   Widget get _lessonHeaderTitle => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Consumer(
-            builder: (context, ref, _) {
-              final lessons = ref.watch(RootProvider.getLessonsProvider());
-              return Text(lessons.lesson!.name, style: const TextStyle(fontSize: 34));
-            },
+          Expanded(
+            child: Consumer(
+              builder: (context, ref, _) {
+                final lessons = ref.watch(RootProvider.getLessonsProvider());
+                return Text(lessons.lesson!.name, textAlign: TextAlign.center, style: const TextStyle(fontSize: 34));
+              },
+            ),
           )
         ],
       );
@@ -163,44 +168,47 @@ class _LessonScreenState extends State<LessonScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 8),
-          child: CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Column(
-                  children: [
-                    Stack(
-                      alignment: Alignment.topCenter,
-                      children: [_lessonHeader, _lessonHeaderAction],
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Column(
-                              children: [
-                                StateChooser(
-                                  items: _states,
-                                  onStateChange: (newState) {
-                                    setState(() {
-                                      _newState = newState;
-                                    });
-                                  },
-                                ),
-                                if (_newState != _states[_states.length - 1]) _mainLessonInfo
-                              ],
-                            ),
-                          ),
-                          Expanded(child: _choosedInfoStateContent),
-                        ],
+          child: RefreshIndicator(
+            onRefresh: RootProvider.getLessons().updateLessonInfo,
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        children: [_lessonHeader, _lessonHeaderAction],
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                children: [
+                                  StateChooser(
+                                    items: _states,
+                                    onStateChange: (newState) {
+                                      setState(() {
+                                        _newState = newState;
+                                      });
+                                    },
+                                  ),
+                                  if (_newState != _states[_states.length - 1]) _mainLessonInfo
+                                ],
+                              ),
+                            ),
+                            Expanded(child: _choosedInfoStateContent),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

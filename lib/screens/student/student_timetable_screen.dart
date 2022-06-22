@@ -4,19 +4,19 @@ import 'package:intl/intl.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/screens/teacher/lesson_screen.dart';
+import 'package:repiton/screens/student/student_lesson_screen.dart';
 import 'package:repiton/utils/separated_list.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class TimeTableScreen extends StatefulWidget {
-  const TimeTableScreen({Key? key}) : super(key: key);
+class StudentTimeTableScreen extends StatefulWidget {
+  const StudentTimeTableScreen({Key? key}) : super(key: key);
 
   @override
-  State<TimeTableScreen> createState() => _TimeTableScreenState();
+  State<StudentTimeTableScreen> createState() => _StudentTimeTableScreenState();
 }
 
-class _TimeTableScreenState extends State<TimeTableScreen> {
+class _StudentTimeTableScreenState extends State<StudentTimeTableScreen> {
   Color? _lessonElementInListColor(LessonStatus status) {
     switch (status) {
       case LessonStatus.done:
@@ -37,15 +37,15 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     RootProvider.getLessons().openLesson(lesson);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => LessonScreen(
+        builder: (context) => StudentLessonScreen(
           disciplineName: discipline.name,
-          studentName: discipline.student.fullName,
+          teacherName: discipline.teacher.fullName,
         ),
       ),
     );
   }
 
-  Widget _studentElementInList(Discipline discipline, Lesson lesson) {
+  Widget _teacherElementInList(Discipline discipline, Lesson lesson) {
     return InkWell(
       hoverColor: Colors.grey[200],
       onTap: () => _onTapStudentElementInList(discipline, lesson),
@@ -57,7 +57,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(discipline.student.fullName, style: const TextStyle(fontSize: 24)),
+                  Text(discipline.teacher.fullName, style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 8),
                   Text(discipline.name, style: const TextStyle(fontSize: 16)),
                 ],
@@ -107,7 +107,7 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
     List<Widget> result = [];
     for (var discipline in disciplines) {
       for (var lesson in discipline.lessons) {
-        result.add(_studentElementInList(discipline, lesson));
+        result.add(_teacherElementInList(discipline, lesson));
       }
     }
     return result;
@@ -128,20 +128,21 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
       );
 
   Widget _getConsumerBuilder(BuildContext context, WidgetRef ref, Widget? child) {
-    final teachersLessons = ref.watch(RootProvider.getTeachersLessonsProvider());
+    final studentsLessons = ref.watch(RootProvider.getStudentLessonsProvider());
 
     final calendar = TimeTableCalendar(
       format: CalendarFormat.month,
-      selectAction: teachersLessons.fecthAndSetLessonsForADay,
-      pageChangeAction: teachersLessons.fetchAndSetLessons,
+      selectAction: studentsLessons.fecthAndSetLessonsForADay,
+      pageChangeAction: studentsLessons.fetchAndSetLessons,
+      disciplines: studentsLessons.disciplines,
     );
     final students = SeparatedList(
-      children: _getListOfLessonsWidgetsForToday(teachersLessons.todayLessons),
+      children: _getListOfLessonsWidgetsForToday(studentsLessons.todayLessons),
       separatorBuilder: (_, __) => const Divider(),
     );
 
     if (MediaQuery.of(context).size.width < 1300) {
-      return _tinyScreen(calendar, students, teachersLessons.todayLessons.isNotEmpty);
+      return _tinyScreen(calendar, students, studentsLessons.todayLessons.isNotEmpty);
     } else {
       return _wideScreen(calendar, students);
     }
@@ -179,8 +180,8 @@ class _TimeTableScreenState extends State<TimeTableScreen> {
   }
 
   Future<void> _getLessons(DateTime dateTime) async {
-    await RootProvider.getTeachersLessons().fetchAndSetLessons(dateTime);
+    await RootProvider.getStudentLessons().fetchAndSetLessons(dateTime);
 
-    RootProvider.getTeachersLessons().fecthAndSetLessonsForADay(dateTime);
+    RootProvider.getStudentLessons().fecthAndSetLessonsForADay(dateTime);
   }
 }

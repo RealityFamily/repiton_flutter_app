@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:repiton/screens/main_screen.dart';
 import 'package:repiton/screens/teacher/students_screen.dart';
-import 'package:repiton/screens/teacher/timetable_screen.dart';
+import 'package:repiton/screens/teacher/teacher_timetable_screen.dart';
 
 import '../settings_screen.dart';
 
 class TeachersBottomNavigationController extends NavigationController {
   final List<Widget> _pages = [
     const StudentsScreen(),
-    const TimeTableScreen(),
+    const TeacherTimeTableScreen(),
     const SettingsScreen(),
   ];
 

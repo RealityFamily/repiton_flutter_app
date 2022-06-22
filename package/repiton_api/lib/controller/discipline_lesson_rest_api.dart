@@ -19,12 +19,15 @@ abstract class DisciplineLessonRestApi {
   Future<List<DisciplineDTO>> studentTimetable(
       {@Path("id") required String studentId, @Query("dateFrom") required String dateFrom, @Query("dateTo") required String dateTo});
 
+  @GET("lesson/{id}")
+  Future<LessonDTO> getLessonInfo({@Path("id") required String lessonId});
+
   @PUT("lesson/{id}")
   Future<LessonDTO> updateLessonInfo({@Path("id") required String lessonId, @Body() required LessonDTO newLesson});
 
   @GET("lesson/{id}/startLesson")
-  Future startLesson({@Path("id") required String lessonId});
+  Future<LessonDTO?> startLesson({@Path("id") required String lessonId});
 
   @GET("lesson/{id}/endLesson")
-  Future endLesson({@Path("id") required String lessonId});
+  Future<LessonDTO?> endLesson({@Path("id") required String lessonId});
 }

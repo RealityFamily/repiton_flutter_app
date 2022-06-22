@@ -10,16 +10,17 @@ import 'package:repiton_api/entities/lesson_dto.dart';
 import 'package:repiton_api/entities/test_dto.dart';
 
 abstract class ILessonRepo {
-  Future<Lesson?> updateLesson(Lesson newLesson);
-  Future startLesson(String lessonId);
-  Future endLesson(String lessonId);
+  Future<Lesson?> updateLessonInfo(Lesson newLesson);
+  Future<Lesson?> getLessonInfo(String lessonId);
+  Future<Lesson?> startLesson(String lessonId);
+  Future<Lesson?> endLesson(String lessonId);
 }
 
 class LessonRepo implements ILessonRepo {
   RepitonApiContainer get _api => GetIt.I.get<RepitonApiContainer>();
 
   @override
-  Future<Lesson?> updateLesson(Lesson newLesson) async {
+  Future<Lesson?> updateLessonInfo(Lesson newLesson) async {
     try {
       final result = await _api.disciplineLesson.updateLessonInfo(lessonId: newLesson.id, newLesson: newLesson.toDTO);
       return result.toLesson;
@@ -30,24 +31,43 @@ class LessonRepo implements ILessonRepo {
   }
 
   @override
-  Future endLesson(String lessonId) async {
+  Future<Lesson?> endLesson(String lessonId) async {
     try {
-      /*final result = */ await _api.disciplineLesson.endLesson(lessonId: lessonId);
-      // return result.toLesson;
+      final result = await _api.disciplineLesson.endLesson(lessonId: lessonId);
+      if (result != null) {
+        return result.toLesson;
+      } else {
+        return null;
+      }
     } catch (e, stackTrace) {
       debugPrint("$e\n$stackTrace");
-      // return null;
+      return null;
     }
   }
 
   @override
-  Future startLesson(String lessonId) async {
+  Future<Lesson?> startLesson(String lessonId) async {
     try {
-      /*final result = */ await _api.disciplineLesson.startLesson(lessonId: lessonId);
-      // return result.toLesson;
+      final result = await _api.disciplineLesson.startLesson(lessonId: lessonId);
+      if (result != null) {
+        return result.toLesson;
+      } else {
+        return null;
+      }
     } catch (e, stackTrace) {
       debugPrint("$e\n$stackTrace");
-      // return null;
+      return null;
+    }
+  }
+
+  @override
+  Future<Lesson?> getLessonInfo(String lessonId) async {
+    try {
+      final result = await _api.disciplineLesson.getLessonInfo(lessonId: lessonId);
+      return result.toLesson;
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      return null;
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:repiton/core/network/jitsy/jitsy_logic.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
+import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/web_jitsi_call_screen.dart';
@@ -55,7 +56,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
   Function()? _lessonButtonOnPressed(LessonsProvider provider) {
     switch (provider.lesson!.status) {
       case LessonStatus.planned:
-        return () => _startLesson(provider);
+        return RootProvider.getAuth().userRole == AuthProvider.teacherRole ? () => _startLesson(provider) : null;
       case LessonStatus.started:
         return () => _connectToLessonRoom(provider.lesson!.id);
       case LessonStatus.moved:
@@ -72,7 +73,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
   String _lessonsButtonTextContent(LessonStatus status) {
     switch (status) {
       case LessonStatus.planned:
-        return "Начать занятие";
+        return RootProvider.getAuth().userRole == AuthProvider.teacherRole ? "Начать занятие" : "Занятие еще не начато. Подождите.";
       case LessonStatus.started:
         return "Подключиться к занятию";
       case LessonStatus.done:
@@ -93,13 +94,16 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    padding: kIsWeb ? const EdgeInsets.symmetric(vertical: 16, horizontal: 24) : const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      padding: kIsWeb ? const EdgeInsets.symmetric(vertical: 16, horizontal: 24) : const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    ),
+                    onPressed: _lessonButtonOnPressed(lessons),
+                    child: Text(_lessonsButtonTextContent(lessons.lesson!.status), style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
                   ),
-                  onPressed: _lessonButtonOnPressed(lessons),
-                  child: Text(_lessonsButtonTextContent(lessons.lesson!.status), style: const TextStyle(fontSize: 18)),
                 );
         },
       );
@@ -208,9 +212,10 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
               Container(
                 width: double.infinity,
                 alignment: Alignment.center,
+                padding: const EdgeInsets.only(bottom: 8),
                 child: const Text("Описание", style: TextStyle(fontSize: 24)),
               ),
-              _editDescriptionButton,
+              if (RootProvider.getAuth().userRole == AuthProvider.teacherRole) _editDescriptionButton,
             ],
           ),
         ),

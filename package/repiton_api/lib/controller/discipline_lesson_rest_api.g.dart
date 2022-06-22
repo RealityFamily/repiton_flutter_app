@@ -60,6 +60,22 @@ class _DisciplineLessonRestApi implements DisciplineLessonRestApi {
   }
 
   @override
+  Future<LessonDTO> getLessonInfo({required lessonId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<LessonDTO>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'lesson/${lessonId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = LessonDTO.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<LessonDTO> updateLessonInfo(
       {required lessonId, required newLesson}) async {
     const _extra = <String, dynamic>{};
@@ -78,32 +94,36 @@ class _DisciplineLessonRestApi implements DisciplineLessonRestApi {
   }
 
   @override
-  Future<dynamic> startLesson({required lessonId}) async {
+  Future<LessonDTO?> startLesson({required lessonId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, 'lesson/${lessonId}/startLesson',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<LessonDTO>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'lesson/${lessonId}/startLesson',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : LessonDTO.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> endLesson({required lessonId}) async {
+  Future<LessonDTO?> endLesson({required lessonId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, 'lesson/${lessonId}/endLesson',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
+        _setStreamType<LessonDTO>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'lesson/${lessonId}/endLesson',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : LessonDTO.fromJson(_result.data!);
     return value;
   }
 

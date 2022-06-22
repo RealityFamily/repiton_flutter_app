@@ -13,7 +13,7 @@ class LessonsProvider with ChangeNotifier {
 
   void setDescription(String newDescription) async {
     if (_lesson == null) return;
-    _lesson = await _repo.updateLesson(_lesson!..description = newDescription);
+    _lesson = await _repo.updateLessonInfo(_lesson!..description = newDescription);
     notifyListeners();
   }
 
@@ -24,17 +24,21 @@ class LessonsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateLessonInfo() async {
+    if (_lesson == null) return;
+    _lesson = await _repo.getLessonInfo(_lesson!.id);
+    notifyListeners();
+  }
+
   Future<void> startLesson() async {
     if (_lesson == null) return;
-    await _repo.startLesson(_lesson!.id);
-    _lesson!.status = LessonStatus.started;
+    _lesson = await _repo.startLesson(_lesson!.id);
     notifyListeners();
   }
 
   Future<void> endLesson() async {
     if (_lesson == null) return;
-    await _repo.endLesson(_lesson!.id);
-    _lesson!.status = LessonStatus.done;
+    _lesson = await _repo.endLesson(_lesson!.id);
     notifyListeners();
   }
 

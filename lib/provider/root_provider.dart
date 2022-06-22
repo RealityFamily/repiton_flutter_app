@@ -7,6 +7,7 @@ import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/rocket_chat_messages.dart';
 import 'package:repiton/provider/student/students.dart';
+import 'package:repiton/provider/student/students_lessons.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/provider/teacher/teachers_lessons.dart';
 import 'package:repiton/repos/admin_repo.dart';
@@ -83,6 +84,13 @@ class RootProvider {
   static ChangeNotifierProvider<StudentsProvider> getStudentsProvider({bool refresh = false}) => ChangeNotifierProvider<StudentsProvider>(
         (ref) {
           return _getAndRegister(() => StudentsProvider(StudentRepo()), refresh: refresh);
+        },
+      );
+
+  static StudentLessonsProvider getStudentLessons({bool refresh = false}) => _getAndRegister(() => StudentLessonsProvider(StudentRepo()), refresh: refresh);
+  static ChangeNotifierProvider<StudentLessonsProvider> getStudentLessonsProvider({bool refresh = false}) => ChangeNotifierProvider<StudentLessonsProvider>(
+        (ref) {
+          return _getAndRegister(() => StudentLessonsProvider(StudentRepo()), refresh: refresh);
         },
       );
 

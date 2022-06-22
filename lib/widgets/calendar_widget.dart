@@ -307,12 +307,13 @@ class StudentsInfoCalendar extends Calendar {
 }
 
 class TimeTableCalendar extends Calendar {
-  late final List<Discipline> disciplines;
+  final List<Discipline> disciplines;
 
   TimeTableCalendar({
     required CalendarFormat format,
     required Function(DateTime) selectAction,
     required Function(DateTime) pageChangeAction,
+    required this.disciplines,
     Key? key,
   }) : super(
           format: format,
@@ -320,9 +321,7 @@ class TimeTableCalendar extends Calendar {
           selectAction: selectAction,
           pageChangeAction: pageChangeAction,
           key: key,
-        ) {
-    disciplines = RootProvider.getTeachersLessons().disciplines;
-  }
+        );
 
   @override
   Color? getColor(DateTime day) {
