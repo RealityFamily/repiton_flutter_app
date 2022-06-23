@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:repiton/model/home_task.dart';
+import 'package:repiton/model/lesson.dart';
+import 'package:repiton/model/lesson_action.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/empty_hometask_widget.dart';
 import 'package:repiton/widgets/lesson_info_widget.dart';
@@ -78,26 +80,42 @@ class _TeacherLessonScreenState extends State<TeacherLessonScreen> {
         icon: const Icon(Icons.arrow_back),
       );
 
-  Widget get _lessonHeaderActionMenuButton => PopupMenuButton<String>(
+  List<LessonAction> get _lessonActions {
+    List<LessonAction> result = [];
+
+    if (RootProvider.getLessons().lessonStatus != null) {
+      if (RootProvider.getLessons().lessonStatus == LessonStatus.started) {
+        result.add(EndLessonAction());
+      }
+
+      if (RootProvider.getLessons().lessonStatus == LessonStatus.planned) {
+        result.add(MoveLessonAction());
+        result.add(CancelLessonAction());
+      }
+    }
+
+    return result;
+  }
+
+  Widget get _lessonHeaderActionMenuButton => PopupMenuButton<LessonAction>(
         padding: const EdgeInsets.all(16),
         icon: const Icon(Icons.more_vert),
-        itemBuilder: (_) => ["Перенести занятие", "Отменить занятие"]
+        itemBuilder: (_) => _lessonActions
             .map(
-              (item) => PopupMenuItem<String>(
-                // TODO: Delete param when would created func
-                enabled: false,
+              (item) => PopupMenuItem<LessonAction>(
+                enabled: item.isActive ?? true,
                 value: item,
                 child: Row(
                   children: [
-                    Icon(item.contains("Перенести") ? Icons.move_down : Icons.dnd_forwardslash),
+                    Icon(item.icon),
                     const SizedBox(width: 5),
-                    Text(item),
+                    Text(item.title),
                   ],
                 ),
               ),
             )
             .toList(),
-        onSelected: (value) {},
+        onSelected: (value) => value.action(),
       );
 
   Widget get _mainLessonInfo => Consumer(

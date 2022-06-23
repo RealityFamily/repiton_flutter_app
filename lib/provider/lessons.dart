@@ -42,8 +42,16 @@ class LessonsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void openLesson(Lesson newLesson) {
-    _lesson = newLesson;
+  Future<void> openLesson(String lessonId) async {
+    _lesson = await _repo.getLessonInfo(lessonId);
+    notifyListeners();
+  }
+
+  LessonStatus? get lessonStatus => _lesson?.status;
+
+  bool isActiveLessonBefore(Duration duration) {
+    if (_lesson == null) return false;
+    return _lesson!.dateTimeStart.isAfter(DateTime.now()) && _lesson!.dateTimeStart.isBefore(DateTime.now().subtract(duration));
   }
 
   void closeLesson() {

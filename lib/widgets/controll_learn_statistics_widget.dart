@@ -94,7 +94,7 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
         formOfCalendarVisualisation = CalendarFormat.month;
         break;
       case InfoVisualisationState.custom:
-        break;
+        return Container();
     }
 
     return Container(

@@ -33,8 +33,8 @@ class _TeacherTimeTableScreenState extends State<TeacherTimeTableScreen> {
     }
   }
 
-  void _onTapStudentElementInList(Discipline discipline, Lesson lesson) {
-    RootProvider.getLessons().openLesson(lesson);
+  void _onTapStudentElementInList(Discipline discipline, Lesson lesson) async {
+    await RootProvider.getLessons().openLesson(lesson.id);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => TeacherLessonScreen(
