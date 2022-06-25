@@ -19,7 +19,9 @@ import 'package:repiton_api/entities/test_dto.dart';
 
 abstract class IStudentRepo {
   Future<List<Discipline>> getTimetable(String studentId, DateTime dateTimeFrom, DateTime dateTimeTo);
+  Future<List<Discipline>> getStudentsDisciplines(String studentId);
   Future<Student?> getStudentById(String studentId);
+  Future<Student?> updateStudentInfo(Student student);
 }
 
 class StudentRepo implements IStudentRepo {
@@ -44,6 +46,23 @@ class StudentRepo implements IStudentRepo {
   Future<Student?> getStudentById(String studentId) async {
     try {
       final result = await _api.user.getStudentById(studentId: studentId);
+      return result.toStudent;
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      return null;
+    }
+  }
+
+  @override
+  Future<List<Discipline>> getStudentsDisciplines(String studentId) {
+    // TODO: implement getStudentsDisciplines
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Student?> updateStudentInfo(Student student) async {
+    try {
+      final result = await _api.user.updateStudent(studentId: student.id!, student: student.toDTO);
       return result.toStudent;
     } catch (e, stackTrace) {
       debugPrint("$e\n$stackTrace");
@@ -93,6 +112,21 @@ extension on StudentDTO {
       );
 }
 
+extension on Student {
+  StudentDTO get toDTO => StudentDTO(
+        id: id,
+        userName: userName,
+        firstName: name,
+        lastName: lastName,
+        birthday: birthDay?.toIso8601String(),
+        email: email,
+        telephone: phone,
+        imageUrl: imageUrl,
+        education: education,
+        parents: parents.map((parent) => parent.toDTO).toList(),
+      );
+}
+
 extension on ParentDTO {
   Parent get toParent => Parent(
         id: id,
@@ -100,6 +134,16 @@ extension on ParentDTO {
         lastName: lastName,
         fatherName: fatherName,
         phone: telephone,
+      );
+}
+
+extension on Parent {
+  ParentDTO get toDTO => ParentDTO(
+        id: id,
+        firstName: name,
+        lastName: lastName,
+        fatherName: fatherName,
+        telephone: phone,
       );
 }
 

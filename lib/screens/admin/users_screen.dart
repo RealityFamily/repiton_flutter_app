@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:repiton/model/student.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/adding_student_account_screen.dart';
 import 'package:repiton/screens/adding_teacher_account_screen.dart';
+import 'package:repiton/screens/student_info_screen.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
 
@@ -83,8 +85,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                   name: users.studentsList[index].lastName + " " + users.studentsList[index].name,
                                   imageUrl: users.studentsList[index].imageUrl,
                                   user: users.studentsList[index],
-                                  // TODO: Change to Students info screen
-                                  page: (user) => Container(),
+                                  page: (user) => StudentInfoScreen(studentId: (user as Student).id!),
                                 ),
                                 separatorBuilder: (context, index) => const Divider(),
                                 itemCount: users.studentsList.length,

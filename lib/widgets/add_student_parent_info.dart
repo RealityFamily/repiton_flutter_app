@@ -4,11 +4,11 @@ import 'package:repiton/model/parent.dart';
 // ignore: must_be_immutable
 class AddStudentParentInfo extends StatefulWidget {
   final GlobalKey<FormState> formKey = GlobalKey();
-  final String parentTitle;
+  final String? parentTitle;
   Function()? onDeleteButtonPressed;
   final Parent result = Parent.empty();
 
-  AddStudentParentInfo({required this.parentTitle, this.onDeleteButtonPressed, Key? key}) : super(key: key);
+  AddStudentParentInfo({this.parentTitle, this.onDeleteButtonPressed, Key? key}) : super(key: key);
 
   @override
   State<AddStudentParentInfo> createState() => _AddStudentParentInfoState();
@@ -18,17 +18,19 @@ class _AddStudentParentInfoState extends State<AddStudentParentInfo> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
-            Expanded(child: Text(widget.parentTitle, style: const TextStyle(fontWeight: FontWeight.bold))),
+            if (widget.parentTitle != null) Expanded(child: Text(widget.parentTitle!, style: const TextStyle(fontWeight: FontWeight.bold))),
             if (widget.onDeleteButtonPressed != null) IconButton(onPressed: widget.onDeleteButtonPressed, icon: const Icon(Icons.delete, color: Colors.red)),
           ],
         ),
         Form(
           key: widget.formKey,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
                 decoration: const InputDecoration(labelText: "Фамилия", contentPadding: EdgeInsets.symmetric(vertical: 5)),

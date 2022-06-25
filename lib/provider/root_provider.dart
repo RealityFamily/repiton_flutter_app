@@ -6,6 +6,7 @@ import 'package:repiton/provider/admin/users.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/rocket_chat_messages.dart';
+import 'package:repiton/provider/student/student_info.dart';
 import 'package:repiton/provider/student/students.dart';
 import 'package:repiton/provider/student/students_lessons.dart';
 import 'package:repiton/provider/teacher/teachers.dart';
@@ -24,19 +25,25 @@ class RootProvider {
     return GetIt.I.get<T>();
   }
 
+  static void _unregisterIfRegistred<T extends Object>() {
+    if (GetIt.I.isRegistered<T>()) {
+      GetIt.I.unregister<T>();
+    }
+  }
+
   static void refreshRootProvider() {
-    GetIt.I.unregister<AuthProvider>();
-    GetIt.I.unregister<RocketChatMessagesProvider>();
-    GetIt.I.unregister<LessonsProvider>();
+    _unregisterIfRegistred<AuthProvider>();
+    _unregisterIfRegistred<RocketChatMessagesProvider>();
+    _unregisterIfRegistred<LessonsProvider>();
 
-    GetIt.I.unregister<TeachersProvider>();
-    GetIt.I.unregister<TeachersLessonsProvider>();
+    _unregisterIfRegistred<TeachersProvider>();
+    _unregisterIfRegistred<TeachersLessonsProvider>();
 
-    GetIt.I.unregister<StudentsProvider>();
+    _unregisterIfRegistred<StudentsProvider>();
 
-    GetIt.I.unregister<UsersProvider>();
-    GetIt.I.unregister<StudentsStatisticsProvider>();
-    GetIt.I.unregister<TearchersStatiscticsProvider>();
+    _unregisterIfRegistred<UsersProvider>();
+    _unregisterIfRegistred<StudentsStatisticsProvider>();
+    _unregisterIfRegistred<TearchersStatiscticsProvider>();
   }
 
   /// General providers
@@ -91,6 +98,13 @@ class RootProvider {
   static ChangeNotifierProvider<StudentLessonsProvider> getStudentLessonsProvider({bool refresh = false}) => ChangeNotifierProvider<StudentLessonsProvider>(
         (ref) {
           return _getAndRegister(() => StudentLessonsProvider(StudentRepo()), refresh: refresh);
+        },
+      );
+
+  static StudentInfoProvider getStudentInfo({bool refresh = false}) => _getAndRegister(() => StudentInfoProvider(StudentRepo()), refresh: refresh);
+  static ChangeNotifierProvider<StudentInfoProvider> getStudentInfoProvider({bool refresh = false}) => ChangeNotifierProvider<StudentInfoProvider>(
+        (ref) {
+          return _getAndRegister(() => StudentInfoProvider(StudentRepo()), refresh: refresh);
         },
       );
 

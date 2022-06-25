@@ -66,4 +66,29 @@ class Student {
         "\nparents: " +
         parents.toString();
   }
+
+  Student copyWith({
+    String? id,
+    String? userName,
+    String? name,
+    String? lastName,
+    DateTime? birthDay,
+    String? email,
+    String? phone,
+    String? imageUrl,
+    String? education,
+    List<Parent>? parents,
+  }) =>
+      Student(
+        id: id ?? this.id,
+        userName: userName ?? this.userName,
+        name: name ?? this.name,
+        lastName: lastName ?? this.lastName,
+        birthDay: birthDay ?? this.birthDay,
+        email: email ?? this.email,
+        phone: phone ?? this.phone,
+        imageUrl: imageUrl ?? this.imageUrl,
+        education: education ?? this.education,
+        parents: parents ?? this.parents,
+      );
 }

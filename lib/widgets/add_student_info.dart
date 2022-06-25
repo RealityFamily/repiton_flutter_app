@@ -5,10 +5,12 @@ import 'package:repiton/model/student.dart';
 class AddStudentInfo extends StatefulWidget {
   final Student result;
   final GlobalKey<FormState> formKey;
+  final bool isTitleNeeded;
 
   const AddStudentInfo({
     required this.formKey,
     required this.result,
+    this.isTitleNeeded = true,
     Key? key,
   }) : super(key: key);
 
@@ -23,15 +25,19 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
 
   @override
   Widget build(BuildContext context) {
+    selectedValue = widget.result.education;
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text("Введите данные ученика", style: TextStyle(fontSize: 22)),
+        if (widget.isTitleNeeded) const Text("Введите данные ученика", style: TextStyle(fontSize: 22)),
         Form(
           key: widget.formKey,
           child: Column(
             children: [
               TextFormField(
+                initialValue: widget.result.lastName,
                 decoration: const InputDecoration(labelText: "Фамилия", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.name,
                 validator: (value) {
@@ -43,6 +49,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                 onSaved: (newValue) => widget.result.lastName = newValue!,
               ),
               TextFormField(
+                initialValue: widget.result.name,
                 decoration: const InputDecoration(labelText: "Имя", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.name,
                 validator: (value) {
@@ -54,6 +61,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                 onSaved: (newValue) => widget.result.name = newValue!,
               ),
               TextFormField(
+                initialValue: widget.result.birthDay != null ? DateFormat('dd.MM.yyyy').format(widget.result.birthDay!) : null,
                 decoration: const InputDecoration(labelText: "Дата рождения", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 controller: _dateController,
                 keyboardType: TextInputType.datetime,
@@ -84,6 +92,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                 onSaved: (newValue) => widget.result.birthDay = pickedDate!,
               ),
               TextFormField(
+                initialValue: widget.result.email,
                 decoration: const InputDecoration(labelText: "Почта", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -95,6 +104,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                 onSaved: (newValue) => widget.result.email = newValue!,
               ),
               TextFormField(
+                initialValue: widget.result.phone,
                 decoration: const InputDecoration(labelText: "Телефон", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                 keyboardType: TextInputType.phone,
                 validator: (value) {

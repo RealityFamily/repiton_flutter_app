@@ -25,4 +25,10 @@ abstract class UserRestApi {
 
   @POST("teacher")
   Future<TeacherDTO> addTeacher({@Body() required TeacherDTO teacher});
+
+  @PUT("student/{id}")
+  Future<StudentDTO> updateStudent({@Path("id") required String studentId, @Body() required StudentDTO student});
+
+  @PUT("teacher/{id}")
+  Future<TeacherDTO> updateTeacher({@Path("id") required String teacherId, @Body() required TeacherDTO teacher});
 }

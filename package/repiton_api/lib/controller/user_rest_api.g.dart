@@ -100,6 +100,42 @@ class _UserRestApi implements UserRestApi {
     return value;
   }
 
+  @override
+  Future<StudentDTO> updateStudent(
+      {required studentId, required student}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(student.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<StudentDTO>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'student/${studentId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = StudentDTO.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<TeacherDTO> updateTeacher(
+      {required teacherId, required teacher}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(teacher.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<TeacherDTO>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'teacher/${teacherId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = TeacherDTO.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
