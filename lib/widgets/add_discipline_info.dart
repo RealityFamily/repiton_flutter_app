@@ -3,8 +3,6 @@ import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/repos/admin_repo.dart';
-import 'package:repiton/repos/auth_repo.dart';
-import 'package:repiton/repos/teacher_repo.dart';
 
 class AddDisciplineInfo extends StatefulWidget {
   final Discipline result;

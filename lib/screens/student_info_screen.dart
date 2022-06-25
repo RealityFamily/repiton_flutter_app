@@ -24,8 +24,6 @@ class StudentInfoScreen extends StatelessWidget {
   Widget _studentInfoHeaderSubTitle(BuildContext context) => Consumer(builder: (context, ref, _) {
         final studentInfoProvider = ref.watch(RootProvider.getStudentInfoProvider());
 
-        print(studentInfoProvider.hashCode);
-
         return RichText(
           textAlign: TextAlign.center,
           text: TextSpan(

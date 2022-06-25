@@ -12,8 +12,6 @@ class CreateHometaskScreen extends StatefulWidget {
 }
 
 class _CreateHometaskScreenState extends State<CreateHometaskScreen> {
-  final HomeTask _homeTask = HomeTask.empty();
-
   void creationHomeTaskCallBack(HomeTask? newHomeTask) {
     if (newHomeTask == null) return;
 

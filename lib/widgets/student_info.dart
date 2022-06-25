@@ -161,6 +161,5 @@ class StudentInfo extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

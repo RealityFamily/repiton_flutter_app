@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:repiton/model/info_visualisation_state.dart';
-import 'package:repiton/model/student.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/widgets/controll_learn_statistics_widget.dart';
 import 'package:repiton/widgets/state_chooser.dart';
