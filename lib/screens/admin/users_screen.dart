@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/screens/adding_student_account_screen.dart';
+import 'package:repiton/screens/adding_discipline_screen.dart';
 import 'package:repiton/screens/adding_teacher_account_screen.dart';
 import 'package:repiton/screens/student_info_screen.dart';
 import 'package:repiton/widgets/controll_list_widget.dart';
@@ -41,7 +41,7 @@ class _UsersScreenState extends State<UsersScreen> {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
                             if (_state == _states[1]) {
-                              return const AddingStudentAccountScreen();
+                              return const AddingDisciplineScreen();
                             } else {
                               return const AddingTeacherAccountScreen();
                             }

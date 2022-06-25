@@ -7,16 +7,16 @@ import 'package:repiton/widgets/add_discipline_info.dart';
 import 'package:repiton/widgets/add_student_info.dart';
 import 'package:repiton/widgets/add_student_parent_info.dart';
 
-class AddingStudentAccountScreen extends StatefulWidget {
+class AddingDisciplineScreen extends StatefulWidget {
   final String? initTeacherId;
 
-  const AddingStudentAccountScreen({this.initTeacherId, Key? key}) : super(key: key);
+  const AddingDisciplineScreen({this.initTeacherId, Key? key}) : super(key: key);
 
   @override
-  State<AddingStudentAccountScreen> createState() => _AddingStudentAccountScreenState();
+  State<AddingDisciplineScreen> createState() => _AddingDisciplineScreenState();
 }
 
-class _AddingStudentAccountScreenState extends State<AddingStudentAccountScreen> {
+class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
   final parentList = [AddStudentParentInfo(parentTitle: "Родитель 1")];
   final GlobalKey<FormState> studentFormKey = GlobalKey();
   final GlobalKey<FormState> teacherFormKey = GlobalKey();

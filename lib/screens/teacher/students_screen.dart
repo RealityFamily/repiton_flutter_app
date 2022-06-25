@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/screens/adding_student_account_screen.dart';
+import 'package:repiton/screens/adding_discipline_screen.dart';
 import 'package:repiton/widgets/teacher_students_element_widget.dart';
 
 class StudentsScreen extends StatelessWidget {
@@ -26,7 +26,7 @@ class StudentsScreen extends StatelessWidget {
                     IconButton(
                       padding: const EdgeInsets.all(16),
                       onPressed: () =>
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddingStudentAccountScreen(initTeacherId: RootProvider.getAuth().id))),
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddingDisciplineScreen(initTeacherId: RootProvider.getAuth().id))),
                       icon: const Icon(Icons.add),
                     ),
                   ],
