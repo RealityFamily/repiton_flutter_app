@@ -27,7 +27,7 @@ class StudentInfo extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Информация о родителях", style: TextStyle(fontSize: 22)),
+            const Text("Информация о родителях", style: TextStyle(fontSize: 20)),
             IconButton(icon: const Icon(Icons.add), onPressed: () => _addParentToStudent(context)),
           ],
         ),

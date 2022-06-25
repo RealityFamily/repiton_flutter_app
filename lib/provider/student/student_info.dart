@@ -13,6 +13,7 @@ class StudentInfoProvider with ChangeNotifier {
   StudentInfoProvider(this._repo);
 
   Student? get student => _student;
+  List<Discipline> get studentDisciplines => [..._studentDisciplines];
 
   Future<void> fetchAndSetStudentForInfo(String studentId) async {
     _student = await _repo.getStudentById(studentId);

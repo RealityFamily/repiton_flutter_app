@@ -22,7 +22,7 @@ class _AddDisciplineInfoState extends State<AddDisciplineInfo> {
 
   Future<List<Teacher>> get _getTeachersForSelecting {
     if (widget.initTeacherId != null) {
-      return RootProvider.getTeachers().choosableTeacher();
+      return RootProvider.getTeachers().choosableTeacher(widget.initTeacherId!);
     } else {
       return AdminRepo().getTeachers();
     }
@@ -38,7 +38,7 @@ class _AddDisciplineInfoState extends State<AddDisciplineInfo> {
           value: selectedValue,
           validator: (value) {
             if (value == null) {
-              return "Выберите ведущего образпреподавателяование";
+              return "Выберите ведущего преподавателя";
             }
             return null;
           },

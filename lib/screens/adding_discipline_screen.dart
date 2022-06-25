@@ -9,8 +9,9 @@ import 'package:repiton/widgets/add_student_parent_info.dart';
 
 class AddingDisciplineScreen extends StatefulWidget {
   final String? initTeacherId;
+  final String? initStudentId;
 
-  const AddingDisciplineScreen({this.initTeacherId, Key? key}) : super(key: key);
+  const AddingDisciplineScreen({this.initStudentId, this.initTeacherId, Key? key}) : super(key: key);
 
   @override
   State<AddingDisciplineScreen> createState() => _AddingDisciplineScreenState();
@@ -55,11 +56,9 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
   Widget get _tinyScreanBuild => SingleChildScrollView(
         child: Column(
           children: [
-            AddStudentInfo(formKey: studentFormKey, result: student),
-            const SizedBox(height: 36),
             AddDisciplineInfo(result: discipline, formKey: studentFormKey, initTeacherId: widget.initTeacherId),
-            const SizedBox(height: 23),
-            _parentInputForm,
+            const SizedBox(height: 36),
+            AddStudentInfo(formKey: studentFormKey, result: student, initStudentId: widget.initStudentId),
           ],
         ),
       );
@@ -68,45 +67,19 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Padding(padding: const EdgeInsets.all(16), child: SingleChildScrollView(child: AddStudentInfo(formKey: studentFormKey, result: student))),
-                ),
-                const Divider(),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: SingleChildScrollView(child: AddDisciplineInfo(result: discipline, formKey: studentFormKey, initTeacherId: widget.initTeacherId)),
-                  ),
-                ),
-              ],
-            ),
+            child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SingleChildScrollView(child: AddDisciplineInfo(result: discipline, formKey: studentFormKey, initTeacherId: widget.initTeacherId))),
           ),
           const VerticalDivider(),
-          Expanded(child: Padding(padding: const EdgeInsets.all(16), child: SingleChildScrollView(child: _parentInputForm))),
-        ],
-      );
-
-  Widget get _parentInputForm => Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Expanded(child: Text("Введите данные родителя ученика", style: TextStyle(fontSize: 22))),
-              IconButton(
-                onPressed: () => setState(() => parentList.add(AddStudentParentInfo(parentTitle: "Родитель ${parentList.length + 1}"))),
-                icon: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
-              )
-            ],
-          ),
-          const SizedBox(height: 13),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (_, index) => _parentListItem(parentList[index]),
-            separatorBuilder: (_, __) => const SizedBox(height: 36),
-            itemCount: parentList.length,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: SingleChildScrollView(
+                  child: Column(
+                children: [AddStudentInfo(formKey: studentFormKey, result: student, initStudentId: widget.initStudentId)],
+              )),
+            ),
           ),
         ],
       );
@@ -119,31 +92,6 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
         onPressed: _submit,
         child: const Text("Сохранить", style: TextStyle(fontSize: 18)),
       );
-
-  Widget _parentListItem(AddStudentParentInfo item) {
-    if (kIsWeb) {
-      item.onDeleteButtonPressed = () => _onDeleteParentItemFromList(item);
-      return item;
-    } else {
-      return Dismissible(
-        key: ObjectKey(item),
-        background: Container(color: Colors.red),
-        child: item,
-        direction: DismissDirection.endToStart,
-        onDismissed: (direction) {
-          if (direction == DismissDirection.endToStart) _onDeleteParentItemFromList(item);
-        },
-      );
-    }
-  }
-
-  void _onDeleteParentItemFromList(AddStudentParentInfo item) {
-    setState(() {
-      if (parentList.length > 1) {
-        parentList.remove(item);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

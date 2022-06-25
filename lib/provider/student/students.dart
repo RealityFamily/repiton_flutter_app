@@ -13,4 +13,8 @@ class StudentsProvider with ChangeNotifier {
     _student ??= await _repo.getStudentById(RootProvider.getAuth().id);
     return _student!;
   }
+
+  Future<List<Student>> choosableStudent(String studentId) async {
+    return [await _repo.getStudentById(studentId) ?? Student.empty()];
+  }
 }

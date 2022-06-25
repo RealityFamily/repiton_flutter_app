@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:repiton/model/discipline.dart';
+import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/screens/adding_discipline_screen.dart';
 import 'package:repiton/utils/separated_list.dart';
 import 'package:repiton/widgets/student_info.dart';
 
@@ -57,7 +60,7 @@ class StudentInfoScreen extends StatelessWidget {
   }
 
   Widget _tinyScreen(BuildContext context) => SeparatedList(
-        children: [const StudentInfo(), _studentsDisciplines(), _studentTimeTable()],
+        children: [const StudentInfo(), _studentsDisciplines(context), _studentTimeTable()],
         separatorBuilder: (_, __) => const Divider(),
       );
 
@@ -68,7 +71,7 @@ class StudentInfoScreen extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Expanded(child: _studentsDisciplines()),
+                Expanded(child: _studentsDisciplines(context)),
                 const Divider(),
                 Expanded(child: _studentTimeTable()),
               ],
@@ -77,13 +80,63 @@ class StudentInfoScreen extends StatelessWidget {
         ],
       );
 
-  Widget _studentsDisciplines() => Column(
+  Widget _studentsDisciplines(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [const Text("Связанные дисциплины с учеником", style: TextStyle(fontSize: 22)), SingleChildScrollView()],
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Связанные дисциплины с учеником", style: TextStyle(fontSize: 22)),
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AddingDisciplineScreen(initStudentId: RootProvider.getStudentInfo().student!.id)),
+                ),
+              ),
+            ],
+          ),
+          SingleChildScrollView(
+            child: Consumer(
+              builder: (context, ref, child) {
+                final studentInfoProvider = RootProvider.getStudentInfo();
+
+                return SeparatedList(
+                  separatorBuilder: (_, __) => const Divider(),
+                  children: studentInfoProvider.studentDisciplines.map((discipline) => _studentDiscipline(discipline)).toList(),
+                );
+              },
+            ),
+          )
+        ],
       );
+
+  Widget _studentDiscipline(Discipline discipline) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(discipline.name),
+              if (RootProvider.getAuth().userRole == AuthProvider.adminRole) Text(discipline.teacher.fullName),
+            ],
+          ),
+          IconButton(onPressed: null, icon: const Icon(Icons.delete, color: Colors.red))
+        ],
+      );
+
   Widget _studentTimeTable() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [const Text("Занятия с учеником", style: TextStyle(fontSize: 22)), SingleChildScrollView()],
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Занятия с учеником", style: TextStyle(fontSize: 22)),
+              IconButton(icon: const Icon(Icons.add), onPressed: null),
+            ],
+          ),
+          SingleChildScrollView(),
+        ],
       );
 
   @override

@@ -20,9 +20,8 @@ class TeachersProvider with ChangeNotifier {
     return _teacher ?? Teacher.empty();
   }
 
-  Future<List<Teacher>> choosableTeacher() async {
-    _teacher ??= await _repo.getTeacherById(RootProvider.getAuth().id);
-    return [(_teacher ?? Teacher.empty())];
+  Future<List<Teacher>> choosableTeacher(String teacherId) async {
+    return [await _repo.getTeacherById(teacherId) ?? Teacher.empty()];
   }
 
   void registerStudent(Student student) {}

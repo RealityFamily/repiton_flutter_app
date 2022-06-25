@@ -54,9 +54,57 @@ class StudentRepo implements IStudentRepo {
   }
 
   @override
-  Future<List<Discipline>> getStudentsDisciplines(String studentId) {
-    // TODO: implement getStudentsDisciplines
-    throw UnimplementedError();
+  Future<List<Discipline>> getStudentsDisciplines(String studentId) async {
+    // TODO: Call API method
+    return [
+      Discipline(
+        id: "d1",
+        name: "Информатика",
+        teacher: Teacher.empty()
+          ..name = "Зинаида"
+          ..lastName = "Юрьевна"
+          ..fatherName = "Аркадьевна"
+          ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+        student: Student.empty(),
+        lessons: [
+          Lesson(
+            id: "l1",
+            name: "Урок №1",
+            description: "Какая-то инфа по уроку",
+            status: LessonStatus.done,
+            dateTimeStart: DateTime.now().subtract(const Duration(
+              days: 1,
+            )),
+            dateTimeEnd: DateTime.now().add(
+              const Duration(hours: 2),
+            ),
+          ),
+          Lesson(
+            id: "l2",
+            name: "Урок №2",
+            description: "Какая-то инфа по уроку",
+            status: LessonStatus.canceledByStudent,
+            dateTimeStart: DateTime.now().subtract(const Duration(days: 3)),
+            dateTimeEnd: DateTime.now().add(
+              const Duration(hours: 2),
+            ),
+          ),
+          Lesson(
+            id: "l3",
+            name: "Урок №3",
+            description: "Какая-то инфа по уроку",
+            status: LessonStatus.moved,
+            dateTimeStart: DateTime.now(),
+            dateTimeEnd: DateTime.now().add(
+              const Duration(hours: 2),
+            ),
+          ),
+        ],
+        rocketChatReference: [],
+        minutes: 45,
+        price: 1000,
+      ),
+    ];
   }
 
   @override
