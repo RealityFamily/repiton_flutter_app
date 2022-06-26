@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
-import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/repos/teacher_repo.dart';
@@ -19,8 +18,6 @@ class TeachersProvider with ChangeNotifier {
     _teacher ??= await _repo.getTeacherById(RootProvider.getAuth().id);
     return _teacher ?? Teacher.empty();
   }
-
-  void registerStudent(Student student) {}
 
   DateTime? getDisciplineNearestLesson(Discipline discipline) {
     DateTime? result;
