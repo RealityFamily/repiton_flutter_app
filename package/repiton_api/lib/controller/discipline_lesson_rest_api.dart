@@ -25,6 +25,9 @@ abstract class DisciplineLessonRestApi {
   @PUT("discipline/{id}")
   Future<DisciplineDTO> updateDiscipline({@Path("id") required String disciplineId, @Body() required DisciplineDTO discipline});
 
+  @DELETE("discipline/{id}")
+  Future<void> deleteDiscipline({@Path("id") required String disciplineId});
+
   @GET("lesson/{id}")
   Future<LessonDTO> getLessonInfo({@Path("id") required String lessonId});
 

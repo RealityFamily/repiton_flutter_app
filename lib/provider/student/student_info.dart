@@ -45,6 +45,8 @@ class StudentInfoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Discipline disciplineById(String disciplineId) => _studentDisciplines.firstWhere((discipline) => discipline.id == disciplineId);
+
   Future<void> updateDisciplineInfo(Discipline discipline) async {
     if (discipline.id == null) return;
     final newDiscipline = await _disciplineRepo.updateDiscipline(discipline);
@@ -54,6 +56,14 @@ class StudentInfoProvider with ChangeNotifier {
       foundDiscipline.price = newDiscipline.price;
       foundDiscipline.minutes = newDiscipline.minutes;
 
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteDiscipline(String disciplineId) async {
+    final result = await _disciplineRepo.deleteDiscipline(disciplineId);
+    if (result) {
+      _studentDisciplines.removeWhere((discipline) => discipline.id == disciplineId);
       notifyListeners();
     }
   }

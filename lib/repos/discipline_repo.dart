@@ -13,6 +13,7 @@ import 'package:repiton_api/entities/teacher_dto.dart';
 abstract class IDisciplineRepo {
   Future<Discipline?> addDiscipline(Discipline discipline);
   Future<Discipline?> updateDiscipline(Discipline discipline);
+  Future<bool> deleteDiscipline(String disciplineId);
 }
 
 class DisciplineRepo implements IDisciplineRepo {
@@ -37,6 +38,17 @@ class DisciplineRepo implements IDisciplineRepo {
     } catch (e, stackTrace) {
       debugPrint("$e\n$stackTrace");
       return null;
+    }
+  }
+
+  @override
+  Future<bool> deleteDiscipline(String disciplineId) async {
+    try {
+      await _api.disciplineLesson.deleteDiscipline(disciplineId: disciplineId);
+      return true;
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      return false;
     }
   }
 }

@@ -8,7 +8,7 @@ part of 'discipline_dto.dart';
 
 DisciplineDTO _$DisciplineDTOFromJson(Map<String, dynamic> json) =>
     DisciplineDTO(
-      id: json['id'] as String,
+      id: json['id'] as String?,
       name: json['name'] as String,
       price: (json['price'] as num).toDouble(),
       minutes: json['minutes'] as int,
