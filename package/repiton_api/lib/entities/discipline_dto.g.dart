@@ -12,13 +12,17 @@ DisciplineDTO _$DisciplineDTOFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       price: (json['price'] as num).toDouble(),
       minutes: json['minutes'] as int,
-      teacher: TeacherDTO.fromJson(json['teacher'] as Map<String, dynamic>),
-      student: StudentDTO.fromJson(json['student'] as Map<String, dynamic>),
-      lessons: (json['lessons'] as List<dynamic>)
-          .map((e) => LessonDTO.fromJson(e as Map<String, dynamic>))
+      teacher: json['teacher'] == null
+          ? null
+          : TeacherDTO.fromJson(json['teacher'] as Map<String, dynamic>),
+      student: json['student'] == null
+          ? null
+          : StudentDTO.fromJson(json['student'] as Map<String, dynamic>),
+      lessons: (json['lessons'] as List<dynamic>?)
+          ?.map((e) => LessonDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
-      rocketChats: (json['rocketChats'] as List<dynamic>)
-          .map((e) => RocketChatDTO.fromJson(e as Map<String, dynamic>))
+      rocketChats: (json['rocketChats'] as List<dynamic>?)
+          ?.map((e) => RocketChatDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

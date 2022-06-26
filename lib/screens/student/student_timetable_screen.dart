@@ -37,10 +37,7 @@ class _StudentTimeTableScreenState extends State<StudentTimeTableScreen> {
     await RootProvider.getLessons().openLesson(lesson.id);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => StudentLessonScreen(
-          disciplineName: discipline.name,
-          teacherName: discipline.teacher.fullName,
-        ),
+        builder: (context) => StudentLessonScreen(disciplineName: discipline.name, teacherName: discipline.teacher?.fullName ?? ""),
       ),
     );
   }
@@ -57,7 +54,7 @@ class _StudentTimeTableScreenState extends State<StudentTimeTableScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(discipline.teacher.fullName, style: const TextStyle(fontSize: 24)),
+                  Text(discipline.teacher?.fullName ?? "", style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 8),
                   Text(discipline.name, style: const TextStyle(fontSize: 16)),
                 ],

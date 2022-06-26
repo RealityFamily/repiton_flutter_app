@@ -3,12 +3,12 @@ import 'package:repiton/model/parent.dart';
 
 // ignore: must_be_immutable
 class AddStudentParentInfo extends StatefulWidget {
-  final GlobalKey<FormState> formKey = GlobalKey();
+  final GlobalKey<FormState> formKey;
   final String? parentTitle;
   Function()? onDeleteButtonPressed;
   final Parent result = Parent.empty();
 
-  AddStudentParentInfo({this.parentTitle, this.onDeleteButtonPressed, Key? key}) : super(key: key);
+  AddStudentParentInfo({required this.formKey, this.parentTitle, this.onDeleteButtonPressed, Key? key}) : super(key: key);
 
   @override
   State<AddStudentParentInfo> createState() => _AddStudentParentInfoState();

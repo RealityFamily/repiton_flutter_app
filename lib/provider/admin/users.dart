@@ -32,9 +32,4 @@ class UsersProvider with ChangeNotifier {
     _studentsList.addAll(await _repo.getStudents());
     notifyListeners();
   }
-
-  void addStudent(Student newStudent) {
-    _studentsList.add(newStudent);
-    notifyListeners();
-  }
 }

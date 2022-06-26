@@ -13,6 +13,7 @@ import 'package:repiton/provider/teacher/teachers.dart';
 import 'package:repiton/provider/teacher/teachers_lessons.dart';
 import 'package:repiton/repos/admin_repo.dart';
 import 'package:repiton/repos/auth_repo.dart';
+import 'package:repiton/repos/discipline_repo.dart';
 import 'package:repiton/repos/lesson_repo.dart';
 import 'package:repiton/repos/student_repo.dart';
 import 'package:repiton/repos/teacher_repo.dart';
@@ -101,10 +102,10 @@ class RootProvider {
         },
       );
 
-  static StudentInfoProvider getStudentInfo({bool refresh = false}) => _getAndRegister(() => StudentInfoProvider(StudentRepo()), refresh: refresh);
+  static StudentInfoProvider getStudentInfo({bool refresh = false}) => _getAndRegister(() => StudentInfoProvider(StudentRepo(), DisciplineRepo()), refresh: refresh);
   static ChangeNotifierProvider<StudentInfoProvider> getStudentInfoProvider({bool refresh = false}) => ChangeNotifierProvider<StudentInfoProvider>(
         (ref) {
-          return _getAndRegister(() => StudentInfoProvider(StudentRepo()), refresh: refresh);
+          return _getAndRegister(() => StudentInfoProvider(StudentRepo(), DisciplineRepo()), refresh: refresh);
         },
       );
 

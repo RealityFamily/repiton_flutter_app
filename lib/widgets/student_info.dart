@@ -79,7 +79,7 @@ class StudentInfo extends StatelessWidget {
   }
 
   Widget _changeStudentInfoDialog(BuildContext context) {
-    Student studentResult = RootProvider.getStudentInfo().student?.copyWith() ?? Student.empty();
+    Student? studentResult;
     final _formKey = GlobalKey<FormState>();
 
     return AlertDialog(
@@ -95,12 +95,17 @@ class StudentInfo extends StatelessWidget {
             child: const Text("OK")),
         TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Отмена"))
       ],
-      content: AddStudentInfo(formKey: _formKey, result: studentResult, isTitleNeeded: false),
+      content: AddStudentInfo(
+        formKey: _formKey,
+        result: (newStudent) => studentResult = newStudent,
+        isChange: false,
+        initStudent: RootProvider.getStudentInfo().student?.copyWith() ?? Student.empty(),
+      ),
     );
   }
 
   Widget _addParentDialog(BuildContext context) {
-    final form = AddStudentParentInfo();
+    final form = AddStudentParentInfo(formKey: GlobalKey<FormState>());
 
     return AlertDialog(
       title: const Text("Добавте информацию о родителе"),

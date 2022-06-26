@@ -20,10 +20,6 @@ class TeachersProvider with ChangeNotifier {
     return _teacher ?? Teacher.empty();
   }
 
-  Future<List<Teacher>> choosableTeacher(String teacherId) async {
-    return [await _repo.getTeacherById(teacherId) ?? Teacher.empty()];
-  }
-
   void registerStudent(Student student) {}
 
   DateTime? getDisciplineNearestLesson(Discipline discipline) {

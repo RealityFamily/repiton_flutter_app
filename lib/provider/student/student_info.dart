@@ -2,22 +2,24 @@ import 'package:flutter/foundation.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/parent.dart';
 import 'package:repiton/model/student.dart';
+import 'package:repiton/repos/discipline_repo.dart';
 import 'package:repiton/repos/student_repo.dart';
 
 class StudentInfoProvider with ChangeNotifier {
   Student? _student;
   List<Discipline> _studentDisciplines = [];
 
-  final IStudentRepo _repo;
+  final IStudentRepo _studentRepo;
+  final IDisciplineRepo _disciplineRepo;
 
-  StudentInfoProvider(this._repo);
+  StudentInfoProvider(this._studentRepo, this._disciplineRepo);
 
   Student? get student => _student;
   List<Discipline> get studentDisciplines => [..._studentDisciplines];
 
   Future<void> fetchAndSetStudentForInfo(String studentId) async {
-    _student = await _repo.getStudentById(studentId);
-    _studentDisciplines = await _repo.getStudentsDisciplines(studentId);
+    _student = await _studentRepo.getStudentById(studentId);
+    _studentDisciplines = await _studentRepo.getStudentsDisciplines(studentId);
     notifyListeners();
   }
 
@@ -39,7 +41,20 @@ class StudentInfoProvider with ChangeNotifier {
 
   Future<void> updateStudentInfo(Student newStudent) async {
     if (_student == null) return;
-    _student = await _repo.updateStudentInfo(newStudent) ?? _student;
+    _student = await _studentRepo.updateStudentInfo(newStudent) ?? _student;
     notifyListeners();
+  }
+
+  Future<void> updateDisciplineInfo(Discipline discipline) async {
+    if (discipline.id == null) return;
+    final newDiscipline = await _disciplineRepo.updateDiscipline(discipline);
+    if (newDiscipline != null) {
+      final foundDiscipline = _studentDisciplines.firstWhere((discipline) => discipline.id == newDiscipline.id);
+      foundDiscipline.name = newDiscipline.name;
+      foundDiscipline.price = newDiscipline.price;
+      foundDiscipline.minutes = newDiscipline.minutes;
+
+      notifyListeners();
+    }
   }
 }

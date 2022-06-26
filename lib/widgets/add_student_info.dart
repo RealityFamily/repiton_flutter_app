@@ -2,21 +2,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:repiton/model/student.dart';
-import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/repos/admin_repo.dart';
 import 'package:repiton/widgets/add_student_parent_info.dart';
 
 class AddStudentInfo extends StatefulWidget {
-  Student result;
-  final String? initStudentId;
+  Function(Student?) result;
+  final Student? initStudent;
   final GlobalKey<FormState> formKey;
-  final bool isTitleNeeded;
+  final bool isChange;
 
   AddStudentInfo({
     required this.formKey,
     required this.result,
-    this.isTitleNeeded = true,
-    this.initStudentId,
+    this.isChange = false,
+    this.initStudent,
     Key? key,
   }) : super(key: key);
 
@@ -33,7 +32,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
   List<Student> studentsForSelect = [];
   bool isLoading = false;
 
-  final parentList = [AddStudentParentInfo(parentTitle: "Родитель 1")];
+  final parentList = [];
 
   Widget get _studentChooser {
     if (isLoading) {
@@ -49,8 +48,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
             }
             return null;
           },
-          onSaved: (newValue) => widget.result = newValue!,
-          onChanged: widget.initStudentId != null ? null : (value) => setState(() => selectedStudent = value!),
+          onChanged: widget.initStudent != null ? null : (value) => setState(() => selectedStudent = value!),
           items: studentsForSelect
               .map((student) => DropdownMenuItem<Student>(
                   child: student.id != null ? Text(student.fullName) : Row(children: const [Icon(Icons.add), SizedBox(width: 8), Text("Новый ученик")]), value: student))
@@ -63,8 +61,8 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
   }
 
   Future<List<Student>> get _getStudentsForSelecting {
-    if (widget.initStudentId != null) {
-      return RootProvider.getStudents().choosableStudent(widget.initStudentId!);
+    if (widget.initStudent != null) {
+      return Future<List<Student>>.microtask(() => [widget.initStudent!]);
     } else {
       // TODO: Change to teacher or admin getStudent() method
       return AdminRepo().getStudents();
@@ -80,7 +78,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
     setState(() {
       isLoading = false;
       studentsForSelect = result;
-      if (result.isNotEmpty && widget.initStudentId != null) selectedStudent = result.first;
+      if (result.isNotEmpty && widget.initStudent != null) selectedStudent = result.first;
     });
   }
 
@@ -91,7 +89,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
             children: [
               const Expanded(child: Text("Введите данные родителя ученика", style: TextStyle(fontSize: 22))),
               IconButton(
-                onPressed: () => setState(() => parentList.add(AddStudentParentInfo(parentTitle: "Родитель ${parentList.length + 1}"))),
+                onPressed: () => setState(() => parentList.add(AddStudentParentInfo(formKey: widget.formKey, parentTitle: "Родитель ${parentList.length + 1}"))),
                 icon: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
               )
             ],
@@ -134,9 +132,9 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
 
   @override
   void initState() {
-    if (widget.result.id != null) {
-      selectedStudent = widget.result;
-      selectedStudent!.id = null;
+    if (widget.isChange) {
+      selectedStudent = widget.initStudent;
+      selectedStudent?.id = null;
     } else {
       _getStudentsForShow();
     }
@@ -145,21 +143,24 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
 
   @override
   Widget build(BuildContext context) {
-    selectedEducation = widget.result.education;
+    selectedEducation = selectedStudent?.education;
+    if (selectedStudent != null && selectedStudent!.id == null && parentList.isEmpty) {
+      parentList.add(AddStudentParentInfo(formKey: widget.formKey, parentTitle: "Родитель 1"));
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (widget.isTitleNeeded) const Text("Введите данные ученика", style: TextStyle(fontSize: 22)),
+        if (!widget.isChange) const Text("Введите данные ученика", style: TextStyle(fontSize: 22)),
         Form(
           key: widget.formKey,
           child: Column(
             children: [
-              if (widget.isTitleNeeded) _studentChooser,
+              if (!widget.isChange) _studentChooser,
               if (selectedStudent != null && selectedStudent!.id == null) ...[
                 TextFormField(
-                  initialValue: widget.result.lastName,
+                  initialValue: widget.initStudent?.lastName,
                   decoration: const InputDecoration(labelText: "Фамилия", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                   keyboardType: TextInputType.name,
                   validator: (value) {
@@ -168,10 +169,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     }
                     return null;
                   },
-                  onSaved: (newValue) => widget.result.lastName = newValue!,
+                  onSaved: (newValue) => selectedStudent?.lastName = newValue!,
                 ),
                 TextFormField(
-                  initialValue: widget.result.name,
+                  initialValue: widget.initStudent?.name,
                   decoration: const InputDecoration(labelText: "Имя", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                   keyboardType: TextInputType.name,
                   validator: (value) {
@@ -180,10 +181,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     }
                     return null;
                   },
-                  onSaved: (newValue) => widget.result.name = newValue!,
+                  onSaved: (newValue) => selectedStudent?.name = newValue!,
                 ),
                 TextFormField(
-                  initialValue: widget.result.birthDay != null ? DateFormat('dd.MM.yyyy').format(widget.result.birthDay!) : null,
+                  initialValue: widget.initStudent?.birthDay != null ? DateFormat('dd.MM.yyyy').format(widget.initStudent!.birthDay!) : null,
                   decoration: const InputDecoration(labelText: "Дата рождения", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                   controller: _dateController,
                   keyboardType: TextInputType.datetime,
@@ -211,10 +212,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     }
                     return null;
                   },
-                  onSaved: (newValue) => widget.result.birthDay = pickedDate!,
+                  onSaved: (newValue) => selectedStudent?.birthDay = pickedDate!,
                 ),
                 TextFormField(
-                  initialValue: widget.result.email,
+                  initialValue: widget.initStudent?.email,
                   decoration: const InputDecoration(labelText: "Почта", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -223,10 +224,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     }
                     return null;
                   },
-                  onSaved: (newValue) => widget.result.email = newValue!,
+                  onSaved: (newValue) => selectedStudent?.email = newValue!,
                 ),
                 TextFormField(
-                  initialValue: widget.result.phone,
+                  initialValue: widget.initStudent?.phone,
                   decoration: const InputDecoration(labelText: "Телефон", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
@@ -235,7 +236,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     }
                     return null;
                   },
-                  onSaved: (newValue) => widget.result.phone = newValue!,
+                  onSaved: (newValue) => selectedStudent?.phone = newValue!,
                 ),
                 DropdownButtonFormField<String>(
                   hint: const Text("В каком вы классе?"),
@@ -246,7 +247,7 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     }
                     return null;
                   },
-                  onSaved: (newValue) => widget.result.education = newValue!,
+                  onSaved: (newValue) => selectedStudent?.education = newValue!,
                   onChanged: (value) => setState(() => selectedEducation = value!),
                   items: const [
                     DropdownMenuItem<String>(child: Text("Дошкольник"), value: "Дошкольник"),
@@ -265,8 +266,14 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                _parentInputForm
+                _parentInputForm,
               ],
+              FormField(
+                builder: (field) => Container(),
+                onSaved: (_) {
+                  widget.result(selectedStudent);
+                },
+              ),
             ],
           ),
         ),

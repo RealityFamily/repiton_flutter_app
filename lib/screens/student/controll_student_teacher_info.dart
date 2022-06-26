@@ -58,7 +58,9 @@ class ControllStudentTeacherInfo extends StatelessWidget {
                                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
                                 ),
                                 TextSpan(
-                                    text: studentStatistics.discipline.teacher.fullName, style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary)),
+                                  text: studentStatistics.discipline.teacher?.fullName ?? "",
+                                  style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.primary),
+                                ),
                               ],
                             ),
                           ),

@@ -123,10 +123,10 @@ extension on DisciplineDTO {
   Discipline get toDiscipline => Discipline(
         id: id,
         name: name,
-        teacher: teacher.toTeacher,
-        student: student.toStudent,
-        lessons: lessons.map((dto) => dto.toLesson).toList(),
-        rocketChatReference: rocketChats.map((dto) => dto.channelName).toList(),
+        teacher: teacher!.toTeacher,
+        student: student!.toStudent,
+        lessons: lessons!.map((dto) => dto.toLesson).toList(),
+        rocketChatReference: rocketChats!.map((dto) => dto.channelName).toList(),
         minutes: minutes,
         price: price,
       );

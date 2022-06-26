@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/adding_discipline_screen.dart';
 import 'package:repiton/widgets/teacher_students_element_widget.dart';
@@ -25,8 +26,10 @@ class StudentsScreen extends StatelessWidget {
                   children: [
                     IconButton(
                       padding: const EdgeInsets.all(16),
-                      onPressed: () =>
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddingDisciplineScreen(initTeacherId: RootProvider.getAuth().id))),
+                      onPressed: () async {
+                        Teacher userInfo = await RootProvider.getAuth().cachedUserInfo as Teacher;
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddingDisciplineScreen(initTeacher: userInfo)));
+                      },
                       icon: const Icon(Icons.add),
                     ),
                   ],
@@ -61,8 +64,8 @@ class StudentsScreen extends StatelessWidget {
 
                       return ListView.separated(
                         itemBuilder: (context, index) => TeacherStudentsElementWidget(
-                          studentName: teacher.teachersStudents[index].student.fullName,
-                          studentId: teacher.teachersStudents[index].id,
+                          studentName: teacher.teachersStudents[index].student?.fullName ?? "",
+                          studentId: teacher.teachersStudents[index].student?.id ?? "",
                           disciplineName: teacher.teachersStudents[index].name,
                           nearestLessonDateTime: teacher.getDisciplineNearestLesson(teacher.teachersStudents[index]),
                         ),

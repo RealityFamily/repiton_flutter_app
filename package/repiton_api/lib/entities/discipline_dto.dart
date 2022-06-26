@@ -8,14 +8,14 @@ part 'discipline_dto.g.dart';
 
 @JsonSerializable()
 class DisciplineDTO {
-  String id;
+  String? id;
   String name;
   double price;
   int minutes;
-  TeacherDTO teacher;
-  StudentDTO student;
-  List<LessonDTO> lessons;
-  List<RocketChatDTO> rocketChats;
+  TeacherDTO? teacher;
+  StudentDTO? student;
+  List<LessonDTO>? lessons;
+  List<RocketChatDTO>? rocketChats;
 
   DisciplineDTO({
     required this.id,

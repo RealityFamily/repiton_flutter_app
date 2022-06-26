@@ -3,10 +3,10 @@ import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 
 class Discipline {
-  late String id;
+  String? id;
   late String name;
-  late Teacher teacher;
-  late Student student;
+  Teacher? teacher;
+  Student? student;
   late List<Lesson> lessons;
   late double price;
   late int minutes;
@@ -16,8 +16,8 @@ class Discipline {
   Discipline({
     required this.id,
     required this.name,
-    required this.teacher,
-    required this.student,
+    this.teacher,
+    this.student,
     required this.lessons,
     required this.price,
     required this.minutes,
@@ -25,13 +25,34 @@ class Discipline {
   });
 
   Discipline.empty() {
-    id = "";
+    id = null;
     name = "";
-    teacher = Teacher.empty();
-    student = Student.empty();
+    teacher = null;
+    student = null;
     lessons = [];
     price = 0;
     minutes = 0;
     rocketChatReference = [];
   }
+
+  Discipline copyWith({
+    String? id,
+    String? name,
+    Teacher? teacher,
+    Student? student,
+    List<Lesson>? lessons,
+    double? price,
+    int? minutes,
+    List<String>? rocketChatReference,
+  }) =>
+      Discipline(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        teacher: teacher ?? this.teacher,
+        student: student ?? this.student,
+        lessons: lessons ?? this.lessons,
+        price: price ?? this.price,
+        minutes: minutes ?? this.minutes,
+        rocketChatReference: rocketChatReference ?? this.rocketChatReference,
+      );
 }

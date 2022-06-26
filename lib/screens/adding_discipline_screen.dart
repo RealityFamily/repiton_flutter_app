@@ -2,47 +2,42 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/student.dart';
-import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/model/teacher.dart';
+import 'package:repiton/repos/discipline_repo.dart';
 import 'package:repiton/widgets/add_discipline_info.dart';
 import 'package:repiton/widgets/add_student_info.dart';
-import 'package:repiton/widgets/add_student_parent_info.dart';
 
 class AddingDisciplineScreen extends StatefulWidget {
-  final String? initTeacherId;
-  final String? initStudentId;
+  final Teacher? initTeacher;
+  final Student? initStudent;
+  final String? initDisciplineId;
 
-  const AddingDisciplineScreen({this.initStudentId, this.initTeacherId, Key? key}) : super(key: key);
+  const AddingDisciplineScreen({this.initStudent, this.initTeacher, this.initDisciplineId, Key? key}) : super(key: key);
 
   @override
   State<AddingDisciplineScreen> createState() => _AddingDisciplineScreenState();
 }
 
 class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
-  final parentList = [AddStudentParentInfo(parentTitle: "Родитель 1")];
   final GlobalKey<FormState> studentFormKey = GlobalKey();
-  final GlobalKey<FormState> teacherFormKey = GlobalKey();
-  final Student student = Student.empty();
-  final Discipline discipline = Discipline.empty();
-
-  bool _checkAllParents() {
-    for (AddStudentParentInfo parent in parentList) {
-      if (!parent.formKey.currentState!.validate()) {
-        return false;
-      }
-    }
-    return true;
-  }
+  final GlobalKey<FormState> disciplineFormKey = GlobalKey();
+  Student? student;
+  Discipline? discipline;
 
   void _submit() {
-    if (!studentFormKey.currentState!.validate() || !_checkAllParents()) {
+    if (!disciplineFormKey.currentState!.validate() || !studentFormKey.currentState!.validate()) {
       return;
     }
+    disciplineFormKey.currentState!.save();
     studentFormKey.currentState!.save();
-    for (AddStudentParentInfo parent in parentList) {
-      parent.formKey.currentState!.save();
-      student.parents.add(parent.result);
+    // for (AddStudentParentInfo parent in parentList) {
+    //   parent.formKey.currentState!.save();
+    //   student.parents.add(parent.result);
+    // }
+    if (discipline != null) {
+      discipline!.student = student;
+      DisciplineRepo().addDiscipline(discipline!);
     }
-    RootProvider.getUsers().addStudent(student);
   }
 
   Widget get _addingScreenBuild {
@@ -56,9 +51,9 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
   Widget get _tinyScreanBuild => SingleChildScrollView(
         child: Column(
           children: [
-            AddDisciplineInfo(result: discipline, formKey: studentFormKey, initTeacherId: widget.initTeacherId),
+            AddDisciplineInfo(result: (newDiscipline) => discipline = newDiscipline, formKey: disciplineFormKey, initTeacher: widget.initTeacher),
             const SizedBox(height: 36),
-            AddStudentInfo(formKey: studentFormKey, result: student, initStudentId: widget.initStudentId),
+            AddStudentInfo(formKey: studentFormKey, result: (newStudent) => student = newStudent, initStudent: widget.initStudent),
           ],
         ),
       );
@@ -68,8 +63,11 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
         children: [
           Expanded(
             child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: SingleChildScrollView(child: AddDisciplineInfo(result: discipline, formKey: studentFormKey, initTeacherId: widget.initTeacherId))),
+              padding: const EdgeInsets.all(16),
+              child: SingleChildScrollView(
+                child: AddDisciplineInfo(result: (newDiscipline) => discipline = newDiscipline, formKey: disciplineFormKey, initTeacher: widget.initTeacher),
+              ),
+            ),
           ),
           const VerticalDivider(),
           Expanded(
@@ -77,14 +75,14 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
               padding: const EdgeInsets.all(16),
               child: SingleChildScrollView(
                   child: Column(
-                children: [AddStudentInfo(formKey: studentFormKey, result: student, initStudentId: widget.initStudentId)],
+                children: [AddStudentInfo(formKey: studentFormKey, result: (newStudent) => student = newStudent, initStudent: widget.initStudent)],
               )),
             ),
           ),
         ],
       );
 
-  Widget get _saveStudentAccountButton => ElevatedButton(
+  Widget get _saveButton => ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: kIsWeb ? const EdgeInsets.symmetric(vertical: 16, horizontal: 24) : const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -124,7 +122,7 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
               const SizedBox(height: 26),
               Expanded(child: _addingScreenBuild),
               const SizedBox(height: 10),
-              _saveStudentAccountButton,
+              _saveButton,
               const SizedBox(height: 10),
             ],
           ),

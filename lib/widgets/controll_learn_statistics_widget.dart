@@ -140,9 +140,9 @@ class _ControllFinancinalStatisticsWidgetState extends State<ControllLearnStatis
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return ListTile(
-                leading: CircleAvatar(backgroundImage: _teacherImage(disciplines[index].discipline.teacher.imageUrl)),
+                leading: CircleAvatar(backgroundImage: _teacherImage(disciplines[index].discipline.teacher?.imageUrl)),
                 title: Text(disciplines[index].discipline.name),
-                subtitle: Text(disciplines[index].discipline.teacher.fullName),
+                subtitle: Text(disciplines[index].discipline.teacher?.fullName ?? ""),
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (ctx) => ControllStudentTeacherInfo(studentStatistics: disciplines[index])),
