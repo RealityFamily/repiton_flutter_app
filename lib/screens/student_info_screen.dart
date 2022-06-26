@@ -93,7 +93,7 @@ class StudentInfoScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Занятия с учеником", style: TextStyle(fontSize: 22)),
-              IconButton(icon: const Icon(Icons.add), onPressed: null),
+              if (RootProvider.getAuth().userRole == AuthProvider.teacherRole) IconButton(icon: const Icon(Icons.add), onPressed: null),
             ],
           ),
           const SizedBox(height: 8),
