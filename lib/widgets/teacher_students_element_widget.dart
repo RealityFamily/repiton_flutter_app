@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:repiton/screens/student_info_screen.dart';
 
 class TeacherStudentsElementWidget extends StatelessWidget {
   final String studentId;
@@ -18,58 +19,26 @@ class TeacherStudentsElementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          // TODO: Change to Students info screen
-          builder: (_) => Container(),
-        ),
-      ),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => StudentInfoScreen(studentId: studentId))),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 16,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  studentName,
-                  style: const TextStyle(
-                    fontSize: 24,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  disciplineName,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+                Text(studentName, style: const TextStyle(fontSize: 24)),
+                const SizedBox(height: 10),
+                Text(disciplineName, style: const TextStyle(fontSize: 16)),
               ],
             ),
             if (nearestLessonDateTime != null)
               Column(
                 children: [
-                  Text(
-                    DateFormat("HH:mm").format(nearestLessonDateTime!),
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    DateFormat("dd.MM").format(nearestLessonDateTime!),
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
+                  Text(DateFormat("HH:mm").format(nearestLessonDateTime!), style: const TextStyle(fontSize: 18)),
+                  const SizedBox(height: 10),
+                  Text(DateFormat("dd.MM").format(nearestLessonDateTime!), style: const TextStyle(fontSize: 18)),
                 ],
               )
           ],

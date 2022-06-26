@@ -19,7 +19,7 @@ import 'package:repiton_api/entities/test_dto.dart';
 
 abstract class IStudentRepo {
   Future<List<Discipline>> getTimetable(String studentId, DateTime dateTimeFrom, DateTime dateTimeTo);
-  Future<List<Discipline>> getStudentsDisciplines(String studentId);
+  Future<List<Discipline>> studentsDisciplines(String studentId);
   Future<Student?> getStudentById(String studentId);
   Future<Student?> updateStudentInfo(Student student);
 }
@@ -54,7 +54,7 @@ class StudentRepo implements IStudentRepo {
   }
 
   @override
-  Future<List<Discipline>> getStudentsDisciplines(String studentId) async {
+  Future<List<Discipline>> studentsDisciplines(String studentId) async {
     // TODO: Call API method
     return [
       Discipline(

@@ -64,13 +64,13 @@ class StudentsScreen extends StatelessWidget {
 
                       return ListView.separated(
                         itemBuilder: (context, index) => TeacherStudentsElementWidget(
-                          studentName: teacher.teachersStudents[index].student?.fullName ?? "",
-                          studentId: teacher.teachersStudents[index].student?.id ?? "",
-                          disciplineName: teacher.teachersStudents[index].name,
-                          nearestLessonDateTime: teacher.getDisciplineNearestLesson(teacher.teachersStudents[index]),
+                          studentName: teacher.teacherDisciplines[index].student?.fullName ?? "",
+                          studentId: teacher.teacherDisciplines[index].student?.id ?? "",
+                          disciplineName: teacher.teacherDisciplines[index].name,
+                          nearestLessonDateTime: teacher.getDisciplineNearestLesson(teacher.teacherDisciplines[index]),
                         ),
                         separatorBuilder: (context, index) => const Divider(),
-                        itemCount: teacher.teachersStudents.length,
+                        itemCount: teacher.teacherDisciplines.length,
                       );
                     });
                   }

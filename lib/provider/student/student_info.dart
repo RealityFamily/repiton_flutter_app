@@ -19,7 +19,7 @@ class StudentInfoProvider with ChangeNotifier {
 
   Future<void> fetchAndSetStudentForInfo(String studentId) async {
     _student = await _studentRepo.getStudentById(studentId);
-    _studentDisciplines = await _studentRepo.getStudentsDisciplines(studentId);
+    _studentDisciplines = await _studentRepo.studentsDisciplines(studentId);
     notifyListeners();
   }
 

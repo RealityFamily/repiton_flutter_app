@@ -20,6 +20,7 @@ import 'package:repiton_api/entities/test_dto.dart';
 abstract class ITeacherRepo {
   Future<List<Discipline>> getTimetable(String teacherId, DateTime dateTimeFrom, DateTime dateTimeTo);
   Future<Teacher?> getTeacherById(String teacherId);
+  Future<List<Discipline>> teachersDisciplines();
 }
 
 class TeacherRepo implements ITeacherRepo {
@@ -49,6 +50,44 @@ class TeacherRepo implements ITeacherRepo {
       debugPrint("$e\n$stackTrace");
       return null;
     }
+  }
+
+  @override
+  Future<List<Discipline>> teachersDisciplines() async {
+    // TODO: change to API method
+    return [
+      Discipline(
+        id: "d1",
+        name: "Информатика",
+        teacher: Teacher.empty(),
+        student: Student.empty()
+          ..id = "s1"
+          ..name = "Виталий"
+          ..lastName = "Евпанько"
+          ..imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/78/Image.jpg",
+        lessons: [
+          Lesson(
+            id: "lesson4",
+            name: "Урок №4",
+            description: "Какая-то инфа по уроку",
+            status: LessonStatus.planned,
+            dateTimeStart: DateTime.now(),
+            dateTimeEnd: DateTime.now(),
+          ),
+          Lesson(
+            id: "lesson5",
+            name: "Урок №5",
+            description: "Какая-то инфа по уроку",
+            status: LessonStatus.done,
+            dateTimeStart: DateTime.now().subtract(const Duration(hours: 4)),
+            dateTimeEnd: DateTime.now(),
+          ),
+        ],
+        rocketChatReference: [],
+        minutes: 45,
+        price: 1000,
+      ),
+    ];
   }
 }
 
