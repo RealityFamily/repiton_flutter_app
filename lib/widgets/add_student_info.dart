@@ -6,12 +6,12 @@ import 'package:repiton/repos/admin_repo.dart';
 import 'package:repiton/widgets/add_student_parent_info.dart';
 
 class AddStudentInfo extends StatefulWidget {
-  Function(Student?) result;
+  final Function(Student?) result;
   final Student? initStudent;
   final GlobalKey<FormState> formKey;
   final bool isChange;
 
-  AddStudentInfo({
+  const AddStudentInfo({
     required this.formKey,
     required this.result,
     this.isChange = false,
@@ -143,7 +143,10 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
 
   @override
   Widget build(BuildContext context) {
-    selectedEducation = selectedStudent?.education;
+    // selectedEducation = selectedStudent?.education;
+    if (widget.initStudent?.birthDay != null) {
+      _dateController.text = DateFormat('dd.MM.yyyy').format(widget.initStudent!.birthDay!);
+    }
     if (selectedStudent != null && selectedStudent!.id == null && parentList.isEmpty) {
       parentList.add(AddStudentParentInfo(formKey: widget.formKey, parentTitle: "Родитель 1"));
     }
@@ -184,7 +187,6 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   onSaved: (newValue) => selectedStudent?.name = newValue!,
                 ),
                 TextFormField(
-                  initialValue: widget.initStudent?.birthDay != null ? DateFormat('dd.MM.yyyy').format(widget.initStudent!.birthDay!) : null,
                   decoration: const InputDecoration(labelText: "Дата рождения", contentPadding: EdgeInsets.symmetric(vertical: 5)),
                   controller: _dateController,
                   keyboardType: TextInputType.datetime,
@@ -207,12 +209,12 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                     }
                   },
                   validator: (value) {
-                    if (value == null || value.isEmpty || pickedDate == null) {
+                    if (value == null || value.isEmpty || (pickedDate == null && !widget.isChange)) {
                       return "Введите дату рождения";
                     }
                     return null;
                   },
-                  onSaved: (newValue) => selectedStudent?.birthDay = pickedDate!,
+                  onSaved: (newValue) => selectedStudent?.birthDay = pickedDate ?? (newValue != null ? DateFormat("dd.MM.yyyy").parse(newValue) : null),
                 ),
                 TextFormField(
                   initialValue: widget.initStudent?.email,
@@ -251,22 +253,22 @@ class _AddStudentInfoState extends State<AddStudentInfo> {
                   onChanged: (value) => setState(() => selectedEducation = value!),
                   items: const [
                     DropdownMenuItem<String>(child: Text("Дошкольник"), value: "Дошкольник"),
-                    DropdownMenuItem<String>(child: Text("1"), value: "1"),
-                    DropdownMenuItem<String>(child: Text("2"), value: "2"),
-                    DropdownMenuItem<String>(child: Text("3"), value: "3"),
-                    DropdownMenuItem<String>(child: Text("4"), value: "4"),
-                    DropdownMenuItem<String>(child: Text("5"), value: "5"),
-                    DropdownMenuItem<String>(child: Text("6"), value: "6"),
-                    DropdownMenuItem<String>(child: Text("7"), value: "7"),
-                    DropdownMenuItem<String>(child: Text("8"), value: "8"),
-                    DropdownMenuItem<String>(child: Text("9"), value: "9"),
-                    DropdownMenuItem<String>(child: Text("10"), value: "10"),
-                    DropdownMenuItem<String>(child: Text("11"), value: "11"),
+                    DropdownMenuItem<String>(child: Text("1 класс"), value: "1 класс"),
+                    DropdownMenuItem<String>(child: Text("2 класс"), value: "2 класс"),
+                    DropdownMenuItem<String>(child: Text("3 класс"), value: "3 класс"),
+                    DropdownMenuItem<String>(child: Text("4 класс"), value: "4 класс"),
+                    DropdownMenuItem<String>(child: Text("5 класс"), value: "5 класс"),
+                    DropdownMenuItem<String>(child: Text("6 класс"), value: "6 класс"),
+                    DropdownMenuItem<String>(child: Text("7 класс"), value: "7 класс"),
+                    DropdownMenuItem<String>(child: Text("8 класс"), value: "8 класс"),
+                    DropdownMenuItem<String>(child: Text("9 класс"), value: "9 класс"),
+                    DropdownMenuItem<String>(child: Text("10 класс"), value: "10 класс"),
+                    DropdownMenuItem<String>(child: Text("11 класс"), value: "11 класс"),
                     DropdownMenuItem<String>(child: Text("Студент"), value: "Студент"),
                   ],
                 ),
-                const SizedBox(height: 32),
-                _parentInputForm,
+                if (!widget.isChange) const SizedBox(height: 32),
+                if (!widget.isChange) _parentInputForm,
               ],
               FormField(
                 builder: (field) => Container(),

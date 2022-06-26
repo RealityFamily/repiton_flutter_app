@@ -67,7 +67,7 @@ class StudentInfo extends StatelessWidget {
       context: context,
       builder: (_) => _changeStudentInfoDialog(context),
     );
-    if (newStudentInfo != null) RootProvider.getStudentInfo().updateStudentInfo(newStudentInfo);
+    if (newStudentInfo != null) RootProvider.getStudentInfo().updateStudentInfo(newStudentInfo.copyWith(id: RootProvider.getStudentInfo().student?.id));
   }
 
   void _addParentToStudent(BuildContext context) async {
@@ -98,7 +98,7 @@ class StudentInfo extends StatelessWidget {
       content: AddStudentInfo(
         formKey: _formKey,
         result: (newStudent) => studentResult = newStudent,
-        isChange: false,
+        isChange: true,
         initStudent: RootProvider.getStudentInfo().student?.copyWith() ?? Student.empty(),
       ),
     );
