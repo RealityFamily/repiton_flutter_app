@@ -16,6 +16,21 @@ class StudentInfoProvider with ChangeNotifier {
 
   Student? get student => _student;
   List<Discipline> get studentDisciplines => [..._studentDisciplines];
+  List<Discipline> get studentLessons {
+    List<Discipline> result = [];
+
+    for (var discipline in _studentDisciplines) {
+      for (var lesson in discipline.lessons) {
+        final newDiscipline = discipline.copyWith(lessons: null, rocketChatReference: null);
+        newDiscipline.lessons = [lesson];
+        result.add(newDiscipline);
+      }
+    }
+
+    result.sort((b, a) => a.lessons.first.dateTimeStart.compareTo(b.lessons.first.dateTimeStart));
+
+    return result;
+  }
 
   Future<void> fetchAndSetStudentForInfo(String studentId) async {
     _student = await _studentRepo.getStudentById(studentId);

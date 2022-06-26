@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/root_provider.dart';
+import 'package:repiton/provider/student/student_info.dart';
 import 'package:repiton/screens/adding_discipline_screen.dart';
+import 'package:repiton/screens/teacher/teacher_lesson_screen.dart';
 import 'package:repiton/utils/separated_list.dart';
 import 'package:repiton/widgets/student_disciplines_info.dart';
 import 'package:repiton/widgets/student_info.dart';
@@ -60,9 +63,11 @@ class StudentInfoScreen extends StatelessWidget {
     }
   }
 
-  Widget _tinyScreen(BuildContext context) => SeparatedList(
-        children: [const StudentInfo(), const StudentDisciplinesInfo(), _studentTimeTable()],
-        separatorBuilder: (_, __) => const Divider(),
+  Widget _tinyScreen(BuildContext context) => SingleChildScrollView(
+        child: SeparatedList(
+          children: [const StudentInfo(), const StudentDisciplinesInfo(), _studentTimeTable(context)],
+          separatorBuilder: (_, __) => const Divider(),
+        ),
       );
 
   Widget _wideScreen(BuildContext context) => Row(
@@ -72,16 +77,16 @@ class StudentInfoScreen extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                const Expanded(child: StudentDisciplinesInfo()),
+                const Expanded(child: SingleChildScrollView(child: StudentDisciplinesInfo())),
                 const Divider(),
-                Expanded(child: _studentTimeTable()),
+                Expanded(child: SingleChildScrollView(child: _studentTimeTable(context))),
               ],
             ),
           )
         ],
       );
 
-  Widget _studentTimeTable() => Column(
+  Widget _studentTimeTable(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -91,8 +96,64 @@ class StudentInfoScreen extends StatelessWidget {
               IconButton(icon: const Icon(Icons.add), onPressed: null),
             ],
           ),
-          SingleChildScrollView(),
+          const SizedBox(height: 8),
+          Consumer(
+            builder: (context, ref, _) {
+              final studentInfoProvider = ref.watch(RootProvider.getStudentInfoProvider());
+
+              return SeparatedList(
+                separatorBuilder: (_, __) => const Divider(),
+                children: studentInfoProvider.studentLessons.map((lesson) => _studentLesson(context, lesson)).toList(),
+              );
+            },
+          ),
         ],
+      );
+
+  Widget _studentLesson(BuildContext context, Discipline singleLessonDiscipline) => InkWell(
+        onTap: () async {
+          await RootProvider.getLessons().openLesson(singleLessonDiscipline.lessons.first.id);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TeacherLessonScreen(disciplineName: singleLessonDiscipline.name, studentName: singleLessonDiscipline.student?.fullName ?? ""),
+            ),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(singleLessonDiscipline.lessons.first.name, style: const TextStyle(fontSize: 18)),
+                  const SizedBox(height: 8),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: singleLessonDiscipline.name),
+                        if (RootProvider.getAuth().userRole == AuthProvider.adminRole)
+                          TextSpan(children: [
+                            const WidgetSpan(child: SizedBox(width: 16)),
+                            const TextSpan(text: "Преподаватель ", style: TextStyle(color: Colors.grey)),
+                            TextSpan(text: singleLessonDiscipline.teacher?.fullName ?? ""),
+                          ]),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(DateFormat("dd.MM.yyyy HH:mm").format(singleLessonDiscipline.lessons.first.dateTimeStart)),
+                  const SizedBox(height: 8),
+                  Text(DateFormat("dd.MM.yyyy HH:mm").format(singleLessonDiscipline.lessons.first.dateTimeEnd)),
+                ],
+              ),
+            ],
+          ),
+        ),
       );
 
   @override

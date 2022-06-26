@@ -32,18 +32,16 @@ class StudentDisciplinesInfo extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
-        SingleChildScrollView(
-          child: Consumer(
-            builder: (context, ref, child) {
-              final studentInfoProvider = RootProvider.getStudentInfo();
+        const SizedBox(height: 8),
+        Consumer(
+          builder: (context, ref, child) {
+            final studentInfoProvider = RootProvider.getStudentInfo();
 
-              return SeparatedList(
-                separatorBuilder: (_, __) => const Divider(),
-                children: studentInfoProvider.studentDisciplines.map((discipline) => _studentDiscipline(context, discipline)).toList(),
-              );
-            },
-          ),
+            return SeparatedList(
+              separatorBuilder: (_, __) => const Divider(),
+              children: studentInfoProvider.studentDisciplines.map((discipline) => _studentDiscipline(context, discipline)).toList(),
+            );
+          },
         )
       ],
     );
