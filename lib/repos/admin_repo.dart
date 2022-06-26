@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:repiton/core/network/repiton_api/repiton_api_container.dart';
+import 'package:repiton/model/admin.dart';
 import 'package:repiton/model/parent.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
@@ -12,6 +13,7 @@ abstract class IAdminRepo {
   Future<List<Teacher>> getTeachers();
   Future<List<Student>> getStudents();
   Future<Teacher?> addTeacher(Teacher newTeacher);
+  Future<Admin?> getAdminById(String adminId);
 }
 
 class AdminRepo implements IAdminRepo {
@@ -49,6 +51,18 @@ class AdminRepo implements IAdminRepo {
       return null;
     }
   }
+
+  @override
+  Future<Admin?> getAdminById(String adminId) async {
+    try {
+      // TODO: Change teacher API to admin API
+      final result = await _api.user.getTeacherById(teacherId: adminId);
+      return result.toAdmin;
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      return null;
+    }
+  }
 }
 
 extension on TeacherDTO {
@@ -63,6 +77,8 @@ extension on TeacherDTO {
         imageUrl: imageUrl,
         education: education,
       );
+
+  Admin get toAdmin => Admin(id: id, name: firstName, lastName: lastName, fatherName: fatherName);
 }
 
 extension on Teacher {

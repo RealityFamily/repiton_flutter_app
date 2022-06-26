@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
+import 'package:repiton/provider/admin/admin.dart';
 import 'package:repiton/provider/admin/students_statistics.dart';
 import 'package:repiton/provider/admin/teachers_statistics.dart';
 import 'package:repiton/provider/admin/users.dart';
@@ -67,6 +68,15 @@ class RootProvider {
   static ChangeNotifierProvider<LessonsProvider> getLessonsProvider({bool refresh = false}) => ChangeNotifierProvider<LessonsProvider>(
         (ref) {
           return _getAndRegister(() => LessonsProvider(LessonRepo()), refresh: refresh);
+        },
+      );
+
+  /// Admins provider
+
+  static AdminsProvider getAdmins({bool refresh = false}) => _getAndRegister(() => AdminsProvider(AdminRepo()), refresh: refresh);
+  static ChangeNotifierProvider<AdminsProvider> getAdminsProvider({bool refresh = false}) => ChangeNotifierProvider<AdminsProvider>(
+        (ref) {
+          return _getAndRegister(() => AdminsProvider(AdminRepo()), refresh: refresh);
         },
       );
 

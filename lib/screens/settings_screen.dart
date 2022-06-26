@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:repiton/model/admin.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/provider/root_provider.dart';
@@ -16,7 +17,10 @@ class SettingsScreen extends ConsumerWidget {
           late String userName;
           late String userRole;
 
-          if (snapshot.data is Teacher) {
+          if (snapshot.data is Admin) {
+            userName = (snapshot.data as Admin).fullName;
+            userRole = "Администратор";
+          } else if (snapshot.data is Teacher) {
             userName = (snapshot.data as Teacher).fullName;
             userRole = "Преподаватель";
           } else if (snapshot.data is Student) {
