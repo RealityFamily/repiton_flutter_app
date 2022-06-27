@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:repiton/model/home_task.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/teacher/create_hometask_screen.dart';
+import 'package:repiton/utils/device_size.dart';
 
 class EmptyHometaskWidget extends StatelessWidget {
   const EmptyHometaskWidget({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class EmptyHometaskWidget extends StatelessWidget {
 
   Widget _emptyHomeTaskContent(BuildContext context) {
     if (kIsWeb) {
-      if (MediaQuery.of(context).size.width < 600) {
+      if (DeviceSize.isTinyScreen(context)) {
         return _tinyDescriptionContent;
       } else {
         return _wideDescriptionContent;

@@ -55,6 +55,13 @@ class StudentRepo implements IStudentRepo {
 
   @override
   Future<List<Discipline>> studentsDisciplines(String studentId) async {
+    try {
+      final result = await _api.disciplineLesson.studentDisciplines(studentId: studentId);
+      return result.map((dto) => dto.toDiscipline).toList();
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      return [];
+    }
     // TODO: Call API method
     return [
       Discipline(

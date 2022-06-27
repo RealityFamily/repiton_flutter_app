@@ -55,4 +55,17 @@ class Discipline {
         minutes: minutes ?? this.minutes,
         rocketChatReference: rocketChatReference ?? this.rocketChatReference,
       );
+
+  @override
+  bool operator ==(Object other) {
+    if (other is Discipline) {
+      return id == other.id;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  // ignore: unnecessary_overrides
+  int get hashCode => super.hashCode;
 }

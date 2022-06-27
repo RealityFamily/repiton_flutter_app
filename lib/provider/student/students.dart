@@ -9,7 +9,7 @@ class StudentsProvider with ChangeNotifier {
 
   StudentsProvider(this._repo);
 
-  Future<Student> cachedStudent() async {
+  Future<Student> get cachedStudent async {
     _student ??= await _repo.getStudentById(RootProvider.getAuth().id);
     return _student!;
   }

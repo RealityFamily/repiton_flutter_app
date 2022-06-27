@@ -60,6 +60,42 @@ class _DisciplineLessonRestApi implements DisciplineLessonRestApi {
   }
 
   @override
+  Future<List<DisciplineDTO>> teacherDisciplines({required teacherId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<DisciplineDTO>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'discipline/teacher/${teacherId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => DisciplineDTO.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<DisciplineDTO>> studentDisciplines({required studentId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<DisciplineDTO>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'discipline/student/${studentId}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => DisciplineDTO.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
   Future<DisciplineDTO> addDiscipline({required discipline}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -95,17 +131,18 @@ class _DisciplineLessonRestApi implements DisciplineLessonRestApi {
   }
 
   @override
-  Future<void> deleteDiscipline({required disciplineId}) async {
+  Future<dynamic> deleteDiscipline({required disciplineId}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    await _dio.fetch<void>(_setStreamType<void>(
+    final _result = await _dio.fetch(_setStreamType<dynamic>(
         Options(method: 'DELETE', headers: _headers, extra: _extra)
             .compose(_dio.options, 'discipline/${disciplineId}',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    return null;
+    final value = _result.data;
+    return value;
   }
 
   @override

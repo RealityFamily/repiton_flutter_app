@@ -9,7 +9,7 @@ class AdminsProvider with ChangeNotifier {
 
   AdminsProvider(this._repo);
 
-  Future<Admin> cachedAdmin() async {
+  Future<Admin> get cachedAdmin async {
     _admin ??= await _repo.getAdminById(RootProvider.getAuth().id);
     return _admin!;
   }

@@ -12,12 +12,14 @@ abstract class Calendar extends StatefulWidget {
   final DateTime lastDay;
   final Function(DateTime) selectAction;
   final Function(DateTime) pageChangeAction;
+  final bool isFormatPeriodSwitching;
 
   const Calendar({
     required this.format,
     required this.lastDay,
     required this.selectAction,
     required this.pageChangeAction,
+    this.isFormatPeriodSwitching = true,
     Key? key,
   }) : super(key: key);
 
@@ -43,10 +45,10 @@ class _CalendarState extends State<Calendar> {
         startingDayOfWeek: StartingDayOfWeek.monday,
         headerStyle: HeaderStyle(
             formatButtonVisible: false,
+            leftChevronVisible: widget.isFormatPeriodSwitching,
+            rightChevronVisible: widget.isFormatPeriodSwitching,
             titleCentered: true,
-            titleTextStyle: const TextStyle(
-              fontSize: 24,
-            ),
+            titleTextStyle: const TextStyle(fontSize: 24),
             titleTextFormatter: (date, locale) {
               String result = "";
 
@@ -91,29 +93,13 @@ class _CalendarState extends State<Calendar> {
 
               return result + " " + date.year.toString();
             }),
-        daysOfWeekStyle: DaysOfWeekStyle(
-            dowTextFormatter: (date, locale) => DateFormat("EE", "ru").format(
-                  date,
-                )),
+        daysOfWeekStyle: DaysOfWeekStyle(dowTextFormatter: (date, locale) => DateFormat("EE", "ru").format(date)),
         calendarStyle: CalendarStyle(
-          selectedDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            shape: BoxShape.circle,
-          ),
-          todayTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          todayDecoration: BoxDecoration(
-            border: Border.all(
-              width: 1,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            shape: BoxShape.circle,
-          ),
+          selectedDecoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, shape: BoxShape.circle),
+          todayTextStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+          todayDecoration: BoxDecoration(border: Border.all(width: 1, color: Theme.of(context).colorScheme.primary), shape: BoxShape.circle),
         ),
-        selectedDayPredicate: (day) {
-          return isSameDay(_selectDate, day);
-        },
+        selectedDayPredicate: (day) => isSameDay(_selectDate, day),
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             _selectDate = selectedDay;
@@ -122,53 +108,27 @@ class _CalendarState extends State<Calendar> {
           widget.selectAction(_selectDate);
         },
         onPageChanged: (focusedDay) {
-          setState(() {
-            _showDate = focusedDay;
-          });
+          setState(() => _showDate = focusedDay);
           widget.pageChangeAction(_showDate);
         },
         calendarBuilders: CalendarBuilders(
           defaultBuilder: (context, date, events) => Container(
             margin: const EdgeInsets.all(5.0),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: widget.getColor(date) ?? Colors.transparent,
-            ),
-            child: Text(
-              date.day.toString(),
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontSize: 16,
-              ),
-            ),
+            decoration: BoxDecoration(color: widget.getColor(date) ?? Colors.transparent),
+            child: Text(date.day.toString(), style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16)),
           ),
           selectedBuilder: (context, date, events) => Container(
             margin: const EdgeInsets.all(5.0),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: Text(
-              date.day.toString(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
+            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+            child: Text(date.day.toString(), style: const TextStyle(color: Colors.white, fontSize: 16)),
           ),
           todayBuilder: (context, date, events) => Container(
             margin: const EdgeInsets.all(5.0),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: widget.getColor(date) ?? Colors.black26,
-            ),
-            child: Text(
-              date.day.toString(),
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontSize: 16,
-              ),
-            ),
+            decoration: BoxDecoration(color: widget.getColor(date) ?? Colors.black26),
+            child: Text(date.day.toString(), style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16)),
           ),
         ),
       ),
@@ -320,6 +280,73 @@ class TimeTableCalendar extends Calendar {
           lastDay: DateTime(DateTime.now().year, DateTime.now().month + 2, 0),
           selectAction: selectAction,
           pageChangeAction: pageChangeAction,
+          key: key,
+        );
+
+  @override
+  Color? getColor(DateTime day) {
+    LessonStatus? result;
+    if (disciplines.isEmpty) {
+      return null;
+    }
+
+    OUTER:
+    for (var discipline in disciplines) {
+      for (var lesson in discipline.lessons) {
+        if (lesson.dateTimeStart.isSameDate(day)) {
+          switch (lesson.status) {
+            case LessonStatus.done:
+              result ??= LessonStatus.done;
+              break;
+            case LessonStatus.canceledByStudent:
+              result = LessonStatus.canceledByStudent;
+              break OUTER;
+            case LessonStatus.canceledByTeacher:
+              result = LessonStatus.canceledByTeacher;
+              break OUTER;
+            case LessonStatus.moved:
+              result = LessonStatus.moved;
+              break;
+            case LessonStatus.planned:
+              result = LessonStatus.planned;
+              break;
+            case LessonStatus.started:
+              result = LessonStatus.done;
+              break;
+          }
+        }
+      }
+    }
+    switch (result) {
+      case LessonStatus.done:
+        return const Color(0xFF9DCBAA);
+      case LessonStatus.canceledByStudent:
+      case LessonStatus.canceledByTeacher:
+        return const Color(0xFFDE9898);
+      case LessonStatus.moved:
+        return const Color(0xFFFFEE97);
+      case LessonStatus.planned:
+        return const Color.fromARGB(255, 128, 186, 205);
+      default:
+        return null;
+    }
+  }
+}
+
+class AddLessonCalendar extends Calendar {
+  final List<Discipline> disciplines;
+
+  AddLessonCalendar({
+    required Function(DateTime) selectAction,
+    DateTime? lastDay,
+    required this.disciplines,
+    Key? key,
+  }) : super(
+          format: CalendarFormat.month,
+          lastDay: lastDay ?? DateTime(DateTime.now().year, DateTime.now().month + 2, 0),
+          selectAction: selectAction,
+          pageChangeAction: (date) {},
+          isFormatPeriodSwitching: false,
           key: key,
         );
 

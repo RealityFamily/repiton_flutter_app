@@ -54,7 +54,7 @@ class StudentsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Expanded(
               child: FutureBuilder(
-                future: RootProvider.getTeachers().fetchTeacherStudents(),
+                future: RootProvider.getTeachers().cachedTeacher,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -64,13 +64,13 @@ class StudentsScreen extends StatelessWidget {
 
                       return ListView.separated(
                         itemBuilder: (context, index) => TeacherStudentsElementWidget(
-                          studentName: teacher.teacherDisciplines[index].student?.fullName ?? "",
-                          studentId: teacher.teacherDisciplines[index].student?.id ?? "",
-                          disciplineName: teacher.teacherDisciplines[index].name,
-                          nearestLessonDateTime: teacher.getDisciplineNearestLesson(teacher.teacherDisciplines[index]),
+                          studentName: teacher.teacherStudents[index].student?.fullName ?? "",
+                          studentId: teacher.teacherStudents[index].student?.id ?? "",
+                          disciplineName: teacher.teacherStudents[index].name,
+                          nearestLessonDateTime: teacher.getDisciplineNearestLesson(teacher.teacherStudents[index]),
                         ),
                         separatorBuilder: (context, index) => const Divider(),
-                        itemCount: teacher.teacherDisciplines.length,
+                        itemCount: teacher.teacherStudents.length,
                       );
                     });
                   }

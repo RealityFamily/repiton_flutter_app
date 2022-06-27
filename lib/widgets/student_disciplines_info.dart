@@ -35,7 +35,7 @@ class StudentDisciplinesInfo extends StatelessWidget {
         const SizedBox(height: 8),
         Consumer(
           builder: (context, ref, child) {
-            final studentInfoProvider = RootProvider.getStudentInfo();
+            final studentInfoProvider = ref.watch(RootProvider.getStudentInfoProvider());
 
             return SeparatedList(
               separatorBuilder: (_, __) => const Divider(),
@@ -45,7 +45,6 @@ class StudentDisciplinesInfo extends StatelessWidget {
         )
       ],
     );
-    ;
   }
 
   Widget _studentDiscipline(BuildContext context, Discipline discipline) => InkWell(
@@ -95,6 +94,8 @@ class StudentDisciplinesInfo extends StatelessWidget {
       );
 
   void _openDisciplineInfo(BuildContext context, String disciplineId) {
+    final discipline = RootProvider.getStudentInfo().disciplineById(disciplineId);
+
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -127,7 +128,11 @@ class StudentDisciplinesInfo extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(title, style: const TextStyle(fontSize: 18)), Text(value)],
+          children: [
+            Expanded(child: Text(title, style: const TextStyle(fontSize: 18))),
+            const SizedBox(width: 8),
+            Expanded(child: Text(value, textAlign: TextAlign.right)),
+          ],
         ),
       );
 

@@ -20,7 +20,7 @@ import 'package:repiton_api/entities/test_dto.dart';
 abstract class ITeacherRepo {
   Future<List<Discipline>> getTimetable(String teacherId, DateTime dateTimeFrom, DateTime dateTimeTo);
   Future<Teacher?> getTeacherById(String teacherId);
-  Future<List<Discipline>> teachersDisciplines();
+  Future<List<Discipline>> teachersDisciplines(String teacherId);
 }
 
 class TeacherRepo implements ITeacherRepo {
@@ -53,7 +53,15 @@ class TeacherRepo implements ITeacherRepo {
   }
 
   @override
-  Future<List<Discipline>> teachersDisciplines() async {
+  Future<List<Discipline>> teachersDisciplines(String teacherId) async {
+    try {
+      final result = await _api.disciplineLesson.teacherDisciplines(teacherId: teacherId);
+      return result.map((dto) => dto.toDiscipline).toList();
+    } catch (e, stackTrace) {
+      debugPrint("$e\n$stackTrace");
+      return [];
+    }
+
     // TODO: change to API method
     return [
       Discipline(

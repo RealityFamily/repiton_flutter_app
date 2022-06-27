@@ -15,7 +15,7 @@ class _StudentSelfControllInfoState extends State<StudentSelfControllInfo> {
   final List<String> _states = ["Неделя", "Месяц", "Выбрать..."];
   late String _state = _states[0];
 
-  void _setStudentForStatistic() async => RootProvider.getStudentsStatistics().student = await RootProvider.getStudents().cachedStudent();
+  void _setStudentForStatistic() async => RootProvider.getStudentsStatistics().student = await RootProvider.getStudents().cachedStudent;
 
   Widget _getContent() {
     if (_states.indexOf(_state) == 0) {

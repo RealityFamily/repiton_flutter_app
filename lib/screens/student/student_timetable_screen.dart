@@ -5,6 +5,7 @@ import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/student/student_lesson_screen.dart';
+import 'package:repiton/utils/device_size.dart';
 import 'package:repiton/utils/separated_list.dart';
 import 'package:repiton/widgets/calendar_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -138,7 +139,7 @@ class _StudentTimeTableScreenState extends State<StudentTimeTableScreen> {
       separatorBuilder: (_, __) => const Divider(),
     );
 
-    if (MediaQuery.of(context).size.width < 1300) {
+    if (DeviceSize.isTinyScreen(context)) {
       return _tinyScreen(calendar, students, studentsLessons.todayLessons.isNotEmpty);
     } else {
       return _wideScreen(calendar, students);

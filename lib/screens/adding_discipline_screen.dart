@@ -4,6 +4,7 @@ import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/student.dart';
 import 'package:repiton/model/teacher.dart';
 import 'package:repiton/repos/discipline_repo.dart';
+import 'package:repiton/utils/device_size.dart';
 import 'package:repiton/widgets/add_discipline_info.dart';
 import 'package:repiton/widgets/add_student_info.dart';
 
@@ -41,7 +42,7 @@ class _AddingDisciplineScreenState extends State<AddingDisciplineScreen> {
   }
 
   Widget get _addingScreenBuild {
-    if (MediaQuery.of(context).size.width < 950) {
+    if (DeviceSize.isTinyScreen(context)) {
       return _tinyScreanBuild;
     } else {
       return _wideScreanBuild;

@@ -9,6 +9,7 @@ import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/lessons.dart';
 import 'package:repiton/provider/root_provider.dart';
 import 'package:repiton/screens/web_jitsi_call_screen.dart';
+import 'package:repiton/utils/device_size.dart';
 
 class LessonInfoWidget extends StatefulWidget {
   const LessonInfoWidget({Key? key}) : super(key: key);
@@ -154,7 +155,7 @@ class _LessonInfoWidgetState extends State<LessonInfoWidget> {
 
   Widget get _lessonDescriptionContent {
     if (kIsWeb) {
-      if (MediaQuery.of(context).size.width < 600) {
+      if (DeviceSize.isTinyScreen(context)) {
         return _tinyDescriptionContent;
       } else {
         return _wideDescriptionContent;

@@ -4,9 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:repiton/model/discipline.dart';
 import 'package:repiton/provider/auth.dart';
 import 'package:repiton/provider/root_provider.dart';
-import 'package:repiton/provider/student/student_info.dart';
-import 'package:repiton/screens/adding_discipline_screen.dart';
+import 'package:repiton/screens/teacher/create_lesson_screen.dart';
 import 'package:repiton/screens/teacher/teacher_lesson_screen.dart';
+import 'package:repiton/utils/device_size.dart';
 import 'package:repiton/utils/separated_list.dart';
 import 'package:repiton/widgets/student_disciplines_info.dart';
 import 'package:repiton/widgets/student_info.dart';
@@ -56,7 +56,7 @@ class StudentInfoScreen extends StatelessWidget {
       );
 
   Widget _buildScreen(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 1500) {
+    if (DeviceSize.isTinyScreen(context)) {
       return _tinyScreen(context);
     } else {
       return _wideScreen(context);
@@ -93,7 +93,13 @@ class StudentInfoScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Занятия с учеником", style: TextStyle(fontSize: 22)),
-              if (RootProvider.getAuth().userRole == AuthProvider.teacherRole) IconButton(icon: const Icon(Icons.add), onPressed: null),
+              if (RootProvider.getAuth().userRole == AuthProvider.teacherRole)
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => CreateLessonScreen(studentId: RootProvider.getStudentInfo().student?.id)),
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: 8),

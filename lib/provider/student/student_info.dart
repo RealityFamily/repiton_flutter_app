@@ -66,10 +66,7 @@ class StudentInfoProvider with ChangeNotifier {
     if (discipline.id == null) return;
     final newDiscipline = await _disciplineRepo.updateDiscipline(discipline);
     if (newDiscipline != null) {
-      final foundDiscipline = _studentDisciplines.firstWhere((discipline) => discipline.id == newDiscipline.id);
-      foundDiscipline.name = newDiscipline.name;
-      foundDiscipline.price = newDiscipline.price;
-      foundDiscipline.minutes = newDiscipline.minutes;
+      _studentDisciplines[_studentDisciplines.indexOf(newDiscipline)] = newDiscipline;
 
       notifyListeners();
     }

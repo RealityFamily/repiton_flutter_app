@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:repiton/core/network/repiton_api/repiton_api_container.dart';
-import 'package:repiton/model/discipline.dart';
 import 'package:repiton/model/home_task.dart';
 import 'package:repiton/model/lesson.dart';
 import 'package:repiton/model/remote_file.dart';
